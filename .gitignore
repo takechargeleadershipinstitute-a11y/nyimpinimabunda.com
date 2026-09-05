@@ -1,0 +1,48 @@
+# Host linkage — contains the deploying account's org/project IDs
+.vercel/
+.wrangler/
+
+# Working backups of index.html. Kept on disk, never in the repo: they are
+# point-in-time copies, and git already does versioning properly.
+index.html.bak*
+_shot.html
+_dbg.html
+_dbg.js
+
+# Asset preparation scripts. These reference local Downloads paths and are not
+# part of the deployable site. Move any of these into tools/ if TCLI should
+# have them for provenance.
+_prep_*.py
+_make_*.py
+_fetch_*.py
+_swap_*.py
+_check_*.py
+_build_*.py
+_validate.py
+_mkverify.py
+
+# Abandoned multi-language build (removed from the site at the client's request,
+# Aug 2026). Kept locally in case it is ever revived.
+_tr_*.json
+_en.json
+_deferred.json
+_review_*.md
+_language_research.md
+_LOCALISATION_PLAN.md
+i18n.js
+_i18n_archive/
+
+# Design exploration and originals — large, and not needed to build the site
+_variants_archive/
+_institute_mvp/
+_candidates/
+_shots/
+_orig_sources/
+
+# OS / editor
+Thumbs.db
+.DS_Store
+desktop.ini
+node_modules/
+.env
+.env.*
