@@ -1,0 +1,11 @@
+# Everything in the repo that is NOT part of the published site.
+# Same syntax as .gitignore; read by `wrangler deploy` at upload time.
+.git/
+.gitignore
+.vercelignore
+.assetsignore
+wrangler.jsonc
+README.md
+SETUP.md
+supabase/
+node_modules/

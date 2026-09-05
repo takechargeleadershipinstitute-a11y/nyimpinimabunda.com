@@ -30,3 +30,5 @@ index.html.bak*
 ﻿assets/logos/_orig
 **/_old-lowres
 _prep_book2.py
+wrangler.jsonc
+.assetsignore

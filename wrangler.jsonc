@@ -1,0 +1,16 @@
+// Cloudflare Workers config for a static site (no Worker code, assets only).
+//
+// The dashboard's "Deploy command" is `npx wrangler deploy`, which reads this
+// file. `assets.directory` is the repo root because index.html, assets/ and
+// waitlist/ live there; .assetsignore keeps the non-site files out of the upload.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nyimpinimabunda-com",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./",
+    // /waitlist  ->  /waitlist/index.html, and /index.html -> /
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}
