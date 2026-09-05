@@ -561,6 +561,53 @@ a{color:inherit}
   transition:transform .2s}
 .soc:hover .soc-go svg{transform:translate(3px,-3px)}
 
+/* CEO NIGHTS SIGN-UP DIALOG
+   The live-recording CTAs used to send people to the TCLI waitlist page, which
+   is the wrong room: they wanted a seat at a recording, not the Institute. This
+   collects the same three fields in place, tags them ceo-nights, and never
+   moves them off the section they were reading. */
+.mdl{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+.mdl.open{display:flex}
+.mdl-veil{position:absolute;inset:0;background:rgba(3,12,38,.72);backdrop-filter:blur(3px)}
+.mdl-box{position:relative;width:100%;max-width:460px;background:var(--off);
+  padding:36px 32px 32px;max-height:92vh;overflow-y:auto;
+  box-shadow:0 40px 90px rgba(0,0,0,.45)}
+@media(min-width:560px){.mdl-box{padding:40px 40px 36px}}
+.mdl-x{position:absolute;top:12px;right:12px;width:38px;height:38px;border:0;background:none;
+  cursor:pointer;color:var(--grey);font-size:22px;line-height:1;border-radius:50%}
+.mdl-x:hover{background:rgba(5,26,82,.07);color:var(--ink)}
+.mdl-k{font-size:10.5px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--amber)}
+.mdl-h{font-family:var(--disp);font-weight:500;text-transform:uppercase;
+  font-size:clamp(26px,4vw,32px);line-height:1;margin:10px 0 8px;color:var(--ink)}
+.mdl-d{color:var(--grey);font-size:14.5px;margin-bottom:22px}
+.mdl .f{margin-bottom:14px}
+.mdl .f label{display:block;font-size:10.5px;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--grey);margin-bottom:7px}
+.mdl .f input[type=text],.mdl .f input[type=email]{width:100%;font-family:var(--body);
+  font-size:16px;color:var(--ink);background:#fff;border:0;padding:14px 15px;
+  box-shadow:inset 0 0 0 1px var(--line)}
+.mdl .f input:focus{outline:0;box-shadow:inset 0 0 0 2px var(--ink)}
+.mdl .two{display:grid;gap:14px}
+@media(min-width:460px){.mdl .two{grid-template-columns:1fr 1fr}}
+.mdl .agree{display:flex;gap:10px;align-items:flex-start;margin:16px 0 20px}
+.mdl .agree input{margin-top:3px;accent-color:var(--ink);width:16px;height:16px;flex:0 0 16px}
+.mdl .agree label{font-size:12.5px;line-height:1.5;color:var(--grey)}
+.mdl .agree a{color:var(--ink)}
+.mdl button.go{width:100%;font-family:var(--body);font-weight:600;font-size:12px;
+  letter-spacing:.2em;text-transform:uppercase;padding:17px 30px;border:0;cursor:pointer;
+  background:var(--ink);color:#fff}
+.mdl button.go:hover:not(:disabled){background:var(--ink-2)}
+.mdl button.go:disabled{opacity:.55;cursor:default}
+.mdl-msg{margin-top:14px;font-size:14px;line-height:1.55;padding:12px 14px;display:none;
+  background:rgba(180,69,60,.08);color:#8E332C;box-shadow:inset 0 0 0 1px rgba(180,69,60,.3)}
+.mdl-msg.show{display:block}
+.mdl-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.mdl-done{display:none;text-align:left}
+.mdl-done.show{display:block}
+.mdl-done .tick{width:42px;height:42px;border-radius:50%;background:var(--amber);
+  display:grid;place-items:center;margin-bottom:16px}
+.mdl-done .tick svg{width:21px;height:21px;color:var(--dark)}
+
 /* FOOTER */
 .foot{border-top:1px solid var(--line);padding:48px 0 46px}
 .foot .wrap{display:flex;flex-wrap:wrap;gap:22px 32px;justify-content:space-between;align-items:center}
@@ -877,7 +924,7 @@ body{background:var(--off)}
         <p class="s2-h" data-i18n="s2.h">Coming soon.</p>
         <p class="s2-d" data-i18n="s2.d">Season One is complete: fifteen conversations with the people running South Africa's biggest companies. Season Two is in production, and every episode is recorded in front of a live audience. Put your name down and stay connected.</p>
       </div>
-      <a class="cta line on-dark s2-cta" href="/waitlist/?i=ceo-nights" data-i18n="s2.cta">Be invited to a live recording</a>
+      <a class="cta line on-dark s2-cta" href="/waitlist/?i=ceo-nights" data-cn-open data-i18n="s2.cta">Be invited to a live recording</a>
     </div>
   </div>
 </section>
@@ -1163,7 +1210,7 @@ body{background:var(--off)}
     </div>
 
     <div class="ev-acts">
-      <a class="cta" href="/waitlist/?i=ceo-nights" data-i18n="events.cta">Be the first to be invited</a>
+      <a class="cta" href="/waitlist/?i=ceo-nights" data-cn-open data-i18n="events.cta">Be the first to be invited</a>
       <span class="note" data-i18n="events.note">Takes a minute. No spam, invitations only.</span>
     </div>
   </div>
@@ -1225,6 +1272,55 @@ body{background:var(--off)}
   </div>
 </section>
 
+<!-- CEO Nights seat request. The href on each trigger still points at the
+     waitlist page, so this degrades to a working link if JavaScript fails. -->
+<div class="mdl" id="cnModal" role="dialog" aria-modal="true" aria-labelledby="cnH" hidden>
+  <div class="mdl-veil" data-cn-close></div>
+  <div class="mdl-box">
+    <button class="mdl-x" type="button" data-cn-close aria-label="Close">&times;</button>
+
+    <form id="cnForm">
+      <p class="mdl-k">CEO Nights</p>
+      <h2 class="mdl-h" id="cnH">Be invited to a live recording.</h2>
+      <p class="mdl-d">Recordings are small and seats go to the list first. Three fields and you are on it.</p>
+
+      <div class="two">
+        <div class="f">
+          <label for="cnFirst">First name</label>
+          <input id="cnFirst" name="first" type="text" autocomplete="given-name" placeholder="Your first name" required maxlength="80">
+        </div>
+        <div class="f">
+          <label for="cnLast">Surname</label>
+          <input id="cnLast" name="last" type="text" autocomplete="family-name" placeholder="Your surname" required maxlength="80">
+        </div>
+      </div>
+      <div class="f">
+        <label for="cnEmail">Email address</label>
+        <input id="cnEmail" name="email" type="email" autocomplete="email" placeholder="name@example.com" required maxlength="254">
+      </div>
+
+      <div class="agree">
+        <input id="cnAgree" type="checkbox" required>
+        <label for="cnAgree">Email me about CEO Nights live recordings and related news. I accept the <a href="/terms/" target="_blank" rel="noopener">terms and privacy notice</a>.</label>
+      </div>
+
+      <div class="mdl-hp" aria-hidden="true">
+        <label for="cnCo">Company</label><input id="cnCo" name="company" type="text" tabindex="-1" autocomplete="off">
+      </div>
+
+      <button class="go" id="cnGo" type="submit">Put me on the list</button>
+      <p class="mdl-msg" id="cnMsg" role="alert" aria-live="polite"></p>
+    </form>
+
+    <div class="mdl-done" id="cnDone" role="status" aria-live="polite">
+      <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+      <h2 class="mdl-h" id="cnDoneH">You are on the list.</h2>
+      <p class="mdl-d">We will email you when the next recording is announced. Seats are limited, so watch for it.</p>
+      <button class="go" type="button" data-cn-close>Close</button>
+    </div>
+  </div>
+</div>
+
 <footer class="foot">
   <div class="wrap">
     <a class="foot-mark" href="#top" aria-label="Nyimpini Mabunda"><img src="assets/nm-logo.png" alt="Nyimpini Mabunda"></a>
@@ -1245,6 +1341,105 @@ body{background:var(--off)}
 
 <script>
 document.getElementById('yr').textContent=new Date().getFullYear();
+
+/* CEO Nights seat request dialog.
+
+   Writes to the same waitlist table as /waitlist/, tagged 'ceo-nights', so the
+   two audiences are separable in beehiiv without running two lists. The
+   triggers keep their href, so with JavaScript off they still reach the
+   waitlist page — the dialog is an enhancement, not a dependency. */
+(function () {
+  var SB_URL  = 'https://cbbhgoahhykpckbtlzkr.supabase.co';
+  var SB_KEY  = 'sb_publishable_RldFFBVH4R8nPDyRlxA0tA__j8mMICa';
+
+  var mdl  = document.getElementById('cnModal');
+  if (!mdl) return;
+  var form = document.getElementById('cnForm'),
+      btn  = document.getElementById('cnGo'),
+      msg  = document.getElementById('cnMsg'),
+      done = document.getElementById('cnDone'),
+      last = null;
+
+  function open(e){
+    if (e) e.preventDefault();
+    last = document.activeElement;
+    mdl.hidden = false; mdl.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(function(){ document.getElementById('cnFirst').focus(); }, 40);
+  }
+  function close(){
+    mdl.classList.remove('open'); mdl.hidden = true;
+    document.body.style.overflow = '';
+    if (last && last.focus) last.focus();
+  }
+
+  [].forEach.call(document.querySelectorAll('[data-cn-open]'), function (t) {
+    t.addEventListener('click', open);
+  });
+  [].forEach.call(mdl.querySelectorAll('[data-cn-close]'), function (t) {
+    t.addEventListener('click', close);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && mdl.classList.contains('open')) close();
+    // Keep Tab inside the dialog: a keyboard user must not fall out of a modal
+    // into the page behind it.
+    if (e.key === 'Tab' && mdl.classList.contains('open')) {
+      var f = mdl.querySelectorAll('button, input, a[href], [tabindex]:not([tabindex="-1"])');
+      f = [].filter.call(f, function (n) { return n.offsetParent !== null; });
+      if (!f.length) return;
+      var first = f[0], lastEl = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); lastEl.focus(); }
+      else if (!e.shiftKey && document.activeElement === lastEl) { e.preventDefault(); first.focus(); }
+    }
+  });
+
+  function fail(t){
+    msg.textContent = t; msg.classList.add('show');
+    btn.disabled = false; btn.textContent = 'Put me on the list';
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    msg.classList.remove('show');
+
+    var first = form.first.value.trim(),
+        lastN = form.last.value.trim(),
+        email = form.email.value.trim();
+
+    if (!first || !lastN) return fail('Please give your first name and surname.');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      return fail('That email address does not look right. Please check it.');
+    if (!document.getElementById('cnAgree').checked)
+      return fail('Please tick the box so we know you are happy to hear from us.');
+    if (form.company.value) { form.style.display='none'; done.classList.add('show'); return; }
+
+    btn.disabled = true; btn.textContent = 'Adding…';
+
+    fetch(SB_URL + '/rest/v1/waitlist', {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify({
+        first_name: first, last_name: lastN, email: email.toLowerCase(),
+        interests: ['ceo-nights'], source: 'ceo-nights-dialog'
+      })
+    })
+    .then(function (r) {
+      // 409 means that address is already on the list, which from the
+      // visitor's side is success, not an error.
+      if (r.ok || r.status === 409) {
+        document.getElementById('cnDoneH').textContent = 'You are on the list, ' + first + '.';
+        form.style.display = 'none';
+        done.classList.add('show');
+        return;
+      }
+      return r.text().then(function (t) { throw new Error(t || r.status); });
+    })
+    .catch(function (err) {
+      console.error('ceo-nights:', err);
+      fail('Something went wrong on our side. Please try again, or email info@takechargeli.co.za.');
+    });
+  });
+})();
 var nav=document.getElementById('nav');
 function s(){nav.classList.toggle('solid',window.scrollY>50);}
 window.addEventListener('scroll',s,{passive:true});s();
