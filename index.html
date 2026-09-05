@@ -357,9 +357,9 @@ a{color:inherit}
 .nb-cover picture{display:contents}
 /* Capped on both axes: the mock-up is tall, and width alone would let it set
    the height of the whole band. */
-.nb-cover img{display:block;width:auto;height:auto;max-width:132px;max-height:190px;
+.nb-cover img{display:block;width:auto;height:auto;max-width:260px;max-height:168px;
   object-fit:contain;filter:drop-shadow(0 18px 34px rgba(0,0,0,.45))}
-@media(max-width:899px){.nb-cover img{max-width:104px;max-height:150px}}
+@media(max-width:899px){.nb-cover img{max-width:210px;max-height:136px}}
 .nb-tag{display:block;font-size:10.5px;font-weight:600;letter-spacing:.24em;
   text-transform:uppercase;color:var(--amber)}
 .nb-h{font-family:var(--disp);font-weight:400;text-transform:uppercase;color:#fff;
@@ -532,29 +532,34 @@ a{color:inherit}
 .social h2{font-family:var(--disp);font-weight:400;text-transform:uppercase;color:#fff;font-size:clamp(30px,3.6vw,46px);line-height:.96;margin-top:14px}
 .social h2 .hand{display:inline-block;color:var(--amber);font-size:1.02em;line-height:.95;padding-left:.2em}
 .social-lead{color:var(--grey-2);font-size:14.5px;max-width:46ch;margin:14px auto 0}
-.soc-grid{display:grid;gap:0;margin-top:40px;border-top:1px solid rgba(237,235,230,.14)}
-@media(min-width:640px){.soc-grid{grid-template-columns:repeat(2,1fr)}}
-@media(min-width:1000px){.soc-grid{grid-template-columns:repeat(4,1fr)}}
-.soc{display:flex;flex-direction:row;align-items:center;gap:16px;padding:22px 22px;text-decoration:none;color:#EDEBE6;
-  border-bottom:1px solid rgba(237,235,230,.14);transition:background .22s}
-@media(min-width:640px){.soc{border-right:1px solid rgba(237,235,230,.14)}
-  .soc:nth-child(2n){border-right:0}}
-@media(min-width:1000px){.soc:nth-child(2n){border-right:1px solid rgba(237,235,230,.14)}
-  .soc:nth-child(4n){border-right:0}}
-.soc:hover{background:rgba(255,255,255,.035)}
-/* The badge: the platform's real mark at app-icon scale, in the platform's colour. */
-.soc-badge{flex:0 0 40px;width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 14px 34px rgba(0,0,0,.35);transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s}
-.soc:hover .soc-badge{transform:translateY(-4px) scale(1.04);box-shadow:0 22px 44px rgba(0,0,0,.45)}
-.soc-badge svg{width:40px;height:40px;display:block}
-.soc-txt{display:flex;flex-direction:column;min-width:0}
-.soc-k{display:block;font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:19px;line-height:1;color:#fff;letter-spacing:.01em}
-.soc-h{display:block;margin-top:5px;font-size:12.5px;line-height:1.4;color:var(--grey-2)}
-.soc-h b{font-weight:500;color:#EDEBE6}
-.soc-go{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--amber)}
-.soc-go svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;transition:transform .2s}
+/* No dividers and no boxes. The lines turned four links into a table; space
+   separates them perfectly well. Each item is the platform's own mark, the
+   handle, and the action — the platform NAME is redundant once its logo is
+   there. */
+.soc-grid{display:grid;gap:8px;margin-top:44px}
+@media(min-width:640px){.soc-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
+@media(min-width:1060px){.soc-grid{grid-template-columns:repeat(4,1fr);gap:14px}}
+.soc{display:flex;flex-direction:column;align-items:flex-start;gap:16px;
+  padding:26px 24px 24px;text-decoration:none;color:#EDEBE6;border-radius:14px;
+  background:rgba(255,255,255,.04);
+  transition:background .22s,transform .25s cubic-bezier(.2,.8,.2,1)}
+.soc:hover{background:rgba(255,255,255,.08);transform:translateY(-3px)}
+.soc:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+
+/* The real app mark, at app-icon scale and in the platform's own colour. */
+.soc-badge{width:46px;height:46px;border-radius:12px;display:flex;
+  align-items:center;justify-content:center;
+  box-shadow:0 12px 28px rgba(0,0,0,.4);transition:box-shadow .25s}
+.soc:hover .soc-badge{box-shadow:0 18px 38px rgba(0,0,0,.5)}
+.soc-badge svg{width:46px;height:46px;display:block}
+.soc-txt{display:block;min-width:0}
+.soc-h{display:block;font-size:15px;line-height:1.35;color:#fff;font-weight:500;
+  word-break:break-word}
+.soc-go{margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-size:10px;
+  font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--amber)}
+.soc-go svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;
+  transition:transform .2s}
 .soc:hover .soc-go svg{transform:translate(3px,-3px)}
-@media(max-width:639px){.soc{padding:18px 4px}}
 
 /* FOOTER */
 .foot{border-top:1px solid var(--line);padding:48px 0 46px}
@@ -1026,8 +1031,8 @@ body{background:var(--off)}
     <div class="nb-in">
       <div class="nb-cover">
         <picture>
-          <source srcset="assets/ceo-nights-book-1.webp" type="image/webp">
-          <img src="assets/ceo-nights-book-1.png" alt="CEO Nights by Nyimpini Mabunda" width="460" height="808" loading="lazy" decoding="async">
+          <source srcset="assets/ceo-nights-book-2.webp" type="image/webp">
+          <img src="assets/ceo-nights-book-2.png" alt="CEO Nights by Nyimpini Mabunda" width="720" height="463" loading="lazy" decoding="async">
         </picture>
       </div>
       <div class="nb-copy">
@@ -1196,28 +1201,24 @@ body{background:var(--off)}
       <p class="social-lead" data-i18n="social.lead">The conversations, the live recordings and the Institute's work, as they happen, in his own words.</p>
     </div>
     <div class="soc-grid">
-      <a class="soc" href="https://www.linkedin.com/in/nyimpini-mabunda-mba-amp-ceo-chairman/" target="_blank" rel="noopener">
-        <span class="soc-badge"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#0A66C2"/><path fill="#fff" d="M20.9 26.3h6.1V46h-6.1zM24 17a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7zm6.8 9.3h5.9v2.7h.1c.8-1.5 2.8-3.2 5.8-3.2 6.2 0 7.4 4.1 7.4 9.4V46h-6.1v-9.5c0-2.3 0-5.2-3.2-5.2s-3.7 2.5-3.7 5V46h-6.1z"/></svg></span>
-        <span class="soc-txt"><span class="soc-k">LinkedIn</span>
-        <span class="soc-h"><b>Nyimpini Mabunda</b></span></span>
+      <a class="soc" href="https://www.linkedin.com/in/nyimpini-mabunda-mba-amp-ceo-chairman/" target="_blank" rel="noopener" aria-label="Nyimpini Mabunda on LinkedIn">
+        <span class="soc-badge"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="15" fill="#0A66C2"/><g transform="translate(14 14) scale(1.5)"><path fill="#fff" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/></g></svg></span>
+        <span class="soc-txt"><span class="soc-h">Nyimpini Mabunda</span></span>
         <span class="soc-go">Follow <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
       </a>
-      <a class="soc" href="https://www.youtube.com/@ceonightswithnyimpini" target="_blank" rel="noopener">
-        <span class="soc-badge"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#FF0000"/><path fill="#fff" d="M46.6 24.2a3.8 3.8 0 0 0-2.7-2.7C41.5 20.9 32 20.9 32 20.9s-9.5 0-11.9.6a3.8 3.8 0 0 0-2.7 2.7C16.8 26.6 16.8 32 16.8 32s0 5.4.6 7.8a3.8 3.8 0 0 0 2.7 2.7c2.4.6 11.9.6 11.9.6s9.5 0 11.9-.6a3.8 3.8 0 0 0 2.7-2.7c.6-2.4.6-7.8.6-7.8s0-5.4-.6-7.8zM29 36.8v-9.6l8 4.8z"/></svg></span>
-        <span class="soc-txt"><span class="soc-k">YouTube</span>
-        <span class="soc-h"><b>CEO Nights with Nyimpini</b></span></span>
+      <a class="soc" href="https://www.youtube.com/@ceonightswithnyimpini" target="_blank" rel="noopener" aria-label="CEO Nights on YouTube">
+        <span class="soc-badge"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="15" fill="#FF0000"/><g transform="translate(14 14) scale(1.5)"><path fill="#fff" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></g></svg></span>
+        <span class="soc-txt"><span class="soc-h">@ceonightswithnyimpini</span></span>
         <span class="soc-go">Subscribe <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
       </a>
-      <a class="soc" href="https://www.instagram.com/nyimpinimabunda/" target="_blank" rel="noopener">
-        <span class="soc-badge"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><radialGradient id="igg1" cx="18%" cy="102%" r="130%"><stop offset="0" stop-color="#FFD600"/><stop offset=".25" stop-color="#FF7A00"/><stop offset=".5" stop-color="#FF0069"/><stop offset=".75" stop-color="#D300C5"/><stop offset="1" stop-color="#7638FA"/></radialGradient></defs><rect width="64" height="64" rx="16" fill="url(#igg1)"/><rect x="17" y="17" width="30" height="30" rx="8.5" fill="none" stroke="#fff" stroke-width="3"/><circle cx="32" cy="32" r="7" fill="none" stroke="#fff" stroke-width="3"/><circle cx="40.6" cy="23.4" r="1.9" fill="#fff"/></svg></span>
-        <span class="soc-txt"><span class="soc-k">Instagram</span>
-        <span class="soc-h"><b>@nyimpinimabunda</b></span></span>
+      <a class="soc" href="https://www.instagram.com/nyimpinimabunda/" target="_blank" rel="noopener" aria-label="Nyimpini Mabunda on Instagram">
+        <span class="soc-badge"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><radialGradient id="ig1" cx="30%" cy="107%" r="150%"><stop offset="0" stop-color="#FFD521"/><stop offset=".05" stop-color="#FFD521"/><stop offset=".5" stop-color="#F50000"/><stop offset=".95" stop-color="#B900B4"/><stop offset="1" stop-color="#B900B4"/></radialGradient></defs><rect width="64" height="64" rx="15" fill="url(#ig1)"/><g transform="translate(14 14) scale(1.5)"><path fill="#fff" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></g></svg></span>
+        <span class="soc-txt"><span class="soc-h">@nyimpinimabunda</span></span>
         <span class="soc-go">Follow <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
       </a>
-      <a class="soc" href="https://www.instagram.com/takecharge_li/" target="_blank" rel="noopener">
-        <span class="soc-badge"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><radialGradient id="igg2" cx="18%" cy="102%" r="130%"><stop offset="0" stop-color="#FFD600"/><stop offset=".25" stop-color="#FF7A00"/><stop offset=".5" stop-color="#FF0069"/><stop offset=".75" stop-color="#D300C5"/><stop offset="1" stop-color="#7638FA"/></radialGradient></defs><rect width="64" height="64" rx="16" fill="url(#igg2)"/><rect x="17" y="17" width="30" height="30" rx="8.5" fill="none" stroke="#fff" stroke-width="3"/><circle cx="32" cy="32" r="7" fill="none" stroke="#fff" stroke-width="3"/><circle cx="40.6" cy="23.4" r="1.9" fill="#fff"/></svg></span>
-        <span class="soc-txt"><span class="soc-k">Instagram</span>
-        <span class="soc-h"><b>@takecharge_li</b> · Take Charge</span></span>
+      <a class="soc" href="https://www.instagram.com/takecharge_li/" target="_blank" rel="noopener" aria-label="Take Charge Leadership Institute on Instagram">
+        <span class="soc-badge"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><radialGradient id="ig2" cx="30%" cy="107%" r="150%"><stop offset="0" stop-color="#FFD521"/><stop offset=".05" stop-color="#FFD521"/><stop offset=".5" stop-color="#F50000"/><stop offset=".95" stop-color="#B900B4"/><stop offset="1" stop-color="#B900B4"/></radialGradient></defs><rect width="64" height="64" rx="15" fill="url(#ig2)"/><g transform="translate(14 14) scale(1.5)"><path fill="#fff" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></g></svg></span>
+        <span class="soc-txt"><span class="soc-h">@takecharge_li</span></span>
         <span class="soc-go">Follow <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
       </a>
     </div>
@@ -1236,6 +1237,7 @@ body{background:var(--off)}
       <li><a href="#impact" data-i18n="nav.impact">Impact</a></li>
       <li><a href="#events" data-i18n="nav.events">Events</a></li>
       <li><a href="#contact" data-i18n="nav.enquiries">Enquiries</a></li>
+    <li><a href="/terms/">Terms &amp; Privacy</a></li>
     </ul>
     <p>© <span id="yr">2026</span> Nyimpini Mabunda</p>
   </div>
