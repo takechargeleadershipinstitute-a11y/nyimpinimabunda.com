@@ -50,18 +50,38 @@ img{max-width:100%;display:block}
 
 .pitch{background:var(--dark);color:#fff;display:flex;flex-direction:column}
 .pitch-top{padding:44px 32px 30px}
-.pitch-more{padding:0 32px 52px}
+.pitch-more{padding:0 32px 0;position:relative;overflow:hidden}
+.pitch-more .inner{position:relative;z-index:1}
 @media(min-width:1000px){
   .pitch-top{padding:56px 60px 22px;justify-content:flex-end}
-  .pitch-more{padding:0 60px 60px}
+  .pitch-more{padding:0 60px 0}
 }
+/* Portrait: anchored to the bottom-right of the navy column so his feet meet
+   the fold, like the homepage hero. Faded at the base so the partner row is
+   never fighting the suit for legibility. */
+.figure{position:absolute;right:-20px;bottom:0;width:min(46%,420px);pointer-events:none;
+  -webkit-mask-image:linear-gradient(to top,transparent 0,#000 22%);
+          mask-image:linear-gradient(to top,transparent 0,#000 22%)}
+.figure img{width:100%;height:auto;display:block}
+@media(max-width:999px){.figure{width:52%;right:-34px;opacity:.92}}
+@media(max-width:560px){.figure{display:none}}
+
+/* Partner marks. Both rendered white so they sit as one family on the navy. */
+.partners{margin-top:40px;padding:26px 0 40px;border-top:1px solid var(--dark-line)}
+.partners .k{display:block;font-size:10.5px;font-weight:600;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--grey-2);margin-bottom:18px}
+.marks{display:flex;align-items:center;gap:34px;flex-wrap:wrap}
+.marks img{display:block;width:auto;opacity:.95}
+.mark-tcli{height:46px}
+.mark-cn{height:64px}
+@media(min-width:1000px){.marks{gap:40px}.mark-tcli{height:52px}.mark-cn{height:72px}}
 @media(min-width:1400px){
   .pitch-top,.pitch-more{padding-left:calc((100vw - 1280px) / 2 + 32px)}
 }
 @media(max-width:999px){.pitch-more{padding-top:36px}}
 
 .brand{display:inline-block;margin-bottom:34px}
-.brand img{height:34px;width:auto}
+.brand img{height:54px;width:auto}
 @media(min-width:1000px){.brand{margin-bottom:52px}}
 
 .pitch h1{font-family:var(--disp);font-weight:400;text-transform:uppercase;
@@ -70,7 +90,8 @@ img{max-width:100%;display:block}
   font-size:1.06em;line-height:.95;color:var(--amber);margin-top:.04em}
 .pitch .lead{color:var(--grey-2);font-size:16.5px;max-width:44ch;margin-top:26px}
 
-.gets{list-style:none;margin-top:0;display:grid;gap:0;max-width:46ch}
+.gets{list-style:none;margin-top:0;display:grid;gap:0;max-width:44ch}
+@media(min-width:1000px){.gets,.pitch .note{max-width:min(44ch,58%)}}
 .gets li{position:relative;padding:15px 0 15px 26px;color:#fff;font-size:15.5px;
   line-height:1.55;border-top:1px solid var(--dark-line)}
 .gets li:last-child{border-bottom:1px solid var(--dark-line)}
@@ -154,7 +175,7 @@ form.hide{display:none}
   <!-- ── why you would join ─────────────────────────────────────────── -->
   <section class="pitch pitch-top">
     <a class="brand" href="/" aria-label="Nyimpini Mabunda, home">
-      <img src="../assets/nm-logo-white.png" alt="Nyimpini Mabunda" width="200" height="34">
+      <img src="../assets/nm-logo-white.png" alt="Nyimpini Mabunda" width="167" height="54">
     </a>
 
     <p class="eyebrow" style="color:var(--amber)">Take Charge Leadership Institute</p>
@@ -166,13 +187,35 @@ form.hide{display:none}
   </section>
 
   <section class="pitch pitch-more">
+    <div class="figure" aria-hidden="true">
+      <picture>
+        <source srcset="../assets/hero-cutout-2.webp" type="image/webp">
+        <img src="../assets/hero-cutout-2.png" alt="" width="750" height="915" loading="lazy" decoding="async">
+      </picture>
+    </div>
+    <div class="inner">
     <ul class="gets">
       <li><b>First access</b> to the TCLI platform when it opens, before it is announced anywhere else.</li>
       <li><b>Invitations to CEO Nights</b> live recordings, in a coffee-house room that seats very few people.</li>
       <li><b>The next book.</b> Word when <i>CEO Nights</i> opens for pre-order.</li>
     </ul>
 
-    <p class="note">Run by the Take Charge Leadership Institute. We write when there is something worth saying, and you can leave any time.</p>
+    <p class="note">We write when there is something worth saying, and you can leave any time.</p>
+
+    <div class="partners">
+      <span class="k">Brought to you by</span>
+      <div class="marks">
+        <picture>
+          <source srcset="../assets/tcli-logo-white.webp" type="image/webp">
+          <img class="mark-tcli" src="../assets/tcli-logo-white.png" alt="Take Charge Leadership Institute" width="760" height="293" loading="lazy">
+        </picture>
+        <picture>
+          <source srcset="../assets/ceo-nights-logo.webp" type="image/webp">
+          <img class="mark-cn" src="../assets/ceo-nights-logo.png" alt="CEO Nights with Nyimpini" width="520" height="495" loading="lazy">
+        </picture>
+      </div>
+    </div>
+    </div>
   </section>
 
   <!-- ── the form ───────────────────────────────────────────────────── -->
