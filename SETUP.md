@@ -70,7 +70,7 @@ credentials and should not pass through chat.**
 | Secret | Value |
 |---|---|
 | `BEEHIIV_API_KEY` | from step 2 |
-| `BEEHIIV_PUBLICATION_ID` | `pub_...` |
+| `BEEHIIV_PUBLICATION_ID` | `pub_...` |  → `pub_4cac3614-a9f4-4d2b-9346-d5543f0ca78c` (publication: Take Charge's Newsletter)
 | `RESEND_API_KEY` | from step 3 |
 | `NOTIFY_TO` | `info@takechargeli.co.za` |
 | `NOTIFY_FROM` | `TCLI Waitlist <news@takechargeli.co.za>` |
@@ -147,3 +147,6 @@ swallow the other, and the signup is saved either way.
 - **Meta URLs in `index.html` point at the review deployment.** Repoint on launch.
 - **The two Google Form links** in `index.html` should be swapped for `/waitlist/`
   once this is live.
+
+
+> **Note (5 Sep 2026):** beehiiv requires Stripe Identity Verification (an ID document check) before it will issue an API key. Only an account owner can complete that. Publication ID recorded above.
