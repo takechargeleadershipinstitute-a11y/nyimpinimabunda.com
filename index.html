@@ -576,6 +576,10 @@ body{background:var(--off)}
 .cta:hover{background:#0A2568}
 .cta.line{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
 .cta.line:hover{background:var(--ink);color:#fff}
+/* On the navy bands the default .cta.line is navy text inside a navy border,
+   i.e. invisible until hovered. .cta.line.on-dark inverts it. */
+.cta.line.on-dark{color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
+.cta.line.on-dark:hover{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1px #fff}
 .nights{background:#051A52;border-top-color:#16306B}
 .ep{background:#051A52}
 .ep:hover{background:#0A2568}
@@ -868,7 +872,7 @@ body{background:var(--off)}
         <p class="s2-h" data-i18n="s2.h">Coming soon.</p>
         <p class="s2-d" data-i18n="s2.d">Season One is complete: fifteen conversations with the people running South Africa's biggest companies. Season Two is in production, and every episode is recorded in front of a live audience. Put your name down and stay connected.</p>
       </div>
-      <a class="cta line s2-cta" href="/waitlist/" data-i18n="s2.cta">Be invited to a live recording</a>
+      <a class="cta line on-dark s2-cta" href="/waitlist/?i=ceo-nights" data-i18n="s2.cta">Be invited to a live recording</a>
     </div>
   </div>
 </section>
@@ -969,7 +973,7 @@ body{background:var(--off)}
         <p class="soon-d" data-i18n="inst.soon.d">A new digital learning and leadership community is coming soon. Join the TCLI waitlist to be part of it from the start, to hear first about the launch and every opportunity to engage with the Institute.</p>
       </div>
       <div class="inst-acts">
-        <a class="cta" href="/waitlist/" data-i18n="inst.cta1">Join TCLI</a>
+        <a class="cta" href="/waitlist/?i=tcli" data-i18n="inst.cta1">Join TCLI</a>
       </div>
     </div>
   </div>
@@ -1032,7 +1036,7 @@ body{background:var(--off)}
         <p class="nb-sub" data-i18n="nb.sub">Insights on Leadership, Career and Growth from Top CEOs</p>
         <p class="nb-d" data-i18n="nb.d">The conversations become a book. What the people running South Africa's biggest companies said about the climb, gathered from the show and set down in one place. Pre-orders open soon.</p>
       </div>
-      <a class="cta line nb-cta" href="mailto:info@takechargeli.co.za?subject=CEO%20Nights%20book%20pre-order&amp;body=Hello%20TCLI%20team%2C%0A%0APlease%20let%20me%20know%20when%20CEO%20Nights%20is%20available%20to%20pre-order.%0A%0AName%3A%0A%0AThank%20you." data-i18n="nb.cta">Notify me about pre-orders</a>
+      <a class="cta line on-dark nb-cta" href="mailto:info@takechargeli.co.za?subject=CEO%20Nights%20book%20pre-order&amp;body=Hello%20TCLI%20team%2C%0A%0AI%20would%20like%20to%20pre-order%20CEO%20Nights.%0A%0AName%3A%0ANumber%20of%20copies%3A%0A%0AThank%20you." data-i18n="nb.cta">Pre-order the book</a>
     </div>
   </div>
 </section>
@@ -1154,7 +1158,7 @@ body{background:var(--off)}
     </div>
 
     <div class="ev-acts">
-      <a class="cta" href="/waitlist/" data-i18n="events.cta">Be the first to be invited</a>
+      <a class="cta" href="/waitlist/?i=ceo-nights" data-i18n="events.cta">Be the first to be invited</a>
       <span class="note" data-i18n="events.note">Takes a minute. No spam, invitations only.</span>
     </div>
   </div>

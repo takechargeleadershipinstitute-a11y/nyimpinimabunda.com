@@ -23,137 +23,140 @@
   --hand:"Caveat",cursive;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
 body{background:var(--off);color:var(--ink);font-family:var(--body);font-size:17px;
   line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{max-width:100%;display:block}
 .eyebrow{font-family:var(--body);font-size:11px;font-weight:600;letter-spacing:.24em;
   text-transform:uppercase;color:var(--grey)}
 
-/* ─────────────────────────────────────────────────────────── shell
-   Desktop: argument left, form right, both visible without scrolling.
-   Mobile: the headline, then THE FORM, then the supporting detail. Someone
-   arriving from a "join the waitlist" link already wants to sign up, and
-   leaving the form 850px down the page makes them work for it. */
+/* ─────────────────────────────────────────────────────────────────── shell
+   Two panels. Left is the argument, right is the form.
+
+   The previous version positioned the portrait absolutely and it collided
+   with the copy. Here the navy panel is a GRID with two rows: content takes
+   the height it needs, the portrait gets whatever is left. They cannot
+   overlap, at any viewport size, because they occupy different rows. */
 .page{min-height:100svh;display:grid}
-@media(min-width:1000px){
-  /* auto/1fr, not align-content:start — the second navy row has to absorb any
-     leftover height, or the column stops short and leaves an ivory seam
-     across the bottom of the viewport. */
+@media(min-width:1040px){
   .page{grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr;
-    grid-template-areas:"top form" "more form"}
-  .pitch-top{grid-area:top} .pitch-more{grid-area:more} .panel{grid-area:form}
+    grid-template-areas:"a form" "b form"}
+  .pitch-a{grid-area:a} .pitch-b{grid-area:b} .panel{grid-area:form}
 }
-@media(max-width:999px){
-  .pitch-top{order:1} .panel{order:2} .pitch-more{order:3}
+/* Mobile: headline, then THE FORM, then the supporting detail. Someone
+   arriving from a "join the waitlist" link already wants to sign up; leaving
+   the form a full screen down the page makes them work for it. */
+@media(max-width:1039px){
+  .pitch-a{order:1} .panel{order:2} .pitch-b{order:3}
 }
 
-.pitch{background:var(--dark);color:#fff;display:flex;flex-direction:column}
-.pitch-top{padding:44px 32px 30px}
-.pitch-more{padding:0 32px 0;position:relative;overflow:hidden}
-.pitch-more .inner{position:relative;z-index:1}
-@media(min-width:1000px){
-  .pitch-top{padding:56px 60px 22px;justify-content:flex-end}
-  .pitch-more{padding:0 60px 0}
+.pitch{background:var(--dark);color:#fff;overflow:hidden}
+.pitch-a{padding:44px 32px 8px}
+.pitch-b{padding:0 32px 0;display:grid;grid-template-rows:auto 1fr;gap:26px}
+@media(min-width:1040px){
+  .pitch-a{padding:56px 60px 8px}
+  .pitch-b{padding:0 60px 0}
 }
-/* Portrait: anchored to the bottom-right of the navy column so his feet meet
-   the fold, like the homepage hero. Faded at the base so the partner row is
-   never fighting the suit for legibility. */
-.figure{position:absolute;right:-20px;bottom:0;width:min(46%,420px);pointer-events:none;
-  -webkit-mask-image:linear-gradient(to top,transparent 0,#000 22%);
-          mask-image:linear-gradient(to top,transparent 0,#000 22%)}
-.figure img{width:100%;height:auto;display:block}
-@media(max-width:999px){.figure{width:52%;right:-34px;opacity:.92}}
-@media(max-width:560px){.figure{display:none}}
-
-/* Partner marks. Both rendered white so they sit as one family on the navy. */
-.partners{margin-top:40px;padding:26px 0 40px;border-top:1px solid var(--dark-line)}
-.partners .k{display:block;font-size:10.5px;font-weight:600;letter-spacing:.24em;
-  text-transform:uppercase;color:var(--grey-2);margin-bottom:18px}
-.marks{display:flex;align-items:center;gap:34px;flex-wrap:wrap}
-.marks img{display:block;width:auto;opacity:.95}
-.mark-tcli{height:46px}
-.mark-cn{height:64px}
-@media(min-width:1000px){.marks{gap:40px}.mark-tcli{height:52px}.mark-cn{height:72px}}
-@media(min-width:1400px){
-  .pitch-top,.pitch-more{padding-left:calc((100vw - 1280px) / 2 + 32px)}
+@media(min-width:1440px){
+  .pitch-a,.pitch-b{padding-left:calc((100vw - 1360px)/2 + 32px)}
 }
-@media(max-width:999px){.pitch-more{padding-top:36px}}
+@media(max-width:1039px){.pitch-b{padding-top:26px;padding-bottom:0}}
 
-.brand{display:inline-block;margin-bottom:34px}
-.brand img{height:54px;width:auto}
-@media(min-width:1000px){.brand{margin-bottom:52px}}
+.brand{display:inline-block;margin-bottom:38px}
+.brand img{height:52px;width:auto}
 
 .pitch h1{font-family:var(--disp);font-weight:400;text-transform:uppercase;
-  font-size:clamp(38px,5.4vw,68px);line-height:.94;margin:34px 0 0}
+  font-size:clamp(40px,5vw,64px);line-height:.94;margin:26px 0 0}
 .pitch h1 .hand{display:block;font-family:var(--hand);text-transform:none;
   font-size:1.06em;line-height:.95;color:var(--amber);margin-top:.04em}
-.pitch .lead{color:var(--grey-2);font-size:16.5px;max-width:44ch;margin-top:26px}
+.lead{color:#C9D2E6;font-size:16.5px;max-width:42ch;margin-top:24px}
 
-.gets{list-style:none;margin-top:0;display:grid;gap:0;max-width:44ch}
-@media(min-width:1000px){.gets,.pitch .note{max-width:min(44ch,58%)}}
-.gets li{position:relative;padding:15px 0 15px 26px;color:#fff;font-size:15.5px;
+.gets{list-style:none;max-width:42ch}
+.gets li{position:relative;padding:14px 0 14px 26px;color:#fff;font-size:15.5px;
   line-height:1.55;border-top:1px solid var(--dark-line)}
 .gets li:last-child{border-bottom:1px solid var(--dark-line)}
-.gets li::before{content:"";position:absolute;left:0;top:calc(15px + .62em);
+.gets li::before{content:"";position:absolute;left:0;top:calc(14px + .62em);
   width:12px;height:1px;background:var(--amber)}
 .gets b{color:var(--amber);font-weight:600}
 
-.pitch .note{color:var(--grey-2);font-size:13.5px;margin-top:26px;max-width:44ch}
-.pitch .note a{color:#fff}
+/* Row two: the portrait fills the remaining height and is bottom-anchored, so
+   he stands on the fold rather than floating. object-fit:contain because a
+   cut-out has no spare margin to crop into. */
+.figure{position:relative;min-height:230px;overflow:hidden}
+/* Absolutely positioned, not a flex child with height:100%. As a flex child the
+   percentage resolves against an indefinite 1fr row, so the image falls back to
+   its intrinsic 915px and is clipped. Positioned against .figure's padding box
+   the height IS definite, so object-fit:contain can do its job and the whole
+   cut-out always fits, however little room the copy leaves it. */
+.figure picture{position:absolute;inset:0;display:block}
+.figure img{width:100%;height:100%;object-fit:contain;object-position:bottom center}
 
-/* ─────────────────────────────────────────────────────────── form */
-.panel{background:var(--off);padding:44px 32px 56px;display:flex;align-items:center}
-@media(min-width:1000px){.panel{padding:56px 60px}}
-@media(min-width:1400px){.panel{padding-right:calc((100vw - 1280px) / 2 + 32px)}}
-.panel-in{width:100%;max-width:460px;margin:0 auto}
+/* ─────────────────────────────────────────────────────────────────── form */
+.panel{background:var(--off);padding:44px 32px 52px;
+  display:flex;flex-direction:column;justify-content:flex-start}
+@media(min-width:1040px){.panel-in{margin-top:auto;margin-bottom:auto}}
+@media(min-width:1040px){.panel{padding:56px 60px}}
+@media(min-width:1440px){.panel{padding-right:calc((100vw - 1360px)/2 + 32px)}}
+.panel-in{width:100%;max-width:440px;margin:0 auto}
 
 .form-h{font-family:var(--disp);font-weight:500;text-transform:uppercase;
-  font-size:clamp(26px,3vw,34px);line-height:1;margin:12px 0 8px}
-.form-d{color:var(--grey);font-size:15px;margin-bottom:30px}
+  font-size:clamp(28px,3vw,36px);line-height:1;margin:12px 0 8px}
+.form-d{color:var(--grey);font-size:15px;margin-bottom:28px}
 
-.field{margin-bottom:20px}
+.field{margin-bottom:18px}
 .field label{display:block;font-size:11px;font-weight:600;letter-spacing:.16em;
   text-transform:uppercase;color:var(--grey);margin-bottom:8px}
 .field input{width:100%;font-family:var(--body);font-size:16px;color:var(--ink);
   background:var(--white);border:0;box-shadow:inset 0 0 0 1px var(--line);
   padding:15px 16px;transition:box-shadow .15s}
+/* Placeholders are INSTRUCTIONS, never sample names. "Nyimpini / Mabunda"
+   read as a pre-filled value and people submitted without correcting it. */
+.field input::placeholder{color:#A9A296;opacity:1}
 .field input:focus{outline:0;box-shadow:inset 0 0 0 2px var(--ink)}
-.field input:invalid:not(:placeholder-shown){box-shadow:inset 0 0 0 2px #B4453C}
-.row{display:grid;gap:20px}
+.row{display:grid;gap:18px}
 @media(min-width:520px){.row{grid-template-columns:1fr 1fr}}
 
-fieldset{border:0;margin-bottom:24px}
-legend{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--grey);margin-bottom:10px}
-.opt{display:flex;gap:12px;align-items:flex-start;padding:13px 15px;cursor:pointer;
-  background:var(--white);box-shadow:inset 0 0 0 1px var(--line);margin-bottom:9px;
-  transition:box-shadow .15s}
-.opt:hover{box-shadow:inset 0 0 0 1px var(--grey-2)}
-.opt input{margin-top:4px;accent-color:var(--ink);width:16px;height:16px;flex:0 0 16px}
-.opt input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-.opt:has(input:checked){box-shadow:inset 0 0 0 2px var(--ink);background:#fff}
-.opt .k{display:block;font-weight:600;font-size:15px;line-height:1.3}
-.opt .d{display:block;color:var(--grey);font-size:13.5px;line-height:1.45;margin-top:2px}
+/* Terms. A single required tick, with the terms themselves reachable inline
+   rather than hidden behind a link nobody clicks. */
+.terms{display:flex;gap:12px;align-items:flex-start;margin:22px 0 24px}
+.terms input{margin-top:3px;accent-color:var(--ink);width:17px;height:17px;flex:0 0 17px}
+.terms input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.terms label{font-size:13.5px;line-height:1.5;color:var(--grey)}
+.terms a{color:var(--ink);cursor:pointer}
+details.legal{margin-bottom:22px;border-top:1px solid var(--line);padding-top:14px}
+details.legal summary{font-size:11px;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--grey);cursor:pointer;list-style:none}
+details.legal summary::-webkit-details-marker{display:none}
+details.legal summary::after{content:" +";color:var(--amber)}
+details.legal[open] summary::after{content:" –"}
+details.legal p{font-size:13px;line-height:1.6;color:var(--grey);margin-top:12px}
 
-/* Honeypot: a real person never sees or fills this. Bots fill every field they
-   find, so a non-empty value is a reliable signal to drop the submission. */
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 
-.submit{display:inline-block;width:100%;font-family:var(--body);font-weight:600;
-  font-size:12px;letter-spacing:.2em;text-transform:uppercase;padding:18px 34px;
-  border:0;cursor:pointer;background:var(--ink);color:#fff;transition:background .18s}
+.submit{width:100%;font-family:var(--body);font-weight:600;font-size:12px;
+  letter-spacing:.2em;text-transform:uppercase;padding:19px 34px;border:0;
+  cursor:pointer;background:var(--ink);color:#fff;transition:background .18s}
 .submit:hover:not(:disabled){background:var(--ink-2)}
 .submit:disabled{opacity:.55;cursor:default}
 
-.msg{margin-top:18px;font-size:14.5px;line-height:1.6;padding:14px 16px;display:none}
+.msg{margin-top:16px;font-size:14.5px;line-height:1.6;padding:14px 16px;display:none}
 .msg.show{display:block}
 .msg.err{background:rgba(180,69,60,.08);color:#8E332C;
   box-shadow:inset 0 0 0 1px rgba(180,69,60,.3)}
-.fine{color:var(--grey-2);font-size:12.5px;line-height:1.55;margin-top:18px}
+.fine{color:var(--grey-2);font-size:12.5px;line-height:1.55;margin-top:16px}
 .fine a{color:var(--ink)}
 
-/* ─────────────────────────────────────────────────────────── done state */
+/* Partner marks live on the IVORY panel, not the navy one. That is what lets
+   both appear in their real colours: TCLI's mark is navy and gold, and
+   knocking it to a white silhouette destroyed the figure and the arrow. */
+.partners{margin-top:42px;padding-top:24px;border-top:1px solid var(--line)}
+.partners .k{display:block;font-size:10.5px;font-weight:600;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--grey-2);margin-bottom:16px}
+.marks{display:flex;align-items:center;gap:32px;flex-wrap:wrap}
+.marks img{width:auto;opacity:.92}
+.mark-tcli{height:44px}
+.mark-cn{height:58px}
+
+/* ─────────────────────────────────────────────────────────────── done */
 .done{display:none}
 .done.show{display:block}
 form.hide{display:none}
@@ -161,7 +164,7 @@ form.hide{display:none}
   display:grid;place-items:center;margin-bottom:20px}
 .done .tick svg{width:22px;height:22px;color:var(--dark)}
 .done h2{font-family:var(--disp);font-weight:500;text-transform:uppercase;
-  font-size:clamp(26px,3vw,34px);line-height:1;margin-bottom:12px}
+  font-size:clamp(28px,3vw,36px);line-height:1;margin-bottom:12px}
 .done p{color:var(--grey);font-size:15.5px;margin-bottom:12px}
 .back{display:inline-block;margin-top:14px;font-size:12px;font-weight:600;
   letter-spacing:.18em;text-transform:uppercase;color:var(--ink);text-decoration:none;
@@ -172,104 +175,72 @@ form.hide{display:none}
 
 <div class="page">
 
-  <!-- ── why you would join ─────────────────────────────────────────── -->
-  <section class="pitch pitch-top">
-    <a class="brand" href="/" aria-label="Nyimpini Mabunda, home">
-      <img src="../assets/nm-logo-white.png" alt="Nyimpini Mabunda" width="167" height="54">
-    </a>
+  <section class="pitch pitch-a">
+    <div>
+      <a class="brand" href="/" aria-label="Nyimpini Mabunda, home">
+        <img src="../assets/nm-logo-white.png" alt="Nyimpini Mabunda" width="161" height="52">
+      </a>
 
-    <p class="eyebrow" style="color:var(--amber)">Take Charge Leadership Institute</p>
-    <h1>
-      Get there
-      <span class="hand">sooner.</span>
-    </h1>
-    <p class="lead">A new digital learning and leadership community is coming soon. The waitlist hears first, and the room at a live recording is small.</p>
+      <p class="eyebrow" style="color:var(--amber)">Take Charge Leadership Institute</p>
+      <h1>Get there <span class="hand">sooner.</span></h1>
+      <p class="lead">A new digital learning and leadership community is coming soon. The waitlist hears first, and the room at a live recording is small.</p>
+    </div>
   </section>
 
-  <section class="pitch pitch-more">
+  <section class="pitch pitch-b">
+      <ul class="gets">
+        <li><b>First access</b> to the TCLI platform when it opens, before it is announced anywhere else.</li>
+        <li><b>Invitations to CEO Nights</b> live recordings, in a coffee-house room that seats very few people.</li>
+        <li><b>The next book.</b> Word when <i>CEO Nights</i> opens for pre-order.</li>
+      </ul>
+
     <div class="figure" aria-hidden="true">
       <picture>
         <source srcset="../assets/hero-cutout-2.webp" type="image/webp">
         <img src="../assets/hero-cutout-2.png" alt="" width="750" height="915" loading="lazy" decoding="async">
       </picture>
     </div>
-    <div class="inner">
-    <ul class="gets">
-      <li><b>First access</b> to the TCLI platform when it opens, before it is announced anywhere else.</li>
-      <li><b>Invitations to CEO Nights</b> live recordings, in a coffee-house room that seats very few people.</li>
-      <li><b>The next book.</b> Word when <i>CEO Nights</i> opens for pre-order.</li>
-    </ul>
-
-    <p class="note">We write when there is something worth saying, and you can leave any time.</p>
-
-    <div class="partners">
-      <span class="k">Brought to you by</span>
-      <div class="marks">
-        <picture>
-          <source srcset="../assets/tcli-logo-white.webp" type="image/webp">
-          <img class="mark-tcli" src="../assets/tcli-logo-white.png" alt="Take Charge Leadership Institute" width="760" height="293" loading="lazy">
-        </picture>
-        <picture>
-          <source srcset="../assets/ceo-nights-logo.webp" type="image/webp">
-          <img class="mark-cn" src="../assets/ceo-nights-logo.png" alt="CEO Nights with Nyimpini" width="520" height="495" loading="lazy">
-        </picture>
-      </div>
-    </div>
-    </div>
   </section>
 
-  <!-- ── the form ───────────────────────────────────────────────────── -->
   <section class="panel">
     <div class="panel-in">
 
       <form id="wl" novalidate>
         <p class="eyebrow">Join the waitlist</p>
         <h2 class="form-h">Put your name down.</h2>
-        <p class="form-d">Takes under a minute. No spam, invitations only.</p>
+        <p class="form-d">Three fields, under a minute. One list, no spam, and you can leave at any time.</p>
 
         <div class="row">
           <div class="field">
             <label for="first">First name</label>
             <input id="first" name="first" type="text" autocomplete="given-name"
-                   placeholder="Nyimpini" required maxlength="80">
+                   placeholder="Your first name" required maxlength="80">
           </div>
           <div class="field">
             <label for="last">Surname</label>
             <input id="last" name="last" type="text" autocomplete="family-name"
-                   placeholder="Mabunda" required maxlength="80">
+                   placeholder="Your surname" required maxlength="80">
           </div>
         </div>
 
         <div class="field">
           <label for="email">Email address</label>
           <input id="email" name="email" type="email" autocomplete="email"
-                 placeholder="you@company.co.za" required maxlength="254">
+                 placeholder="name@example.com" required maxlength="254">
         </div>
 
-        <fieldset>
-          <legend>What are you interested in?</legend>
-          <label class="opt">
-            <input type="checkbox" name="interest" value="tcli" checked>
-            <span>
-              <span class="k">The TCLI platform</span>
-              <span class="d">Learning and leadership community, launching soon.</span>
-            </span>
-          </label>
-          <label class="opt">
-            <input type="checkbox" name="interest" value="ceo-nights">
-            <span>
-              <span class="k">CEO Nights live recordings</span>
-              <span class="d">Be invited when a seat opens.</span>
-            </span>
-          </label>
-          <label class="opt">
-            <input type="checkbox" name="interest" value="book">
-            <span>
-              <span class="k">The next book</span>
-              <span class="d">Pre-order news for <i>CEO Nights</i>.</span>
-            </span>
-          </label>
-        </fieldset>
+        <div class="terms">
+          <input id="agree" name="agree" type="checkbox" required>
+          <label for="agree">I agree to receive email from the Take Charge Leadership Institute about the platform launch, CEO Nights live recordings, new books and related news, and I accept the terms below.</label>
+        </div>
+
+        <details class="legal">
+          <summary>Terms and privacy</summary>
+          <p><b>What we collect.</b> Your first name, surname and email address, and nothing else. We do not ask for, or store, any payment or identity information on this page.</p>
+          <p><b>What we use it for.</b> To tell you when the TCLI platform opens, to invite you to CEO Nights live recordings, and to let you know about new books and Institute news. We do not sell or rent your details to anyone.</p>
+          <p><b>Who processes it.</b> Your details are stored by the Institute and managed in beehiiv, our email provider. Both hold data outside South Africa, which POPIA permits where comparable protection applies.</p>
+          <p><b>Your rights under POPIA.</b> You may ask to see, correct or delete your information at any time by writing to <a href="mailto:info@takechargeli.co.za">info@takechargeli.co.za</a>. Every email we send carries a one-click unsubscribe link, and unsubscribing removes you from the list entirely.</p>
+        </details>
 
         <div class="hp" aria-hidden="true">
           <label for="company">Company</label>
@@ -279,7 +250,7 @@ form.hide{display:none}
         <button class="submit" id="go" type="submit">Join the waitlist</button>
         <p class="msg err" id="msg" role="alert" aria-live="polite"></p>
 
-        <p class="fine">By joining you agree to receive email from the Take Charge Leadership Institute. Every email carries an unsubscribe link. <a href="/">Back to the site</a></p>
+        <p class="fine"><a href="/">Back to the site</a></p>
       </form>
 
       <div class="done" id="done" role="status" aria-live="polite">
@@ -293,6 +264,17 @@ form.hide{display:none}
         <a class="back" href="/">Back to the site</a>
       </div>
 
+      <div class="partners">
+        <span class="k">Brought to you by</span>
+        <div class="marks">
+          <img class="mark-tcli" src="../assets/tcli-logo.png" alt="Take Charge Leadership Institute" width="760" height="293" loading="lazy">
+          <picture>
+            <source srcset="../assets/ceo-nights-logo-dark.webp" type="image/webp">
+            <img class="mark-cn" src="../assets/ceo-nights-logo-dark.png" alt="CEO Nights with Nyimpini" width="520" height="495" loading="lazy">
+          </picture>
+        </div>
+      </div>
+
     </div>
   </section>
 </div>
@@ -302,12 +284,12 @@ form.hide{display:none}
 
    Posts straight to Supabase from the browser. That is safe here because the
    key below is the PUBLISHABLE key (Supabase's own label: "can be safely
-   shared publicly"), which is designed to ship in page source, and the table's row-level security grants anon INSERT only — no
-   select, no update, no delete. Nobody can read the list back with this key.
+   shared publicly"), which is designed to ship in page source, and the
+   table's row-level security grants anon INSERT only — no select, no update,
+   no delete. Nobody can read the list back with this key.
 
    Everything that needs a secret (adding the person to beehiiv, emailing TCLI)
-   happens server-side in a Supabase Edge Function triggered by the insert, so
-   no API key is ever exposed to the page. */
+   happens server-side in a Supabase Edge Function triggered by the insert. */
 (function () {
   var SUPABASE_URL  = 'https://cbbhgoahhykpckbtlzkr.supabase.co';
   var SUPABASE_ANON = 'sb_publishable_RldFFBVH4R8nPDyRlxA0tA__j8mMICa';
@@ -316,6 +298,16 @@ form.hide{display:none}
       btn  = document.getElementById('go'),
       msg  = document.getElementById('msg'),
       done = document.getElementById('done');
+
+  /* Interest is taken from the URL, not from the visitor.
+     Every CTA on the site links here with its own ?i= value, so we still know
+     what brought each person in and can segment later — without making them
+     tick boxes. Asking cost us signups; the link already knows the answer. */
+  var ALLOWED = ['tcli', 'ceo-nights', 'book'];
+  function interest(){
+    var v = new URLSearchParams(location.search).get('i') || '';
+    return ALLOWED.indexOf(v) > -1 ? v : 'tcli';
+  }
 
   function fail(text) {
     msg.textContent = text;
@@ -332,19 +324,17 @@ form.hide{display:none}
         last  = form.last.value.trim(),
         email = form.email.value.trim();
 
-    if (!first || !last)        return fail('Please give your first name and surname.');
-    // Deliberately loose: the only reliable test of an address is sending to it,
-    // and over-strict patterns reject valid addresses.
+    if (!first || !last) return fail('Please give your first name and surname.');
+    // Deliberately loose: the only reliable test of an address is sending to
+    // it, and over-strict patterns reject valid addresses.
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       return fail('That email address does not look right. Please check it.');
+    if (!form.agree.checked)
+      return fail('Please tick the box to confirm you are happy to hear from us.');
 
     // Bot filled the hidden field. Show success rather than an error so it
     // learns nothing, and send nothing.
     if (form.company.value) { form.classList.add('hide'); done.classList.add('show'); return; }
-
-    var interests = [].slice.call(
-      form.querySelectorAll('input[name="interest"]:checked')).map(function (i) { return i.value; });
-    if (!interests.length) interests = ['tcli'];
 
     btn.disabled = true;
     btn.textContent = 'Joining…';
@@ -360,7 +350,7 @@ form.hide{display:none}
         first_name: first,
         last_name:  last,
         email:      email.toLowerCase(),
-        interests:  interests,
+        interests:  [interest()],
         source:     'waitlist-page'
       })
     })
@@ -372,7 +362,6 @@ form.hide{display:none}
           'Thank you, ' + first + '. We have your details.';
         form.classList.add('hide');
         done.classList.add('show');
-        done.scrollIntoView({ block: 'center' });
         return;
       }
       return r.text().then(function (t) { throw new Error(t || r.status); });
