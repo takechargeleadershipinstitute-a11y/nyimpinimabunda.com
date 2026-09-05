@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Join the waitlist | Take Charge Leadership Institute</title>
+<meta name="description" content="Be first to hear when the Take Charge Leadership Institute platform opens, and be invited to a live recording of CEO Nights with Nyimpini Mabunda.">
+<!-- Not indexed until the real domain is connected and the client signs off. -->
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* Same tokens as index.html — the palette is defined once per the NM Brand
+   Guidelines v1.0 and must not drift between pages. */
+:root{
+  --ink:#051A52; --ink-2:#0A2568; --grey:#6B6459; --grey-2:#8C8478;
+  --white:#FFFFFF; --off:#FAF6EF; --line:#E6DFD2;
+  --dark:#051A52; --dark-line:#16306B;
+  --amber:#D4AD66;
+  --disp:"Antonio",Impact,sans-serif;
+  --body:"Hanken Grotesk",-apple-system,Arial,sans-serif;
+  --hand:"Caveat",cursive;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--off);color:var(--ink);font-family:var(--body);font-size:17px;
+  line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+.eyebrow{font-family:var(--body);font-size:11px;font-weight:600;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--grey)}
+
+/* ─────────────────────────────────────────────────────────── shell
+   Desktop: argument left, form right, both visible without scrolling.
+   Mobile: the headline, then THE FORM, then the supporting detail. Someone
+   arriving from a "join the waitlist" link already wants to sign up, and
+   leaving the form 850px down the page makes them work for it. */
+.page{min-height:100svh;display:grid}
+@media(min-width:1000px){
+  /* auto/1fr, not align-content:start — the second navy row has to absorb any
+     leftover height, or the column stops short and leaves an ivory seam
+     across the bottom of the viewport. */
+  .page{grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr;
+    grid-template-areas:"top form" "more form"}
+  .pitch-top{grid-area:top} .pitch-more{grid-area:more} .panel{grid-area:form}
+}
+@media(max-width:999px){
+  .pitch-top{order:1} .panel{order:2} .pitch-more{order:3}
+}
+
+.pitch{background:var(--dark);color:#fff;display:flex;flex-direction:column}
+.pitch-top{padding:44px 32px 30px}
+.pitch-more{padding:0 32px 52px}
+@media(min-width:1000px){
+  .pitch-top{padding:56px 60px 22px;justify-content:flex-end}
+  .pitch-more{padding:0 60px 60px}
+}
+@media(min-width:1400px){
+  .pitch-top,.pitch-more{padding-left:calc((100vw - 1280px) / 2 + 32px)}
+}
+@media(max-width:999px){.pitch-more{padding-top:36px}}
+
+.brand{display:inline-block;margin-bottom:34px}
+.brand img{height:34px;width:auto}
+@media(min-width:1000px){.brand{margin-bottom:52px}}
+
+.pitch h1{font-family:var(--disp);font-weight:400;text-transform:uppercase;
+  font-size:clamp(38px,5.4vw,68px);line-height:.94;margin:34px 0 0}
+.pitch h1 .hand{display:block;font-family:var(--hand);text-transform:none;
+  font-size:1.06em;line-height:.95;color:var(--amber);margin-top:.04em}
+.pitch .lead{color:var(--grey-2);font-size:16.5px;max-width:44ch;margin-top:26px}
+
+.gets{list-style:none;margin-top:0;display:grid;gap:0;max-width:46ch}
+.gets li{position:relative;padding:15px 0 15px 26px;color:#fff;font-size:15.5px;
+  line-height:1.55;border-top:1px solid var(--dark-line)}
+.gets li:last-child{border-bottom:1px solid var(--dark-line)}
+.gets li::before{content:"";position:absolute;left:0;top:calc(15px + .62em);
+  width:12px;height:1px;background:var(--amber)}
+.gets b{color:var(--amber);font-weight:600}
+
+.pitch .note{color:var(--grey-2);font-size:13.5px;margin-top:26px;max-width:44ch}
+.pitch .note a{color:#fff}
+
+/* ─────────────────────────────────────────────────────────── form */
+.panel{background:var(--off);padding:44px 32px 56px;display:flex;align-items:center}
+@media(min-width:1000px){.panel{padding:56px 60px}}
+@media(min-width:1400px){.panel{padding-right:calc((100vw - 1280px) / 2 + 32px)}}
+.panel-in{width:100%;max-width:460px;margin:0 auto}
+
+.form-h{font-family:var(--disp);font-weight:500;text-transform:uppercase;
+  font-size:clamp(26px,3vw,34px);line-height:1;margin:12px 0 8px}
+.form-d{color:var(--grey);font-size:15px;margin-bottom:30px}
+
+.field{margin-bottom:20px}
+.field label{display:block;font-size:11px;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--grey);margin-bottom:8px}
+.field input{width:100%;font-family:var(--body);font-size:16px;color:var(--ink);
+  background:var(--white);border:0;box-shadow:inset 0 0 0 1px var(--line);
+  padding:15px 16px;transition:box-shadow .15s}
+.field input:focus{outline:0;box-shadow:inset 0 0 0 2px var(--ink)}
+.field input:invalid:not(:placeholder-shown){box-shadow:inset 0 0 0 2px #B4453C}
+.row{display:grid;gap:20px}
+@media(min-width:520px){.row{grid-template-columns:1fr 1fr}}
+
+fieldset{border:0;margin-bottom:24px}
+legend{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--grey);margin-bottom:10px}
+.opt{display:flex;gap:12px;align-items:flex-start;padding:13px 15px;cursor:pointer;
+  background:var(--white);box-shadow:inset 0 0 0 1px var(--line);margin-bottom:9px;
+  transition:box-shadow .15s}
+.opt:hover{box-shadow:inset 0 0 0 1px var(--grey-2)}
+.opt input{margin-top:4px;accent-color:var(--ink);width:16px;height:16px;flex:0 0 16px}
+.opt input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.opt:has(input:checked){box-shadow:inset 0 0 0 2px var(--ink);background:#fff}
+.opt .k{display:block;font-weight:600;font-size:15px;line-height:1.3}
+.opt .d{display:block;color:var(--grey);font-size:13.5px;line-height:1.45;margin-top:2px}
+
+/* Honeypot: a real person never sees or fills this. Bots fill every field they
+   find, so a non-empty value is a reliable signal to drop the submission. */
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+.submit{display:inline-block;width:100%;font-family:var(--body);font-weight:600;
+  font-size:12px;letter-spacing:.2em;text-transform:uppercase;padding:18px 34px;
+  border:0;cursor:pointer;background:var(--ink);color:#fff;transition:background .18s}
+.submit:hover:not(:disabled){background:var(--ink-2)}
+.submit:disabled{opacity:.55;cursor:default}
+
+.msg{margin-top:18px;font-size:14.5px;line-height:1.6;padding:14px 16px;display:none}
+.msg.show{display:block}
+.msg.err{background:rgba(180,69,60,.08);color:#8E332C;
+  box-shadow:inset 0 0 0 1px rgba(180,69,60,.3)}
+.fine{color:var(--grey-2);font-size:12.5px;line-height:1.55;margin-top:18px}
+.fine a{color:var(--ink)}
+
+/* ─────────────────────────────────────────────────────────── done state */
+.done{display:none}
+.done.show{display:block}
+form.hide{display:none}
+.done .tick{width:44px;height:44px;border-radius:50%;background:var(--amber);
+  display:grid;place-items:center;margin-bottom:20px}
+.done .tick svg{width:22px;height:22px;color:var(--dark)}
+.done h2{font-family:var(--disp);font-weight:500;text-transform:uppercase;
+  font-size:clamp(26px,3vw,34px);line-height:1;margin-bottom:12px}
+.done p{color:var(--grey);font-size:15.5px;margin-bottom:12px}
+.back{display:inline-block;margin-top:14px;font-size:12px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--ink);text-decoration:none;
+  box-shadow:inset 0 -1px 0 var(--amber);padding-bottom:2px}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ── why you would join ─────────────────────────────────────────── -->
+  <section class="pitch pitch-top">
+    <a class="brand" href="/" aria-label="Nyimpini Mabunda, home">
+      <img src="../assets/nm-logo-white.png" alt="Nyimpini Mabunda" width="200" height="34">
+    </a>
+
+    <p class="eyebrow" style="color:var(--amber)">Take Charge Leadership Institute</p>
+    <h1>
+      Get there
+      <span class="hand">sooner.</span>
+    </h1>
+    <p class="lead">A new digital learning and leadership community is coming soon. The waitlist hears first, and the room at a live recording is small.</p>
+  </section>
+
+  <section class="pitch pitch-more">
+    <ul class="gets">
+      <li><b>First access</b> to the TCLI platform when it opens, before it is announced anywhere else.</li>
+      <li><b>Invitations to CEO Nights</b> live recordings, in a coffee-house room that seats very few people.</li>
+      <li><b>The next book.</b> Word when <i>CEO Nights</i> opens for pre-order.</li>
+    </ul>
+
+    <p class="note">Run by the Take Charge Leadership Institute. We write when there is something worth saying, and you can leave any time.</p>
+  </section>
+
+  <!-- ── the form ───────────────────────────────────────────────────── -->
+  <section class="panel">
+    <div class="panel-in">
+
+      <form id="wl" novalidate>
+        <p class="eyebrow">Join the waitlist</p>
+        <h2 class="form-h">Put your name down.</h2>
+        <p class="form-d">Takes under a minute. No spam, invitations only.</p>
+
+        <div class="row">
+          <div class="field">
+            <label for="first">First name</label>
+            <input id="first" name="first" type="text" autocomplete="given-name"
+                   placeholder="Nyimpini" required maxlength="80">
+          </div>
+          <div class="field">
+            <label for="last">Surname</label>
+            <input id="last" name="last" type="text" autocomplete="family-name"
+                   placeholder="Mabunda" required maxlength="80">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" autocomplete="email"
+                 placeholder="you@company.co.za" required maxlength="254">
+        </div>
+
+        <fieldset>
+          <legend>What are you interested in?</legend>
+          <label class="opt">
+            <input type="checkbox" name="interest" value="tcli" checked>
+            <span>
+              <span class="k">The TCLI platform</span>
+              <span class="d">Learning and leadership community, launching soon.</span>
+            </span>
+          </label>
+          <label class="opt">
+            <input type="checkbox" name="interest" value="ceo-nights">
+            <span>
+              <span class="k">CEO Nights live recordings</span>
+              <span class="d">Be invited when a seat opens.</span>
+            </span>
+          </label>
+          <label class="opt">
+            <input type="checkbox" name="interest" value="book">
+            <span>
+              <span class="k">The next book</span>
+              <span class="d">Pre-order news for <i>CEO Nights</i>.</span>
+            </span>
+          </label>
+        </fieldset>
+
+        <div class="hp" aria-hidden="true">
+          <label for="company">Company</label>
+          <input id="company" name="company" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <button class="submit" id="go" type="submit">Join the waitlist</button>
+        <p class="msg err" id="msg" role="alert" aria-live="polite"></p>
+
+        <p class="fine">By joining you agree to receive email from the Take Charge Leadership Institute. Every email carries an unsubscribe link. <a href="/">Back to the site</a></p>
+      </form>
+
+      <div class="done" id="done" role="status" aria-live="polite">
+        <span class="tick" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        </span>
+        <h2>You are on the list.</h2>
+        <p id="doneName">Thank you. We have your details.</p>
+        <p>Watch for an email from the Take Charge Leadership Institute. Add us to your contacts so it does not land in promotions.</p>
+        <a class="back" href="/">Back to the site</a>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<script>
+/* Waitlist submission.
+
+   Posts straight to Supabase from the browser. That is safe here because the
+   key below is the PUBLISHABLE (anon) key, which is designed to ship in page
+   source, and the table's row-level security grants anon INSERT only — no
+   select, no update, no delete. Nobody can read the list back with this key.
+
+   Everything that needs a secret (adding the person to beehiiv, emailing TCLI)
+   happens server-side in a Supabase Edge Function triggered by the insert, so
+   no API key is ever exposed to the page. */
+(function () {
+  var SUPABASE_URL  = 'https://YOUR-PROJECT-REF.supabase.co';
+  var SUPABASE_ANON = 'YOUR-PUBLISHABLE-ANON-KEY';
+
+  var form = document.getElementById('wl'),
+      btn  = document.getElementById('go'),
+      msg  = document.getElementById('msg'),
+      done = document.getElementById('done');
+
+  function fail(text) {
+    msg.textContent = text;
+    msg.classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'Join the waitlist';
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    msg.classList.remove('show');
+
+    var first = form.first.value.trim(),
+        last  = form.last.value.trim(),
+        email = form.email.value.trim();
+
+    if (!first || !last)        return fail('Please give your first name and surname.');
+    // Deliberately loose: the only reliable test of an address is sending to it,
+    // and over-strict patterns reject valid addresses.
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      return fail('That email address does not look right. Please check it.');
+
+    // Bot filled the hidden field. Show success rather than an error so it
+    // learns nothing, and send nothing.
+    if (form.company.value) { form.classList.add('hide'); done.classList.add('show'); return; }
+
+    var interests = [].slice.call(
+      form.querySelectorAll('input[name="interest"]:checked')).map(function (i) { return i.value; });
+    if (!interests.length) interests = ['tcli'];
+
+    btn.disabled = true;
+    btn.textContent = 'Joining…';
+
+    fetch(SUPABASE_URL + '/rest/v1/waitlist', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_ANON,
+        'Authorization': 'Bearer ' + SUPABASE_ANON,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        first_name: first,
+        last_name:  last,
+        email:      email.toLowerCase(),
+        interests:  interests,
+        source:     'waitlist-page'
+      })
+    })
+    .then(function (r) {
+      // 409 is the unique constraint on email: they are already signed up,
+      // which is a success from the visitor's point of view, not an error.
+      if (r.ok || r.status === 409) {
+        document.getElementById('doneName').textContent =
+          'Thank you, ' + first + '. We have your details.';
+        form.classList.add('hide');
+        done.classList.add('show');
+        done.scrollIntoView({ block: 'center' });
+        return;
+      }
+      return r.text().then(function (t) { throw new Error(t || r.status); });
+    })
+    .catch(function (err) {
+      console.error('waitlist:', err);
+      fail('Something went wrong on our side. Please try again, or email info@takechargeli.co.za and we will add you by hand.');
+    });
+  });
+})();
+</script>
+</body>
+</html>
