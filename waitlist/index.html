@@ -258,16 +258,16 @@ form.hide{display:none}
 /* Waitlist submission.
 
    Posts straight to Supabase from the browser. That is safe here because the
-   key below is the PUBLISHABLE (anon) key, which is designed to ship in page
-   source, and the table's row-level security grants anon INSERT only — no
+   key below is the PUBLISHABLE key (Supabase's own label: "can be safely
+   shared publicly"), which is designed to ship in page source, and the table's row-level security grants anon INSERT only — no
    select, no update, no delete. Nobody can read the list back with this key.
 
    Everything that needs a secret (adding the person to beehiiv, emailing TCLI)
    happens server-side in a Supabase Edge Function triggered by the insert, so
    no API key is ever exposed to the page. */
 (function () {
-  var SUPABASE_URL  = 'https://YOUR-PROJECT-REF.supabase.co';
-  var SUPABASE_ANON = 'YOUR-PUBLISHABLE-ANON-KEY';
+  var SUPABASE_URL  = 'https://cbbhgoahhykpckbtlzkr.supabase.co';
+  var SUPABASE_ANON = 'sb_publishable_RldFFBVH4R8nPDyRlxA0tA__j8mMICa';
 
   var form = document.getElementById('wl'),
       btn  = document.getElementById('go'),
@@ -310,7 +310,6 @@ form.hide{display:none}
       method: 'POST',
       headers: {
         'apikey': SUPABASE_ANON,
-        'Authorization': 'Bearer ' + SUPABASE_ANON,
         'Content-Type': 'application/json',
         'Prefer': 'return=minimal'
       },
