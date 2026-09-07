@@ -46,3 +46,6 @@ desktop.ini
 node_modules/
 .env
 .env.*
+
+# Generated deliverable, rebuilt from HANDOVER.md when it changes
+*.docx
