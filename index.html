@@ -645,6 +645,47 @@ body{background:var(--off)}
 .ep{background:#051A52}
 .ep:hover{background:#0A2568}
 .eps{background:#16306B}
+
+/* ── PHONES: LESS TEXT ─────────────────────────────────────────────────────
+   Mr Mabunda, 11 Sept 2026: the site reads text-heavy on mobile. Desktop is
+   untouched and nothing is deleted. On phones, long paragraphs collapse to a few
+   lines behind a Read more toggle (added by script), card rows swipe sideways
+   instead of stacking, and secondary descriptions give way to the headings. */
+.more{display:none}
+/* The vertical road starts right under the Story intro, and the first stop's
+   label is centred on its pin, so it rode up into the last line of the intro
+   (visible on the live site in the client's own screenshot). Push the road down
+   far enough for the label to clear. */
+@media(max-width:899px){.road{margin-top:118px}}
+@media(max-width:699px){
+  .clamp{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:var(--lines,3);overflow:hidden}
+  .clamp.open{display:block;-webkit-line-clamp:unset;overflow:visible}
+  .more{display:inline-block;justify-self:start;align-self:start;width:auto;margin-top:10px;background:none;border:0;padding:0 0 2px;cursor:pointer;
+    font-family:var(--body);font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--ink);box-shadow:inset 0 -1px 0 var(--amber)}
+  .nights .more,.nb .more{color:#fff}
+
+  /* CEO Nights episodes: guest and role; the full hook lives on the video */
+  .ep .h{display:none}
+  .ep .txt{padding:20px 20px 22px}
+
+  /* The seven areas: a two-up grid of headings, descriptions hidden */
+  .areas{grid-template-columns:1fr 1fr;gap:24px 16px}
+  .area{flex-direction:column;gap:10px}
+  .ar-h{margin-bottom:0;font-size:14.5px}
+  .ar-d{display:none}
+
+  /* Events and Impact cards swipe sideways; the next card peeks in */
+  .ev-grid,.ib-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;
+    padding-bottom:6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .ev-grid::-webkit-scrollbar,.ib-grid::-webkit-scrollbar{display:none}
+  .ev-grid > .ev,.ib-grid > .ib{flex:0 0 84%;scroll-snap-align:start}
+
+  /* Book room: a smaller cover so the words arrive sooner */
+  .book{padding:84px 0}
+  .book .wrap{gap:40px}
+  .book .cover{max-width:240px}
+}
 </style>
 </head>
 <body>
@@ -1680,6 +1721,48 @@ var SB = {
   } else {
     load();
   }
+})();
+
+/* Phones: collapse the long paragraphs to a few lines with a Read more toggle.
+   Only runs at phone width, and only adds a toggle where the text actually
+   overflows its line count. The matching CSS is at the end of the style block. */
+(function () {
+  var mq = window.matchMedia('(max-width: 699px)');
+  var TARGETS = [
+    ['.role p', 3],
+    ['.nights-head p', 3],
+    ['.s2-d', 3],
+    ['.qa-d', 3],
+    ['.soon-d', 3],
+    ['.book p[data-i18n="book.p"]', 5],
+    ['.nb-d', 3]
+  ];
+  // Deliberately NOT collapsed: the one-sentence section intros (Institute,
+  // Impact, Events). Cutting a single sentence mid-way reads worse than the
+  // few extra lines it saves.
+  var done = false;
+  function apply() {
+    if (done || !mq.matches) return;
+    done = true;
+    TARGETS.forEach(function (t) {
+      [].forEach.call(document.querySelectorAll(t[0]), function (p) {
+        p.style.setProperty('--lines', t[1]);
+        p.classList.add('clamp');
+        if (p.scrollHeight <= p.clientHeight + 2) { p.classList.remove('clamp'); return; }
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'more'; b.textContent = 'Read more';
+        b.setAttribute('aria-expanded', 'false');
+        b.addEventListener('click', function () {
+          var open = p.classList.toggle('open');
+          b.textContent = open ? 'Show less' : 'Read more';
+          b.setAttribute('aria-expanded', String(open));
+        });
+        p.insertAdjacentElement('afterend', b);
+      });
+    });
+  }
+  apply();
+  if (mq.addEventListener) mq.addEventListener('change', apply);
 })();
 var nav=document.getElementById('nav');
 function s(){nav.classList.toggle('solid',window.scrollY>50);}
