@@ -733,28 +733,24 @@ body{background:var(--off)}
 .xb-reach .cap span{color:#E3E9F5}
 
 .xb-row{margin:70px 0 24px}
-.xb-edu{display:grid;gap:18px}
-@media(min-width:960px){.xb-edu{grid-template-columns:minmax(0,1fr) minmax(0,1.08fr)}}
-.xb-photo{position:relative;margin:0;min-height:380px;overflow:hidden;background:var(--dark);isolation:isolate}
-.xb-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform 1.4s cubic-bezier(.2,.7,.2,1)}
-.xb-photo:hover img{transform:scale(1.04)}
-.xb-photo::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(5,26,82,0) 30%,rgba(5,26,82,.55) 55%,rgba(5,26,82,.95))}
-.xb-photo figcaption{position:absolute;left:0;right:0;bottom:0;padding:30px 32px 32px;color:#fff}
-.xb-photo .k{display:block;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--amber)}
-.xb-photo b{display:block;font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:clamp(34px,3.4vw,48px);line-height:.92;margin-top:10px}
-.xb-photo b + span{display:block;margin-top:12px;font-size:14.5px;line-height:1.55;color:#E3E9F5;max-width:42ch}
-.xb-schools{display:grid;gap:14px}
-.xb-school{display:grid;grid-template-columns:210px minmax(0,1fr);background:#fff;border:1px solid var(--line);transition:transform .3s,box-shadow .3s}
-.xb-school:hover{transform:translateY(-4px);box-shadow:0 26px 54px rgba(5,26,82,.12)}
-.xb-school .lg{display:grid;place-items:center;padding:22px;border-right:1px solid var(--line);background:linear-gradient(180deg,#fff,#FBF8F2)}
-.xb-school .lg img{max-height:80px;max-width:100%;width:auto;height:auto;object-fit:contain}
-.xb-school .tx{position:relative;padding:24px 26px 26px;align-self:center}
-@media(max-width:559px){.xb-photo{min-height:340px}.xb-school{grid-template-columns:minmax(0,1fr)}
-  .xb-school .lg{height:130px;border-right:0;border-bottom:1px solid var(--line)}}
-.xb-school .yr{position:absolute;right:24px;top:18px;font-family:var(--disp);font-size:32px;line-height:1;color:var(--amber)}
-.xb-school .k{display:block;font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--grey-2);padding-right:70px}
-.xb-school h3{font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:clamp(24px,2.2vw,30px);line-height:1;margin:12px 0 8px}
-.xb-school p{font-size:14px;color:var(--grey)}
+
+/* Education rows share the career list, lifted onto white with the school's logo. */
+.xb-stops li.edu{background:#fff;border-top:0;margin:10px -22px;padding:20px 22px;box-shadow:0 18px 44px rgba(0,0,0,.3)}
+.xb-stops li.edu + li{border-top:0}
+.xb-stops li.edu b,.xb-stops li.edu:hover b{color:var(--ink)}
+.xb-stops li.edu .r{color:var(--grey)}
+.xb-stops .tag{display:inline-block;margin-bottom:8px;padding:3px 8px;font-size:10px;font-weight:600;letter-spacing:.18em;
+  text-transform:uppercase;background:rgba(212,173,102,.26);color:var(--ink)}
+.xb-stops li.edu .xb-badge{width:156px;height:58px;box-shadow:none;border:1px solid var(--line)}
+.xb-stops li.edu .xb-badge img{max-height:38px}
+@media(max-width:599px){.xb-stops li.edu{margin:10px -12px;padding:16px 12px}.xb-stops li.edu .xb-badge{width:140px;height:52px}}
+
+/* Merged into the Story: no band of its own. overflow:clip (not hidden) keeps
+   stray map labels in check without breaking the sticky map. */
+.xb.xb-merged{background:none;border-top:0;padding:110px 0 0;overflow:clip}
+.xb-merged h2{font-size:clamp(40px,5.4vw,80px)}
+@media(min-width:960px){.xb-merged .xb-map-in{position:sticky;top:96px}}
+@media(max-width:699px){.xb.xb-merged{padding:72px 0 0}}
 
 .xb-teach{display:grid;gap:14px}
 @media(min-width:760px){.xb-teach{grid-template-columns:repeat(3,1fr)}}
@@ -1003,17 +999,17 @@ body{background:var(--off)}
         </span>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- Education and reach (Mr Mabunda's voice note, 11 Sept 2026: "we're trying
-     to build a global brand... education... the international journey").
-     Every line is from his own LinkedIn profile, read 11 Sept 2026. -->
-<section class="xb" id="creds" aria-labelledby="xbH">
-  <div class="wrap">
+    <!-- Career and education, merged into the Story at the client's request
+         (11 Sept 2026). The road tells it in six stops; the panel below is the
+         full record, with work and study in one year-by-year list, then reach
+         and teaching. Every line is from his LinkedIn profile, read 11 Sept 2026.
+         Mr Mabunda's voice note: "we're trying to build a global brand...
+         education... the international journey". -->
+    <div class="xb xb-merged" id="creds" role="region" aria-labelledby="xbH">
     <div class="xb-head">
-      <p class="eyebrow ruled">Education and reach</p>
-      <h2 id="xbH">A career<span class="hand">across borders.</span></h2>
+      <p class="eyebrow ruled">Career and education</p>
+      <h2 id="xbH">Work and study,<span class="hand">year by year.</span></h2>
       <p class="xb-lead">Three countries, four multinationals and three of the world's leading business schools, on the road from a village classroom to the boardroom.</p>
     </div>
 
@@ -1035,6 +1031,8 @@ body{background:var(--off)}
           </svg>
         </div>
       </figure>
+      <!-- Work and study in one chronology. Education rows are lifted onto white
+           with the school's own logo, so the degrees read as part of the career. -->
       <ol class="xb-stops">
         <li data-pin="jhb">
           <span class="yr">1996</span>
@@ -1043,8 +1041,18 @@ body{background:var(--off)}
         </li>
         <li data-pin="cpt">
           <span class="yr">2000</span>
-          <div><b>Cape Town</b><span class="r">Marketing, portfolio and strategy at Diageo, with an MBA from UCT along the way</span></div>
+          <div><b>Cape Town</b><span class="r">Marketing, portfolio and strategy at Diageo</span></div>
           <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/diageo.png" alt="Diageo" loading="lazy"></span></span>
+        </li>
+        <li class="edu" data-pin="cpt">
+          <span class="yr">2004</span>
+          <div><span class="tag">Education</span><b>MBA, University of Cape Town</b><span class="r">Graduate School of Business, earned while building brands at Diageo</span></div>
+          <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/edu/uct-gsb.svg" alt="UCT Graduate School of Business" loading="lazy"></span></span>
+        </li>
+        <li>
+          <span class="yr">2006</span>
+          <div><b>Nando's</b><span class="r">Leaves the corporate world to own and grow six franchise restaurants, later sold</span></div>
+          <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/nandos.png" alt="Nando's" loading="lazy"></span></span>
         </li>
         <li data-pin="lon">
           <span class="yr">2008</span>
@@ -1058,11 +1066,28 @@ body{background:var(--off)}
         </li>
         <li data-pin="jhb">
           <span class="yr">2016</span>
-          <div><b>Johannesburg</b><span class="r">CEO roles at Vodacom and GE Southern Africa, with BCG in between</span></div>
-          <span class="xb-badges">
-            <span class="xb-badge"><img src="assets/logos/vodacom.svg" alt="Vodacom" loading="lazy"></span>
-            <span class="xb-badge"><img src="assets/logos/general-electric.png" alt="General Electric" loading="lazy"></span>
-          </span>
+          <div><b>Johannesburg</b><span class="r">CEO, Consumer Business at Vodacom. Then Senior Advisor to BCG across sub-Saharan Africa</span></div>
+          <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/vodacom.svg" alt="Vodacom" loading="lazy"></span></span>
+        </li>
+        <li data-pin="jhb">
+          <span class="yr">2020</span>
+          <div><b>Johannesburg</b><span class="r">CEO, GE Southern Africa. A year later, Chair of the U.S.–South Africa Business Council</span></div>
+          <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/general-electric.png" alt="General Electric" loading="lazy"></span></span>
+        </li>
+        <li class="edu">
+          <span class="yr">2021</span>
+          <div><span class="tag">Education</span><b>INSEAD</b><span class="r">Advanced Management Program, Business Administration and Management</span></div>
+          <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/edu/insead.svg" alt="INSEAD" loading="lazy"></span></span>
+        </li>
+        <li class="edu">
+          <span class="yr">2023</span>
+          <div><span class="tag">Education</span><b>Harvard Business School</b><span class="r">Finance for Senior Executives, Executive Education</span></div>
+          <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/edu/hbs.svg" alt="Harvard Business School" loading="lazy"></span></span>
+        </li>
+        <li data-pin="jhb">
+          <span class="yr">Now</span>
+          <div><b>The chair</b><span class="r">Chairperson, Schindler South Africa. Founder and CEO of the Take Charge Leadership Institute</span></div>
+          <span class="xb-badges"><span class="xb-badge"><img src="assets/tcli-logo.png" alt="Take Charge Leadership Institute" loading="lazy"></span></span>
         </li>
       </ol>
     </div>
@@ -1075,36 +1100,13 @@ body{background:var(--off)}
     </div>
 
     <div class="xb-row">
-      <p class="eyebrow ruled">Education</p>
-    </div>
-    <div class="xb-edu">
-      <figure class="xb-photo">
-        <img src="assets/tl-uct.jpg" alt="The University of Cape Town campus below Devil's Peak" loading="lazy" decoding="async">
-        <figcaption><span class="k">Cape Town, 2004</span><b>Where the climb<br>got its MBA</b><span>An MBA from the University of Cape Town, earned while building brands at Diageo. INSEAD and Harvard Business School followed.</span></figcaption>
-      </figure>
-      <div class="xb-schools">
-      <article class="xb-school">
-        <div class="lg"><img src="assets/logos/edu/uct-gsb.svg" alt="UCT Graduate School of Business" loading="lazy"></div>
-        <div class="tx"><span class="yr">2004</span><span class="k">University of Cape Town</span><h3>MBA</h3><p>Business Management</p></div>
-      </article>
-      <article class="xb-school">
-        <div class="lg"><img src="assets/logos/edu/insead.svg" alt="INSEAD" loading="lazy"></div>
-        <div class="tx"><span class="yr">2021</span><span class="k">INSEAD</span><h3>Advanced Management Program</h3><p>Business Administration and Management</p></div>
-      </article>
-      <article class="xb-school">
-        <div class="lg"><img src="assets/logos/edu/hbs.svg" alt="Harvard Business School" loading="lazy"></div>
-        <div class="tx"><span class="yr">2023</span><span class="k">Harvard Business School</span><h3>Finance for Senior Executives</h3><p>Executive Education</p></div>
-      </article>
-      </div>
-    </div>
-
-    <div class="xb-row">
       <p class="eyebrow ruled">Teaches and advises at</p>
     </div>
     <div class="xb-teach">
       <div><span class="lg"><img src="assets/logos/edu/gibs-white.svg" alt="GIBS Business School" loading="lazy"></span><span><b>GIBS</b><span>Part-time lecturer</span></span></div>
       <div><span class="lg"><img src="assets/logos/edu/wits-business-school.svg" alt="Wits Business School" loading="lazy"></span><span><b>Wits Business School</b><span>Advisor</span></span></div>
       <div><span class="lg sq"><img src="assets/logos/edu/jbs.png" alt="Johannesburg Business School, University of Johannesburg" loading="lazy"></span><span><b>Johannesburg Business School</b><span>Lecturer, University of Johannesburg</span></span></div>
+    </div>
     </div>
   </div>
 </section>

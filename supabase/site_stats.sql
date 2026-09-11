@@ -49,7 +49,9 @@ begin
     select coalesce(ends_on, starts_on) as last_day, published
     from public.gig_guide
   ), weeks as (
-    select generate_series(this_week - 77, this_week, 7)::date as week
+    -- generate_series has no (date, date, integer) form; step timestamps by 7 days.
+    select d::date as week
+    from generate_series((this_week - 77)::timestamp, this_week::timestamp, interval '7 days') as d
   )
   select jsonb_build_object(
     'generated_at', now(),
