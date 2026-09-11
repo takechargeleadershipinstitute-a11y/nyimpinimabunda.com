@@ -130,6 +130,30 @@ Supabase  ── stores the row in public.book_preorders   (status starts as 'ne
 - Schema and security rules: [`supabase/book_preorders.sql`](supabase/book_preorders.sql).
   Like the waitlist, the public key can add an order and do nothing else.
 
+### Gig guide (added 11 September 2026)
+
+The page at `/gig-guide/`, linked from **Upcoming Events**, reads its list straight from
+Supabase. **Nobody has to touch the website code to update it.**
+
+- **To add an event:** Supabase → Table Editor → `gig_guide` → **Insert row**. Fill in
+  `event_name` and `starts_on` (plus `ends_on` for a multi-day event), and whatever you
+  have of `organisation`, `city`, `country` and `link`. Save, and it is on the site.
+- **Coming up and Recently sort themselves.** Once an event's last day has passed, it
+  moves to "Recently". Nothing needs deleting.
+- **`category`** is the small tag shown on each event: Conference, Keynote, CEO Nights,
+  Masterclass, Gathering. Keep the spelling consistent so the tags match.
+- **Corporate bookings: tick `private`.** The site then shows "Private corporate session"
+  with the city only, never the client's name. Untick it once the client is happy to be
+  named. The first import marked Nedbank, Capitec, KPMG and Board Partners as private.
+- **To hide an event completely,** untick `published`. It disappears from the site but
+  stays in the table.
+- **The homepage** Upcoming Events card shows the next three dates from the same table,
+  and the page adds each public event in the structured format search engines read.
+- **Planning details stay private.** `venue`, `theme`, `expected_attendance`, `audience`,
+  `dress_code` and `notes` are for TCLI only. The website cannot read those columns, so
+  the table can replace the PDF gig guide.
+- Schema and security rules: [`supabase/gig_guide.sql`](supabase/gig_guide.sql).
+
 **Pushing code to GitHub `main` redeploys the site automatically.** There is no build
 step: the repository contains exactly what is published.
 

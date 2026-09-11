@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gig Guide | Nyimpini Mabunda</title>
+<meta name="description" content="Where to find Nyimpini Mabunda next: keynotes, masterclasses, conferences and CEO Nights live recordings, kept up to date by the Take Charge Leadership Institute.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cbbhgoahhykpckbtlzkr.supabase.co" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#051A52; --ink-2:#0A2568; --grey:#6B6459; --grey-2:#8C8478;
+  --white:#FFFFFF; --off:#FAF6EF; --line:#E6DFD2;
+  --dark:#051A52; --dark-line:#16306B; --amber:#D4AD66;
+  --disp:"Antonio",Impact,sans-serif;
+  --body:"Hanken Grotesk",-apple-system,Arial,sans-serif;
+  --hand:"Caveat",cursive;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--off);color:var(--ink);font-family:var(--body);font-size:17px;
+  line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+.wrap{max-width:1000px;margin:0 auto;padding:0 32px}
+@media(max-width:560px){.wrap{padding:0 20px}}
+.eyebrow{font-family:var(--body);font-size:11px;font-weight:600;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--grey)}
+
+/* HEADER — same navy band and type as /terms/, so the two sub-pages read as
+   one family with the main site. */
+.top{background:var(--dark);color:#fff;padding:32px 0 64px}
+.top-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:52px}
+.brand img{height:40px;width:auto}
+.back{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#fff;
+  text-decoration:none;box-shadow:inset 0 -1px 0 var(--amber);padding-bottom:2px}
+.top .eyebrow{color:var(--amber)}
+.top h1{font-family:var(--disp);font-weight:400;text-transform:uppercase;
+  font-size:clamp(44px,7vw,84px);line-height:.92;margin-top:14px}
+.top h1 .hand{display:block;font-family:var(--hand);text-transform:none;
+  font-size:.62em;line-height:1.05;color:var(--amber);margin-top:.12em}
+.top .sub{color:#C9D2E6;font-size:16.5px;margin-top:22px;max-width:58ch}
+
+/* GIG GUIDE — every row is built by script from the gig_guide table in Supabase,
+   so TCLI updates the list in the Table Editor and never touches this file. Text
+   from the table is always set with textContent, never innerHTML. */
+main{padding:0 0 0}
+.gg-k{font-size:10.5px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--amber);margin-bottom:12px}
+.pill{display:inline-block;font-size:9.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink);background:rgba(212,173,102,.22);padding:5px 9px;line-height:1.2}
+.pill.private{background:rgba(5,26,82,.06);color:var(--grey)}
+.meta{color:var(--grey);font-size:15.5px;line-height:1.5}
+
+/* Next up: the soonest public date, pulled up over the header edge */
+.gg-next{margin-top:-34px;position:relative}
+.feature{display:grid;background:var(--white);border:1px solid var(--line);
+  box-shadow:0 26px 60px rgba(5,26,82,.10)}
+@media(min-width:720px){.feature{grid-template-columns:240px 1fr}}
+.f-date{background:var(--ink-2);color:#fff;padding:26px 28px;display:flex;flex-direction:column;justify-content:center;
+  border-top:3px solid var(--amber)}
+.f-date .d{font-family:var(--disp);font-weight:400;font-size:clamp(54px,7vw,76px);line-height:.88;color:var(--amber)}
+.f-date .m{font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;margin-top:10px}
+.f-date .in{margin-top:18px;font-size:13px;color:#C9D2E6}
+.f-body{padding:26px 30px 30px}
+.f-body h3{font-family:var(--disp);font-weight:500;text-transform:uppercase;
+  font-size:clamp(30px,3.8vw,44px);line-height:.98;margin:14px 0 10px;color:var(--ink)}
+.acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+.btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--body);font-weight:600;font-size:11.5px;
+  letter-spacing:.18em;text-transform:uppercase;padding:14px 18px;border:0;cursor:pointer;
+  background:var(--ink);color:#fff;text-decoration:none;line-height:1}
+.btn:hover{background:var(--ink-2)}
+.btn.line{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.btn.line:hover{background:var(--ink);color:#fff}
+.btn svg{width:15px;height:15px;flex:0 0 15px}
+
+/* Coming up, grouped by month */
+.gg-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  border-top:1px solid var(--line);padding-top:24px;margin-top:60px}
+.gg-head h2{font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:clamp(28px,3.2vw,38px);line-height:1}
+.gg-count{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--grey-2)}
+.month{margin-top:28px}
+.month-h{font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--grey-2);
+  padding-bottom:8px;border-bottom:1px solid var(--line)}
+.list{list-style:none}
+.row{display:grid;grid-template-columns:78px 1fr auto;gap:22px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line)}
+.tile{background:var(--white);border:1px solid var(--line);text-align:center;padding:11px 4px 10px}
+.tile .d{display:block;font-family:var(--disp);font-weight:400;font-size:25px;line-height:1;color:var(--ink)}
+.tile .m{display:block;font-size:9.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-top:6px}
+.row h4{font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:21px;line-height:1.08;color:var(--ink)}
+.row .meta{font-size:14.5px;margin-top:3px}
+.row .pill{margin-top:9px}
+.row.is-private h4{color:var(--grey)}
+.ical{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:44px;height:44px;
+  border:1px solid var(--line);background:var(--white);color:var(--ink);cursor:pointer;font-family:var(--body)}
+.ical:hover{border-color:var(--ink)}
+.ical svg{width:17px;height:17px}
+.ical-t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media(max-width:560px){
+  .row{grid-template-columns:64px 1fr;gap:16px}
+  .row .ical{grid-column:2;justify-self:start;width:auto;height:auto;padding:9px 12px;
+    font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase}
+  .ical-t{position:static;width:auto;height:auto;clip:auto}
+}
+
+.gg-status{color:var(--grey);font-size:15.5px;padding:22px 0}
+.gg-status a,.book a.text{color:var(--ink);box-shadow:inset 0 -1px 0 var(--amber);text-decoration:none}
+.skel div{height:78px;border-bottom:1px solid var(--line);
+  background:linear-gradient(90deg,rgba(5,26,82,.025),rgba(5,26,82,.07),rgba(5,26,82,.025));
+  background-size:200% 100%;animation:sh 1.3s linear infinite}
+@keyframes sh{to{background-position:-200% 0}}
+@media (prefers-reduced-motion:reduce){.skel div{animation:none}}
+
+/* Recently */
+.past-list{list-style:none;display:grid;gap:0 36px;margin-top:10px}
+@media(min-width:720px){.past-list{grid-template-columns:1fr 1fr}}
+.past-list li{display:grid;grid-template-columns:92px 1fr;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.past-list .when{color:var(--grey-2);font-weight:600;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;padding-top:4px}
+.past-list .nm{color:var(--ink);font-weight:600;font-size:15px;line-height:1.35}
+.past-list .ct{display:block;color:var(--grey-2);font-weight:400;font-size:13.5px}
+
+/* Booking band */
+.book{background:var(--dark);color:#fff;margin-top:90px;padding:70px 0}
+.book-in{display:grid;gap:30px;align-items:end}
+@media(min-width:840px){.book-in{grid-template-columns:1fr auto}}
+.book .eyebrow{color:var(--amber)}
+.book h2{font-family:var(--disp);font-weight:400;text-transform:uppercase;font-size:clamp(38px,5.4vw,62px);line-height:.92;margin-top:12px}
+.book h2 .hand{display:block;font-family:var(--hand);text-transform:none;color:var(--amber);font-size:.8em;line-height:1.05;margin-top:.08em}
+.book p{color:#C9D2E6;max-width:52ch;margin-top:16px;font-size:16px}
+.book-acts{display:flex;flex-wrap:wrap;gap:12px}
+.cta{display:inline-block;font-family:var(--body);font-weight:600;font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+  padding:17px 26px;text-decoration:none;background:var(--amber);color:var(--dark);line-height:1}
+.cta:hover{background:#E0BF82}
+.cta.line{background:transparent;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
+.cta.line:hover{background:#fff;color:var(--dark)}
+
+.foot{border-top:1px solid var(--line);padding:34px 0 60px;
+  display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
+.foot a{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink);text-decoration:none;box-shadow:inset 0 -1px 0 var(--amber);padding-bottom:2px}
+.foot span{color:var(--grey-2);font-size:12px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="top-bar">
+      <a class="brand" href="/" aria-label="Nyimpini Mabunda, home">
+        <img src="../assets/nm-logo-white.png" alt="Nyimpini Mabunda" width="124" height="40">
+      </a>
+      <a class="back" href="/">Back to the site</a>
+    </div>
+    <p class="eyebrow">Events</p>
+    <h1>Gig guide<span class="hand">where to find Nyimpini next.</span></h1>
+    <p class="sub">Keynotes, masterclasses, conferences and CEO Nights live recordings, kept up to date by the Take Charge Leadership Institute.</p>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <section class="gg-next" id="ggNextWrap" aria-labelledby="ggNextK" hidden>
+      <article class="feature" id="ggNext"></article>
+    </section>
+
+    <section aria-labelledby="ggUpH">
+      <div class="gg-head">
+        <h2 id="ggUpH">Coming up</h2>
+        <span class="gg-count" id="ggCount"></span>
+      </div>
+      <div id="ggMonths"></div>
+      <div class="skel" id="ggSkel" aria-hidden="true"><div></div><div></div><div></div></div>
+      <p class="gg-status" id="ggStatus" role="status" aria-live="polite" hidden></p>
+    </section>
+
+    <section id="ggPast" aria-labelledby="ggPastH" hidden>
+      <div class="gg-head"><h2 id="ggPastH">Recently</h2></div>
+      <ol class="past-list" id="ggRecent"></ol>
+    </section>
+
+  </div>
+
+  <section class="book" aria-labelledby="bookH">
+    <div class="wrap book-in">
+      <div>
+        <p class="eyebrow">Speaking</p>
+        <h2 id="bookH">Bring Nyimpini<span class="hand">to your stage.</span></h2>
+        <p>Keynotes, masterclasses and leadership sessions for conferences, boards and leadership teams.</p>
+      </div>
+      <div class="book-acts">
+        <a class="cta" href="/#contact">Check available dates</a>
+        <a class="cta line" href="/waitlist/?i=ceo-nights">Get CEO Nights invitations</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="foot">
+      <a href="/">← Back to the site</a>
+      <span>© <span id="yr">2026</span> Take Charge Leadership Institute</span>
+    </div>
+  </div>
+</main>
+
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+(function () {
+  // TCLI Supabase project. The publishable key can read the public columns of
+  // published gig_guide rows and nothing else (supabase/gig_guide.sql).
+  var SB = {
+    url: 'https://cbbhgoahhykpckbtlzkr.supabase.co',
+    key: 'sb_publishable_RldFFBVH4R8nPDyRlxA0tA__j8mMICa'
+  };
+  var MON  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var MONTH = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var PRIVATE_LABEL = 'Private corporate session';
+  var ICON_CAL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4M12 13.5v4M10 15.5h4"/></svg>';
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  // Today in South African time as YYYY-MM-DD, so an event stays under
+  // "Coming up" until its last day is over there, whatever the visitor's zone.
+  var today = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Africa/Johannesburg', year: 'numeric', month: '2-digit', day: '2-digit'
+  }).format(new Date());
+
+  function parts(iso) { var p = iso.split('-'); return { y: +p[0], m: +p[1] - 1, d: +p[2] }; }
+  function utc(iso) { var p = parts(iso); return Date.UTC(p.y, p.m, p.d); }
+  function lastDay(ev) { return ev.ends_on || ev.starts_on; }
+  function days(from, to) { return Math.round((utc(to) - utc(from)) / 86400000); }
+
+  // "16–17" / "Sep 2026", "30–2" / "Oct–Nov 2026", or a single day.
+  function when(start, end) {
+    var a = parts(start), b = end ? parts(end) : a;
+    if (a.y === b.y && a.m === b.m)
+      return { d: a.d === b.d ? String(a.d) : a.d + '–' + b.d, m: MON[a.m] + ' ' + a.y };
+    if (a.y === b.y) return { d: a.d + '–' + b.d, m: MON[a.m] + '–' + MON[b.m] + ' ' + a.y };
+    return { d: a.d + '–' + b.d, m: MON[a.m] + ' ' + a.y + '–' + MON[b.m] + ' ' + b.y };
+  }
+
+  function countdown(ev) {
+    var s = days(today, ev.starts_on), e = days(today, lastDay(ev));
+    if (s <= 0 && e >= 0) return s === 0 && e === 0 ? 'Today' : 'On now';
+    if (s === 1) return 'Tomorrow';
+    return 'In ' + s + ' days';
+  }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function title(ev) { return ev.private ? PRIVATE_LABEL : ev.event_name; }
+  function place(ev) { return [ev.city, ev.country].filter(Boolean).join(', '); }
+  function meta(ev) {
+    var bits = [];
+    if (!ev.private && ev.organisation && ev.organisation !== ev.event_name) bits.push(ev.organisation);
+    if (place(ev)) bits.push(place(ev));
+    return bits.join(' · ');
+  }
+  function pill(ev) {
+    if (ev.private) return el('span', 'pill private', 'Private');
+    return ev.category ? el('span', 'pill', ev.category) : null;
+  }
+
+  // ── Add to calendar: an all-day .ics built in the browser ───────────────────
+  function icsEsc(s) { return String(s).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n'); }
+  function ymd(iso) { return iso.replace(/-/g, ''); }
+  function dayAfter(iso) { var p = parts(iso); return new Date(Date.UTC(p.y, p.m, p.d + 1)).toISOString().slice(0, 10).replace(/-/g, ''); }
+  function addToCalendar(ev) {
+    var stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+    var ics = [
+      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Take Charge Leadership Institute//Gig Guide//EN', 'CALSCALE:GREGORIAN',
+      'BEGIN:VEVENT',
+      'UID:' + ev.id + '@nyimpinimabunda',
+      'DTSTAMP:' + stamp,
+      'DTSTART;VALUE=DATE:' + ymd(ev.starts_on),
+      'DTEND;VALUE=DATE:' + dayAfter(lastDay(ev)),
+      'SUMMARY:' + icsEsc(ev.event_name + ' with Nyimpini Mabunda'),
+      'LOCATION:' + icsEsc(place(ev)),
+      'DESCRIPTION:' + icsEsc([ev.organisation, location.origin + '/gig-guide/'].filter(Boolean).join('\n')),
+      'END:VEVENT', 'END:VCALENDAR'
+    ].join('\r\n');
+    var url = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' }));
+    var a = el('a');
+    a.href = url;
+    a.download = ev.event_name.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase() + '.ics';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  function calButton(ev, big) {
+    var b = el('button', big ? 'btn' : 'ical');
+    b.type = 'button';
+    b.setAttribute('aria-label', 'Add ' + ev.event_name + ' to your calendar');
+    b.innerHTML = ICON_CAL; // static markup only, never table data
+    b.appendChild(el('span', big ? null : 'ical-t', 'Add to calendar'));
+    b.addEventListener('click', function () { addToCalendar(ev); });
+    return b;
+  }
+
+  // ── Render ───────────────────────────────────────────────────────────────────
+  function feature(ev) {
+    var box = $('ggNext'), w = when(ev.starts_on, ev.ends_on);
+    var date = el('div', 'f-date');
+    date.appendChild(el('p', 'gg-k', 'Next up'));
+    date.lastChild.id = 'ggNextK';
+    date.appendChild(el('span', 'd', w.d));
+    date.appendChild(el('span', 'm', w.m));
+    date.appendChild(el('span', 'in', countdown(ev)));
+
+    var body = el('div', 'f-body');
+    var p = pill(ev); if (p) body.appendChild(p);
+    body.appendChild(el('h3', null, title(ev)));
+    if (meta(ev)) body.appendChild(el('p', 'meta', meta(ev)));
+    var acts = el('div', 'acts');
+    if (!ev.private) acts.appendChild(calButton(ev, true));
+    if (ev.link && /^https:\/\//i.test(ev.link)) {
+      var a = el('a', 'btn line', 'Event details');
+      a.href = ev.link; a.target = '_blank'; a.rel = 'noopener';
+      acts.appendChild(a);
+    }
+    if (acts.childNodes.length) body.appendChild(acts);
+
+    box.appendChild(date);
+    box.appendChild(body);
+    $('ggNextWrap').hidden = false;
+  }
+
+  function row(ev) {
+    var li = el('li', 'row' + (ev.private ? ' is-private' : '')), w = when(ev.starts_on, ev.ends_on);
+    var tile = el('div', 'tile');
+    tile.appendChild(el('span', 'd', w.d));
+    tile.appendChild(el('span', 'm', w.m.replace(/ \d{4}/g, '')));
+    var body = el('div');
+    body.appendChild(el('h4', null, title(ev)));
+    if (meta(ev)) body.appendChild(el('p', 'meta', meta(ev)));
+    var p = pill(ev); if (p) body.appendChild(p);
+    li.appendChild(tile);
+    li.appendChild(body);
+    if (!ev.private) li.appendChild(calButton(ev, false));
+    return li;
+  }
+
+  function months(list) {
+    var host = $('ggMonths'), current = null, ol = null;
+    list.forEach(function (ev) {
+      var p = parts(ev.starts_on), key = p.y + '-' + p.m;
+      if (key !== current) {
+        current = key;
+        var group = el('div', 'month');
+        group.appendChild(el('h3', 'month-h', MONTH[p.m] + ' ' + p.y));
+        ol = el('ol', 'list');
+        group.appendChild(ol);
+        host.appendChild(group);
+      }
+      ol.appendChild(row(ev));
+    });
+  }
+
+  function past(list) {
+    var ol = $('ggRecent');
+    list.forEach(function (ev) {
+      var li = el('li'), w = when(ev.starts_on, ev.ends_on);
+      li.appendChild(el('span', 'when', w.d + ' ' + w.m));
+      var nm = el('span', 'nm', title(ev));
+      if (place(ev)) nm.appendChild(el('span', 'ct', place(ev)));
+      li.appendChild(nm);
+      ol.appendChild(li);
+    });
+    $('ggPast').hidden = !list.length;
+  }
+
+  // Public events only, in the structured-data form search engines read.
+  function structuredData(list) {
+    var events = list.filter(function (ev) { return !ev.private && ev.city; }).map(function (ev) {
+      var o = {
+        '@context': 'https://schema.org', '@type': 'Event',
+        name: ev.event_name,
+        startDate: ev.starts_on, endDate: lastDay(ev),
+        eventStatus: 'https://schema.org/EventScheduled',
+        eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+        location: { '@type': 'Place', name: ev.city, address: { '@type': 'PostalAddress', addressLocality: ev.city, addressCountry: ev.country || 'South Africa' } },
+        performer: { '@type': 'Person', name: 'Nyimpini Mabunda' }
+      };
+      if (ev.organisation) o.organizer = { '@type': 'Organization', name: ev.organisation };
+      if (ev.link && /^https:\/\//i.test(ev.link)) o.url = ev.link;
+      return o;
+    });
+    if (!events.length) return;
+    var s = el('script'); s.type = 'application/ld+json';
+    s.textContent = JSON.stringify(events);
+    document.head.appendChild(s);
+  }
+
+  function status(text, linkText, href) {
+    var s = $('ggStatus');
+    s.textContent = text;
+    if (linkText) { var a = el('a', null, linkText); a.href = href; s.appendChild(a); s.appendChild(document.createTextNode('.')); }
+    s.hidden = false;
+  }
+
+  fetch(SB.url + '/rest/v1/gig_guide?select=id,event_name,organisation,starts_on,ends_on,city,country,link,category,private&order=starts_on.asc', {
+    headers: { 'apikey': SB.key }
+  })
+  .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+  .then(function (rows) {
+    $('ggSkel').remove();
+    var coming = rows.filter(function (e) { return lastDay(e) >= today; });
+    var done   = rows.filter(function (e) { return lastDay(e) < today; }).reverse().slice(0, 8);
+
+    // Feature the soonest PUBLIC date; private sessions stay in the list.
+    var lead = coming.filter(function (e) { return !e.private; })[0];
+    if (lead) feature(lead);
+    var rest = coming.filter(function (e) { return e !== lead; });
+
+    $('ggCount').textContent = coming.length ? coming.length + (coming.length === 1 ? ' date' : ' dates') : '';
+    if (rest.length) months(rest);
+    else if (!coming.length) status('New dates are being confirmed. ', 'Join the list to hear first', '/waitlist/');
+
+    past(done);
+    structuredData(coming);
+  })
+  .catch(function (err) {
+    console.error('gig-guide:', err);
+    var sk = $('ggSkel'); if (sk) sk.remove();
+    status('The gig guide could not load just now. Please refresh, or email ', 'bookings@takechargeli.co.za', 'mailto:bookings@takechargeli.co.za');
+  });
+})();
+</script>
+</body>
+</html>

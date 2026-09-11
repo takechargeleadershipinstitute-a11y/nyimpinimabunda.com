@@ -490,6 +490,14 @@ a{color:inherit}
 .ev-k{display:block;font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin-bottom:12px}
 .ev h3{font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:25px;line-height:1.02;margin-bottom:12px}
 .ev p{font-size:14.5px;color:var(--grey);line-height:1.55}
+.ev-link{align-self:flex-start;margin-top:14px;font-size:11px;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink);text-decoration:none;box-shadow:inset 0 -1px 0 var(--amber);padding-bottom:2px}
+.ev-link:hover{color:var(--amber)}
+.ev-next{list-style:none;margin-top:16px;border-top:1px solid var(--line)}
+.ev-next li{display:grid;grid-template-columns:64px 1fr;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.ev-next .dt{font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);padding-top:3px}
+.ev-next .nm{font-size:13.5px;font-weight:600;line-height:1.35;color:var(--ink)}
+.ev-next .ct{display:block;font-size:12.5px;font-weight:400;color:var(--grey-2)}
 .ev-when{margin-top:auto;padding-top:16px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--grey-2)}
 .ev-acts{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center}
 .ev-acts .note{font-size:13px;color:var(--grey-2)}
@@ -1203,8 +1211,12 @@ body{background:var(--off)}
         <div class="ev-txt">
           <span class="ev-k" data-i18n="events.e3.k">Upcoming</span>
           <h3 data-i18n="events.e3.h">Upcoming Events</h3>
-          <p data-i18n="events.e3.d">Keynotes, masterclasses and Take Charge experiences. Dates are announced to the list before they go anywhere else.</p>
-          <span class="ev-when" data-i18n="events.e3.w">Announced to the list first</span>
+          <p data-i18n="events.e3.d">Keynotes, masterclasses and Take Charge experiences. The gig guide shows where Nyimpini is speaking next.</p>
+          <!-- Filled from the gig_guide table when the section scrolls near; stays
+               hidden if the list is empty or cannot load. -->
+          <ul class="ev-next" id="evNext" aria-label="Next dates" hidden></ul>
+          <a class="ev-link" href="/gig-guide/" data-i18n="events.e3.link">See the full gig guide</a>
+          <span class="ev-when" data-i18n="events.e3.w">Updated by the TCLI team</span>
         </div>
       </article>
     </div>
@@ -1620,6 +1632,54 @@ var SB = {
       fail('Something went wrong on our side. Please try again, or email info@takechargeli.co.za.');
     });
   });
+})();
+
+/* Upcoming Events card: the next three dates from the gig guide.
+
+   Reads the same gig_guide table as /gig-guide/ (public columns only), but not
+   until the Events section is near the viewport, so it costs the page load
+   nothing. If the list is empty or the request fails, the card simply keeps its
+   static copy. */
+(function () {
+  var list = document.getElementById('evNext'), section = document.getElementById('events');
+  if (!list || !section || !window.fetch) return;
+  var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Johannesburg', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+
+  // "16–17 Sep" within one month, "15 Sep" for one day. A range that crosses a
+  // month shows its first day only, which is what fits the narrow date column.
+  function label(ev) {
+    var a = ev.starts_on.split('-'), b = (ev.ends_on || ev.starts_on).split('-');
+    var sameMonth = a[0] === b[0] && a[1] === b[1];
+    var d = sameMonth && a[2] !== b[2] ? (+a[2]) + '–' + (+b[2]) : String(+a[2]);
+    return d + ' ' + MON[+a[1] - 1];
+  }
+
+  function load() {
+    fetch(SB.url + '/rest/v1/gig_guide?select=event_name,starts_on,ends_on,city,private&order=starts_on.asc', { headers: { 'apikey': SB.key } })
+    .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function (rows) {
+      rows.filter(function (e) { return (e.ends_on || e.starts_on) >= today; }).slice(0, 3).forEach(function (ev) {
+        var li = document.createElement('li');
+        var dt = document.createElement('span'); dt.className = 'dt'; dt.textContent = label(ev);
+        var nm = document.createElement('span'); nm.className = 'nm';
+        nm.textContent = ev.private ? 'Private corporate session' : ev.event_name;
+        if (ev.city) { var ct = document.createElement('span'); ct.className = 'ct'; ct.textContent = ev.city; nm.appendChild(ct); }
+        li.appendChild(dt); li.appendChild(nm); list.appendChild(li);
+      });
+      list.hidden = !list.children.length;
+    })
+    .catch(function (err) { console.error('gig-guide card:', err); });
+  }
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      if (entries.some(function (e) { return e.isIntersecting; })) { io.disconnect(); load(); }
+    }, { rootMargin: '600px 0px' });
+    io.observe(section);
+  } else {
+    load();
+  }
 })();
 var nav=document.getElementById('nav');
 function s(){nav.classList.toggle('solid',window.scrollY>50);}
