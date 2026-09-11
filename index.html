@@ -627,6 +627,24 @@ a{color:inherit}
 .mdl-done .tick{width:42px;height:42px;border-radius:50%;background:var(--amber);
   display:grid;place-items:center;margin-bottom:16px}
 .mdl-done .tick svg{width:21px;height:21px;color:var(--dark)}
+/* Take Charge order dialog (Yoco checkout): delivery choice, address and total. */
+.mdl .f textarea{width:100%;font-family:var(--body);font-size:16px;color:var(--ink);background:#fff;border:0;
+  padding:14px 15px;box-shadow:inset 0 0 0 1px var(--line);min-height:84px;resize:vertical}
+.mdl .f textarea:focus{outline:0;box-shadow:inset 0 0 0 2px var(--ink)}
+.mdl .opts{display:grid;gap:8px;border:0;padding:0;margin:0 0 14px}
+.mdl .opts legend{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);margin-bottom:7px}
+.mdl .opt{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#fff;box-shadow:inset 0 0 0 1px var(--line);
+  cursor:pointer;font-size:14.5px;color:var(--ink)}
+.mdl .opt input{accent-color:var(--ink);width:16px;height:16px;flex:0 0 16px;margin:0}
+.mdl .opt b{margin-left:auto;font-weight:600}
+.mdl .opt:has(input:checked){box-shadow:inset 0 0 0 2px var(--ink)}
+.mdl .total{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0;margin:2px 0 16px;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.mdl .total span{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--grey)}
+.mdl .total b{font-family:var(--disp);font-weight:500;font-size:30px;line-height:1;color:var(--ink)}
+.mdl .test-note{font-size:12.5px;line-height:1.5;padding:10px 12px;margin:-8px 0 20px;background:rgba(212,173,102,.16);
+  color:var(--ink);box-shadow:inset 0 0 0 1px rgba(212,173,102,.5)}
+.mdl .secure{font-size:12px;line-height:1.5;color:var(--grey);text-align:center;margin-top:10px}
 
 /* FOOTER */
 .foot{border-top:1px solid var(--line);padding:48px 0 46px}
@@ -1337,7 +1355,7 @@ body{background:var(--off)}
         <p data-i18n="book.signed.d">Every copy ordered here can be signed and personalised by Nyimpini.</p>
       </div>
       <div class="acts">
-        <a class="cta" href="https://paystack.com/buy/take-charge-life-lessons-on-the-road-to-ceo-lrekxy" target="_blank" rel="noopener" data-i18n="book.cta1">Buy the book · R320</a>
+        <a class="cta" href="https://paystack.com/buy/take-charge-life-lessons-on-the-road-to-ceo-lrekxy" target="_blank" rel="noopener" data-pay-open data-i18n="book.cta1">Buy the book · R320</a>
         <a class="cta line" href="mailto:info@takechargeli.co.za?subject=Signed%20copy%20of%20Take%20Charge&amp;body=Hello%20TCLI%20team%2C%0A%0AI%20would%20like%20a%20signed%20copy%20of%20Take%20Charge.%0A%0AName%3A%0ADelivery%20address%3A%0ANumber%20of%20copies%3A%0ATo%20be%20signed%20for%20(name)%3A%0A%0AThank%20you." data-i18n="book.cta3">Get your signed copy</a>
         <a class="textlink" href="#contact" data-i18n="book.cta2">Bulk &amp; corporate purchases</a>
       </div>
@@ -1744,6 +1762,86 @@ body{background:var(--off)}
   </div>
 </div>
 
+<!-- Take Charge order and card payment through Yoco Checkout. While payments are
+     being tested, only a visit with ?yoco=test opens this; everyone else keeps
+     the existing "Buy the book" link. -->
+<div class="mdl" id="payModal" role="dialog" aria-modal="true" aria-labelledby="payH" hidden>
+  <div class="mdl-veil" data-pay-close></div>
+  <div class="mdl-box">
+    <button class="mdl-x" type="button" data-pay-close aria-label="Close">&times;</button>
+
+    <form id="payForm" novalidate>
+      <p class="mdl-k">Take Charge · R320</p>
+      <h2 class="mdl-h" id="payH">Order your copy.</h2>
+      <p class="mdl-d">Pay by card on Yoco's secure payment page. Every copy can be signed and personalised by Nyimpini.</p>
+      <p class="test-note" id="payTest" hidden><b>Test mode.</b> No real money moves. Pay with the Yoco test card.</p>
+
+      <div class="two">
+        <div class="f">
+          <label for="payFirst">First name</label>
+          <input id="payFirst" name="first" type="text" autocomplete="given-name" placeholder="Your first name" required maxlength="80">
+        </div>
+        <div class="f">
+          <label for="payLast">Surname</label>
+          <input id="payLast" name="last" type="text" autocomplete="family-name" placeholder="Your surname" required maxlength="80">
+        </div>
+      </div>
+      <div class="f">
+        <label for="payEmail">Email address</label>
+        <input id="payEmail" name="email" type="email" autocomplete="email" placeholder="name@example.com" required maxlength="254">
+      </div>
+      <div class="f">
+        <label for="payPhone">Contact number</label>
+        <input id="payPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="072 123 4567" required maxlength="25">
+      </div>
+      <div class="f f-copies">
+        <label for="payCopies">Number of copies</label>
+        <input id="payCopies" name="copies" type="number" inputmode="numeric" min="1" max="50" step="1" value="1" required>
+      </div>
+
+      <fieldset class="opts">
+        <legend>Delivery</legend>
+        <label class="opt"><input type="radio" name="delivery" value="johannesburg" checked> Delivery in Johannesburg <b>R90</b></label>
+        <label class="opt"><input type="radio" name="delivery" value="kzn"> Delivery in KwaZulu-Natal <b>R120</b></label>
+        <label class="opt"><input type="radio" name="delivery" value="collection"> Collection <b>Free</b></label>
+      </fieldset>
+      <div class="f" id="payAddrWrap">
+        <label for="payAddr">Delivery address</label>
+        <textarea id="payAddr" name="address" autocomplete="street-address" maxlength="500" placeholder="Street address, suburb, city and postal code"></textarea>
+      </div>
+
+      <div class="agree">
+        <input id="paySigned" name="signed" type="checkbox">
+        <label for="paySigned">Sign and personalise my copy.</label>
+      </div>
+      <div class="f" id="paySignWrap" hidden>
+        <label for="paySignFor">Sign it for</label>
+        <input id="paySignFor" name="signfor" type="text" maxlength="120" placeholder="The name to write in the book">
+      </div>
+      <div class="agree">
+        <input id="payAgree" type="checkbox" required>
+        <label for="payAgree">I accept the <a href="/terms/" target="_blank" rel="noopener">terms and privacy notice</a>.</label>
+      </div>
+
+      <div class="mdl-hp" aria-hidden="true">
+        <label for="payCo">Company</label><input id="payCo" name="company" type="text" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="total"><span>Total</span><b id="payTotal">R410</b></div>
+      <button class="go" id="payGo" type="submit">Pay R410 securely</button>
+      <p class="secure">Card details go into Yoco's payment page, never into this site.</p>
+      <p class="mdl-msg" id="payMsg" role="alert" aria-live="polite"></p>
+    </form>
+
+    <div class="mdl-done" id="payDone" role="status" aria-live="polite">
+      <span class="tick" id="payTick" aria-hidden="true" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+      <h2 class="mdl-h" id="payDoneH">Checking your payment.</h2>
+      <p class="mdl-d" id="payDoneD">This takes a few seconds.</p>
+      <button class="go" type="button" data-pay-close>Close</button>
+    </div>
+  </div>
+</div>
+
 <footer class="foot">
   <div class="wrap">
     <a class="foot-mark" href="#top" aria-label="Nyimpini Mabunda"><img src="assets/nm-logo.png" alt="Nyimpini Mabunda"></a>
@@ -1982,6 +2080,175 @@ var SB = {
       fail('Something went wrong on our side. Please try again, or email info@takechargeli.co.za.');
     });
   });
+})();
+
+/* Take Charge order dialog: website -> book-checkout Edge Function -> Yoco.
+
+   The function sets the price and returns Yoco's hosted payment page, so card
+   details never touch this site and the amount cannot be changed here. The
+   totals below are for display only. A payment is confirmed by the yoco-webhook
+   function; the page a buyer returns to asks book-checkout for the status.
+   While payments are being tested, the dialog only opens with ?yoco=test and
+   everyone else keeps the existing "Buy the book" link. */
+(function () {
+  var mdl = document.getElementById('payModal');
+  if (!mdl || !window.fetch || !window.URLSearchParams) return;
+  var FN = SB.url + '/functions/v1/book-checkout',
+      PRICE = 320,
+      FEES = { johannesburg: 90, kzn: 120, collection: 0 },
+      // The "Last updated" date on /terms/, stored with each order.
+      TERMS_VERSION = '2026-09-11',
+      UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
+      params = new URLSearchParams(location.search),
+      testing = params.get('yoco') === 'test',
+      form = document.getElementById('payForm'),
+      btn  = document.getElementById('payGo'),
+      msg  = document.getElementById('payMsg'),
+      done = document.getElementById('payDone'),
+      last = null;
+
+  document.getElementById('payTest').hidden = !testing;
+
+  function rand(n) { return 'R' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
+  function delivery() { var c = form.querySelector('input[name=delivery]:checked'); return c ? c.value : ''; }
+  function total() {
+    var copies = parseInt(form.copies.value, 10);
+    return PRICE * (copies >= 1 && copies <= 50 ? copies : 1) + (FEES[delivery()] || 0);
+  }
+  function label() { return 'Pay ' + rand(total()) + ' securely'; }
+  function refresh() {
+    document.getElementById('payTotal').textContent = rand(total());
+    document.getElementById('payAddrWrap').hidden = delivery() === 'collection';
+    document.getElementById('paySignWrap').hidden = !form.signed.checked;
+    if (!btn.disabled) btn.textContent = label();
+  }
+  form.addEventListener('input', refresh);
+  form.addEventListener('change', refresh);
+
+  function open(e) {
+    if (e) e.preventDefault();
+    last = document.activeElement;
+    mdl.hidden = false; mdl.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function close() {
+    mdl.classList.remove('open'); mdl.hidden = true;
+    document.body.style.overflow = '';
+    if (last && last.focus) last.focus();
+  }
+
+  [].forEach.call(document.querySelectorAll('[data-pay-open]'), function (t) {
+    t.addEventListener('click', function (e) {
+      if (!testing) return;            // not switched on yet: follow the normal link
+      form.style.display = ''; done.classList.remove('show');
+      refresh();
+      open(e);
+      setTimeout(function () { document.getElementById('payFirst').focus(); }, 40);
+    });
+  });
+  [].forEach.call(mdl.querySelectorAll('[data-pay-close]'), function (t) {
+    t.addEventListener('click', close);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && mdl.classList.contains('open')) close();
+    if (e.key === 'Tab' && mdl.classList.contains('open')) {
+      var f = mdl.querySelectorAll('button, input, textarea, a[href], [tabindex]:not([tabindex="-1"])');
+      f = [].filter.call(f, function (n) { return n.offsetParent !== null; });
+      if (!f.length) return;
+      var first = f[0], lastEl = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); lastEl.focus(); }
+      else if (!e.shiftKey && document.activeElement === lastEl) { e.preventDefault(); first.focus(); }
+    }
+  });
+
+  function fail(t) {
+    msg.textContent = t; msg.classList.add('show');
+    btn.disabled = false; btn.textContent = label();
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    msg.classList.remove('show');
+
+    var first  = form.first.value.trim(),
+        lastN  = form.last.value.trim(),
+        email  = form.email.value.trim(),
+        phone  = form.phone.value.trim(),
+        digits = phone.replace(/\D/g, ''),
+        copies = parseInt(form.copies.value, 10),
+        how    = delivery(),
+        addr   = form.address.value.trim();
+
+    if (!first || !lastN) return fail('Please give your first name and surname.');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      return fail('That email address does not look right. Please check it.');
+    if (!/^\+?[0-9 ()-]+$/.test(phone) || digits.length < 9 || digits.length > 15)
+      return fail('That contact number does not look right. Please check it.');
+    if (!(copies >= 1 && copies <= 50))
+      return fail('Please choose between 1 and 50 copies. For a bigger order, email info@takechargeli.co.za.');
+    if (!FEES.hasOwnProperty(how)) return fail('Please choose delivery or collection.');
+    if (how !== 'collection' && addr.length < 10) return fail('Please give the full delivery address.');
+    if (!document.getElementById('payAgree').checked) return fail('Please accept the terms to continue.');
+    if (form.company.value) return;
+
+    btn.disabled = true; btn.textContent = 'Opening secure payment…';
+
+    fetch(FN, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        book: 'take-charge', first_name: first, last_name: lastN,
+        email: email.toLowerCase(), phone: phone, copies: copies,
+        delivery: how, delivery_address: how === 'collection' ? null : addr,
+        signed: form.signed.checked, sign_for: form.signed.checked ? form.signfor.value.trim() : null,
+        accepted_terms: true, terms_version: TERMS_VERSION,
+        source: testing ? 'book-dialog-test' : 'book-dialog'
+      })
+    })
+    .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+    .then(function (x) {
+      // Only ever send the buyer to Yoco.
+      if (x.ok && x.d.redirectUrl && /^https:\/\/([a-z0-9-]+\.)*yoco\.com\//i.test(x.d.redirectUrl)) {
+        location.href = x.d.redirectUrl;
+        return;
+      }
+      fail((x.d && x.d.error) || 'Something went wrong on our side. Please try again, or email info@takechargeli.co.za.');
+    })
+    .catch(function (err) {
+      console.error('book-checkout:', err);
+      fail('Something went wrong on our side. Please try again, or email info@takechargeli.co.za.');
+    });
+  });
+
+  // ── back from Yoco: ?order=<id>&payment=success|cancelled|failed ─────────
+  var order = params.get('order'), outcome = params.get('payment');
+  if (!order || !UUID.test(order) || !outcome) return;
+  history.replaceState(null, '', location.pathname + '#book');   // a refresh must not re-run this
+
+  var H = document.getElementById('payDoneH'), D = document.getElementById('payDoneD'),
+      tick = document.getElementById('payTick'), ref = order.slice(0, 8).toUpperCase();
+  function show(title, text, ok) { H.textContent = title; D.textContent = text; tick.hidden = !ok; }
+
+  form.style.display = 'none'; done.classList.add('show');
+  open();
+
+  if (outcome === 'cancelled') return show('Payment cancelled.', 'Nothing was charged. You can order again whenever you are ready.', false);
+  if (outcome !== 'success') return show('Payment not completed.', 'Nothing was charged. Please try again, or email info@takechargeli.co.za.', false);
+
+  show('Checking your payment.', 'This takes a few seconds.', false);
+  (function poll(n) {
+    fetch(FN + '?order=' + order)
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d.status === 'paid' || d.status === 'fulfilled') {
+          return show('Payment received.', 'Thank you. Your order is confirmed. Your reference is ' + ref + '.' +
+            (d.mode === 'test' ? ' This was a test payment, so no money moved.' : ''), true);
+        }
+        if (n < 15) return setTimeout(function () { poll(n + 1); }, 2000);
+        show('Confirming your payment.', 'Yoco is still confirming it. Your reference is ' + ref + '. If you do not hear from us, email info@takechargeli.co.za with that reference.', false);
+      })
+      .catch(function () { if (n < 15) setTimeout(function () { poll(n + 1); }, 2000); });
+  })(0);
 })();
 
 /* Upcoming Events card: the next three dates from the gig guide.
