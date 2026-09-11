@@ -19,6 +19,9 @@ create table if not exists public.gig_guide (
   organisation         text check (organisation is null or length(organisation) <= 120),
   starts_on            date not null,
   ends_on              date check (ends_on is null or ends_on >= starts_on),
+  -- Optional, South African time (SAST, UTC+2). Used for calendar links.
+  start_time           time,
+  end_time             time,
   city                 text check (city is null or length(city) <= 80),
   country              text check (country is null or length(country) <= 80),
   link                 text check (link is null or link ~* '^https://'),
@@ -42,7 +45,9 @@ create table if not exists public.gig_guide (
 -- For a table created before these columns existed (the live one was). No-op otherwise.
 alter table public.gig_guide
   add column if not exists category text check (category is null or length(category) <= 40),
-  add column if not exists private  boolean not null default false;
+  add column if not exists private  boolean not null default false,
+  add column if not exists start_time time,
+  add column if not exists end_time   time;
 
 create index if not exists gig_guide_starts_on_idx on public.gig_guide (starts_on);
 
@@ -60,6 +65,6 @@ create policy "anyone can read published gig guide events"
 -- Belt and braces: revoke everything, then grant SELECT on the public columns only.
 -- `published` is included because the policy above reads it.
 revoke all on public.gig_guide from anon, authenticated;
-grant select (id, event_name, organisation, starts_on, ends_on, city, country, link,
-              category, private, published)
+grant select (id, event_name, organisation, starts_on, ends_on, start_time, end_time,
+              city, country, link, category, private, published)
   on public.gig_guide to anon;

@@ -657,30 +657,100 @@ body{background:var(--off)}
 .ep:hover{background:#0A2568}
 .eps{background:#16306B}
 
-/* EDUCATION AND REACH — four compact cards under the Story road. On phones they
-   swipe sideways like the Events cards, so the room adds almost no scroll. */
-.creds{background:#F2ECE1;border-top:1px solid var(--line);padding:84px 0 90px}
-.creds-head{max-width:60ch}
-.creds h2{font-family:var(--disp);font-weight:400;text-transform:uppercase;font-size:clamp(34px,4.6vw,60px);line-height:.96;margin-top:14px}
-.creds h2 .hand{display:inline-block;color:var(--amber);padding-left:.18em}
-.creds-grid{display:grid;gap:18px;margin-top:40px}
-@media(min-width:700px){.creds-grid{grid-template-columns:repeat(2,1fr)}}
-@media(min-width:1060px){.creds-grid{grid-template-columns:repeat(4,1fr)}}
-.cr{background:var(--white);border:1px solid var(--line);padding:24px 22px 22px}
-.cr-k{display:block;font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--amber);margin-bottom:14px}
-.cr ul{list-style:none}
-.cr li{padding:10px 0;border-top:1px solid var(--line);font-size:13.5px;line-height:1.4;color:var(--grey)}
-.cr li:first-child{border-top:0;padding-top:0}
-.cr li b{display:block;font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:17px;line-height:1.1;color:var(--ink);margin-bottom:3px}
-.cr.stat{background:var(--dark);border-color:var(--dark);display:flex;flex-direction:column;justify-content:center}
-.cr-n{display:block;font-family:var(--disp);font-weight:400;font-size:clamp(58px,6vw,78px);line-height:.9;color:#fff}
-.cr-t{display:block;margin-top:12px;color:#C9D2E6;font-size:14.5px;line-height:1.5}
-@media(max-width:699px){
-  .creds{padding:64px 0 70px}
-  .creds-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;padding-bottom:6px;scrollbar-width:none}
-  .creds-grid::-webkit-scrollbar{display:none}
-  .creds-grid > .cr{flex:0 0 84%;scroll-snap-align:start}
-}
+/* A CAREER ACROSS BORDERS — Mr Mabunda wants the education and the
+   international journey to be a big part of the site. A dotted map with the
+   route drawn in gold (Johannesburg, Cape Town, London, Kampala), the stops
+   with company marks, a reach band, then the schools with their own logos. */
+.xb{background:#F2ECE1;border-top:1px solid var(--line);padding:110px 0 120px;overflow:hidden}
+.xb-head{max-width:64ch}
+.xb h2{font-family:var(--disp);font-weight:400;text-transform:uppercase;font-size:clamp(46px,6.6vw,96px);line-height:.9;margin-top:18px}
+.xb h2 .hand{display:block;font-size:.74em;line-height:1.02;color:var(--amber);text-transform:none}
+.xb-lead{color:var(--grey);font-size:17px;line-height:1.65;max-width:54ch;margin-top:24px}
+
+.xb-journey{display:grid;grid-template-columns:minmax(0,1fr);margin-top:56px;background:var(--dark);color:#fff;box-shadow:0 40px 90px rgba(5,26,82,.2)}
+@media(min-width:960px){.xb-journey{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr)}}
+.xb-map{margin:0;padding:36px 30px 30px;background:radial-gradient(75% 65% at 50% 55%,#12307A,#051A52 72%)}
+.xb-map-in{position:relative;max-width:520px;margin:0 auto}
+.xb-map-in img{display:block;width:100%;height:auto;opacity:.6}
+.xb-routes{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.xb-route{fill:none;stroke:var(--amber);stroke-width:3.2;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;
+  transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1);filter:drop-shadow(0 0 6px rgba(212,173,102,.55))}
+.xb.in .xb-route{stroke-dashoffset:0}
+.xb-pin .dot{fill:var(--amber);stroke:#051A52;stroke-width:3;transition:r .25s}
+.xb-pin .halo{fill:none;stroke:var(--amber);stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:center}
+.xb.in .xb-pin .halo{animation:xbHalo 2.6s ease-out 1.2s infinite}
+@keyframes xbHalo{0%{transform:scale(.5);opacity:.9}100%{transform:scale(1.9);opacity:0}}
+.xb-pin text{font-family:var(--disp);font-weight:500;font-size:27px;letter-spacing:.04em;fill:#fff}
+.xb-pin text.yr{font-family:var(--body);font-weight:600;font-size:14px;letter-spacing:.12em;fill:var(--amber)}
+.xb-pin.on .dot{r:15}
+/* On a phone the map is ~40% of its drawn size: drop the years (the list below has them)
+   and enlarge the city names so they stay readable. */
+@media(max-width:599px){.xb-map{padding:26px 14px 18px}.xb-pin text{font-size:44px}.xb-pin text.yr{display:none}}
+@media (prefers-reduced-motion:reduce){.xb-route{transition:none;stroke-dashoffset:0}.xb.in .xb-pin .halo{animation:none}}
+
+.xb-stops{list-style:none;padding:34px 42px;display:flex;flex-direction:column;justify-content:center}
+@media(max-width:600px){.xb-stops{padding:18px 20px 26px}}
+.xb-stops li{display:grid;grid-template-columns:58px minmax(0,1fr);gap:4px 16px;align-items:center;padding:18px 0;border-top:1px solid rgba(255,255,255,.12)}
+@media(min-width:600px){.xb-stops li{grid-template-columns:72px minmax(0,1fr) auto;gap:4px 18px}}
+.xb-stops li:first-child{border-top:0}
+.xb-stops .yr{font-family:var(--disp);font-weight:400;font-size:30px;line-height:1;color:var(--amber)}
+.xb-stops b{display:block;font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:23px;line-height:1;letter-spacing:.02em;transition:color .2s}
+.xb-stops li:hover b{color:var(--amber)}
+.xb-stops .r{display:block;font-size:14px;line-height:1.5;color:#C9D2E6;margin-top:6px}
+.xb-badges{display:flex;flex-wrap:wrap;gap:8px;grid-column:2;margin-top:10px}
+@media(min-width:600px){.xb-badges{grid-column:auto;flex-direction:column;align-items:flex-end}}
+.xb-badge{display:flex;align-items:center;justify-content:center;width:112px;height:44px;padding:0 14px;background:#fff;border-radius:6px;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.xb-badge img{max-width:100%;max-height:24px;width:auto;height:auto;object-fit:contain}
+@media(max-width:599px){.xb-badge{width:100px;height:40px;padding:0 12px}}
+
+.xb-reach{display:grid;grid-template-columns:repeat(2,1fr);margin-top:18px;background:#fff;border:1px solid var(--line)}
+@media(min-width:900px){.xb-reach{grid-template-columns:repeat(4,1fr)}}
+.xb-reach div{padding:30px 26px 28px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.xb-reach b{display:block;font-family:var(--disp);font-weight:400;font-size:clamp(48px,5.4vw,70px);line-height:.88;color:var(--ink)}
+.xb-reach b i{font-style:normal;color:var(--amber)}
+.xb-reach b.sm{font-size:clamp(40px,4.2vw,56px);color:var(--amber)}
+.xb-reach span{display:block;margin-top:12px;font-size:13.5px;line-height:1.45;color:var(--grey)}
+.xb-reach .cap{position:relative;isolation:isolate;overflow:hidden;background:#051A52 url(assets/tl-capitol.jpg) center 40%/cover;border-color:#051A52}
+.xb-reach .cap::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(5,26,82,.8),rgba(5,26,82,.94))}
+.xb-reach .cap span{color:#E3E9F5}
+
+.xb-row{margin:70px 0 24px}
+.xb-edu{display:grid;gap:18px}
+@media(min-width:960px){.xb-edu{grid-template-columns:minmax(0,1fr) minmax(0,1.08fr)}}
+.xb-photo{position:relative;margin:0;min-height:380px;overflow:hidden;background:var(--dark);isolation:isolate}
+.xb-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform 1.4s cubic-bezier(.2,.7,.2,1)}
+.xb-photo:hover img{transform:scale(1.04)}
+.xb-photo::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(5,26,82,0) 30%,rgba(5,26,82,.55) 55%,rgba(5,26,82,.95))}
+.xb-photo figcaption{position:absolute;left:0;right:0;bottom:0;padding:30px 32px 32px;color:#fff}
+.xb-photo .k{display:block;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--amber)}
+.xb-photo b{display:block;font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:clamp(34px,3.4vw,48px);line-height:.92;margin-top:10px}
+.xb-photo b + span{display:block;margin-top:12px;font-size:14.5px;line-height:1.55;color:#E3E9F5;max-width:42ch}
+.xb-schools{display:grid;gap:14px}
+.xb-school{display:grid;grid-template-columns:210px minmax(0,1fr);background:#fff;border:1px solid var(--line);transition:transform .3s,box-shadow .3s}
+.xb-school:hover{transform:translateY(-4px);box-shadow:0 26px 54px rgba(5,26,82,.12)}
+.xb-school .lg{display:grid;place-items:center;padding:22px;border-right:1px solid var(--line);background:linear-gradient(180deg,#fff,#FBF8F2)}
+.xb-school .lg img{max-height:80px;max-width:100%;width:auto;height:auto;object-fit:contain}
+.xb-school .tx{position:relative;padding:24px 26px 26px;align-self:center}
+@media(max-width:559px){.xb-photo{min-height:340px}.xb-school{grid-template-columns:minmax(0,1fr)}
+  .xb-school .lg{height:130px;border-right:0;border-bottom:1px solid var(--line)}}
+.xb-school .yr{position:absolute;right:24px;top:18px;font-family:var(--disp);font-size:32px;line-height:1;color:var(--amber)}
+.xb-school .k{display:block;font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--grey-2);padding-right:70px}
+.xb-school h3{font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:clamp(24px,2.2vw,30px);line-height:1;margin:12px 0 8px}
+.xb-school p{font-size:14px;color:var(--grey)}
+
+.xb-teach{display:grid;gap:14px}
+@media(min-width:760px){.xb-teach{grid-template-columns:repeat(3,1fr)}}
+/* The schools' own marks are white-lettered (GIBS, Wits) or a solid orange
+   square (UJ), so these tiles sit on navy. */
+.xb-teach > div{display:flex;flex-direction:column;justify-content:space-between;gap:26px;min-height:190px;
+  background:var(--dark);color:#fff;padding:28px 26px 24px;transition:transform .3s,box-shadow .3s}
+.xb-teach > div:hover{transform:translateY(-4px);box-shadow:0 26px 54px rgba(5,26,82,.25)}
+.xb-teach .lg{height:58px;display:flex;align-items:center}
+.xb-teach .lg img{max-height:48px;max-width:220px;width:auto;height:auto;object-fit:contain}
+.xb-teach .lg.sq img{max-height:58px;border-radius:4px}
+.xb-teach b{display:block;font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:22px;line-height:1.05;color:#fff}
+.xb-teach b + span{display:block;margin-top:6px;font-size:13.5px;color:#C9D2E6}
+@media(max-width:699px){.xb{padding:76px 0 84px}.xb-row{margin:52px 0 18px}.xb-reach div{padding:22px 18px}}
 
 /* ── PHONES: LESS TEXT ─────────────────────────────────────────────────────
    Mr Mabunda, 11 Sept 2026: the site reads text-heavy on mobile. Desktop is
@@ -921,42 +991,102 @@ body{background:var(--off)}
 <!-- Education and reach (Mr Mabunda's voice note, 11 Sept 2026: "we're trying
      to build a global brand... education... the international journey").
      Every line is from his own LinkedIn profile, read 11 Sept 2026. -->
-<section class="creds" id="creds" aria-labelledby="credsH">
+<section class="xb" id="creds" aria-labelledby="xbH">
   <div class="wrap">
-    <div class="creds-head">
-      <p class="eyebrow">Education and reach</p>
-      <h2 id="credsH">A career<span class="hand">across borders.</span></h2>
+    <div class="xb-head">
+      <p class="eyebrow ruled">Education and reach</p>
+      <h2 id="xbH">A career<span class="hand">across borders.</span></h2>
+      <p class="xb-lead">Three countries, four multinationals and three of the world's leading business schools, on the road from a village classroom to the boardroom.</p>
     </div>
-    <div class="creds-grid">
-      <div class="cr">
-        <span class="cr-k">Education</span>
-        <ul>
-          <li><b>MBA</b>University of Cape Town, 2004</li>
-          <li><b>Advanced Management Program</b>INSEAD, 2021</li>
-          <li><b>Finance for Senior Executives</b>Harvard Business School, 2023</li>
-        </ul>
+
+    <!-- The journey: a dotted map generated from Natural Earth land data
+         (assets/journey-map.svg, public domain) with the route drawn over it. -->
+    <div class="xb-journey">
+      <figure class="xb-map" aria-hidden="true">
+        <div class="xb-map-in">
+          <img src="assets/journey-map.svg" alt="" width="840" height="980" loading="lazy" decoding="async">
+          <svg class="xb-routes" viewBox="0 0 840 980">
+            <path class="xb-route" pathLength="1" style="transition-delay:.1s" d="M500.5 862 Q468 918 404.2 939.2"/>
+            <path class="xb-route" pathLength="1" style="transition-delay:.9s" d="M404.2 939.2 C120 760 60 300 218.7 84.9"/>
+            <path class="xb-route" pathLength="1" style="transition-delay:2.1s" d="M218.7 84.9 C470 160 560 380 545.8 596.5"/>
+            <path class="xb-route" pathLength="1" style="transition-delay:3.1s" d="M545.8 596.5 C590 700 560 800 500.5 862"/>
+            <g class="xb-pin" data-pin="lon"><circle class="halo" cx="218.7" cy="84.9" r="22"/><circle class="dot" cx="218.7" cy="84.9" r="10"/><text x="196" y="62" text-anchor="end">LONDON</text><text class="yr" x="196" y="86" text-anchor="end">2008 to 2012</text></g>
+            <g class="xb-pin" data-pin="kla"><circle class="halo" cx="545.8" cy="596.5" r="22"/><circle class="dot" cx="545.8" cy="596.5" r="10"/><text x="572" y="592">KAMPALA</text><text class="yr" x="573" y="616">2013 to 2016</text></g>
+            <g class="xb-pin" data-pin="jhb"><circle class="halo" cx="500.5" cy="862" r="22"/><circle class="dot" cx="500.5" cy="862" r="10"/><text x="527" y="858">JOHANNESBURG</text><text class="yr" x="528" y="882">1996 · 2016 to now</text></g>
+            <g class="xb-pin" data-pin="cpt"><circle class="halo" cx="404.2" cy="939.2" r="22"/><circle class="dot" cx="404.2" cy="939.2" r="10"/><text x="378" y="946" text-anchor="end">CAPE TOWN</text><text class="yr" x="377" y="970" text-anchor="end">2000 to 2008</text></g>
+          </svg>
+        </div>
+      </figure>
+      <ol class="xb-stops">
+        <li data-pin="jhb">
+          <span class="yr">1996</span>
+          <div><b>Johannesburg</b><span class="r">Graduate recruit to trade marketing at Procter &amp; Gamble</span></div>
+          <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/procter-gamble.png" alt="Procter &amp; Gamble" loading="lazy"></span></span>
+        </li>
+        <li data-pin="cpt">
+          <span class="yr">2000</span>
+          <div><b>Cape Town</b><span class="r">Marketing, portfolio and strategy at Diageo, with an MBA from UCT along the way</span></div>
+          <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/diageo.png" alt="Diageo" loading="lazy"></span></span>
+        </li>
+        <li data-pin="lon">
+          <span class="yr">2008</span>
+          <div><b>London</b><span class="r">Regional Marketing Manager, running Diageo's soft drinks business across Africa</span></div>
+          <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/diageo.png" alt="Diageo" loading="lazy"></span></span>
+        </li>
+        <li data-pin="kla">
+          <span class="yr">2013</span>
+          <div><b>Kampala</b><span class="r">Managing Director and CEO of Uganda Breweries, brought in to turn it around</span></div>
+          <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/diageo.png" alt="Diageo" loading="lazy"></span></span>
+        </li>
+        <li data-pin="jhb">
+          <span class="yr">2016</span>
+          <div><b>Johannesburg</b><span class="r">CEO roles at Vodacom and GE Southern Africa, with BCG in between</span></div>
+          <span class="xb-badges">
+            <span class="xb-badge"><img src="assets/logos/vodacom.svg" alt="Vodacom" loading="lazy"></span>
+            <span class="xb-badge"><img src="assets/logos/general-electric.png" alt="General Electric" loading="lazy"></span>
+          </span>
+        </li>
+      </ol>
+    </div>
+
+    <div class="xb-reach">
+      <div><b>130<i>+</i></b><span>keynotes delivered</span></div>
+      <div><b>11</b><span>countries across Africa, the Middle East and Europe</span></div>
+      <div><b>3</b><span>countries where he has led businesses</span></div>
+      <div class="cap"><b class="sm">Chair</b><span>U.S.–South Africa Business Council, Washington DC, from 2021</span></div>
+    </div>
+
+    <div class="xb-row">
+      <p class="eyebrow ruled">Education</p>
+    </div>
+    <div class="xb-edu">
+      <figure class="xb-photo">
+        <img src="assets/tl-uct.jpg" alt="The University of Cape Town campus below Devil's Peak" loading="lazy" decoding="async">
+        <figcaption><span class="k">Cape Town, 2004</span><b>Where the climb<br>got its MBA</b><span>An MBA from the University of Cape Town, earned while building brands at Diageo. INSEAD and Harvard Business School followed.</span></figcaption>
+      </figure>
+      <div class="xb-schools">
+      <article class="xb-school">
+        <div class="lg"><img src="assets/logos/edu/uct-gsb.svg" alt="UCT Graduate School of Business" loading="lazy"></div>
+        <div class="tx"><span class="yr">2004</span><span class="k">University of Cape Town</span><h3>MBA</h3><p>Business Management</p></div>
+      </article>
+      <article class="xb-school">
+        <div class="lg"><img src="assets/logos/edu/insead.svg" alt="INSEAD" loading="lazy"></div>
+        <div class="tx"><span class="yr">2021</span><span class="k">INSEAD</span><h3>Advanced Management Program</h3><p>Business Administration and Management</p></div>
+      </article>
+      <article class="xb-school">
+        <div class="lg"><img src="assets/logos/edu/hbs.svg" alt="Harvard Business School" loading="lazy"></div>
+        <div class="tx"><span class="yr">2023</span><span class="k">Harvard Business School</span><h3>Finance for Senior Executives</h3><p>Executive Education</p></div>
+      </article>
       </div>
-      <div class="cr">
-        <span class="cr-k">Led businesses in</span>
-        <ul>
-          <li><b>South Africa</b>Procter &amp; Gamble, Diageo, Vodacom, GE</li>
-          <li><b>United Kingdom</b>Diageo, London, 2008 to 2012</li>
-          <li><b>Uganda</b>Uganda Breweries, Kampala, 2013 to 2016</li>
-        </ul>
-      </div>
-      <div class="cr stat">
-        <span class="cr-k">On stage</span>
-        <span class="cr-n">130+</span>
-        <span class="cr-t">keynotes in 11 countries across Africa, the Middle East and Europe</span>
-      </div>
-      <div class="cr">
-        <span class="cr-k">Business schools</span>
-        <ul>
-          <li><b>GIBS</b>Part-time lecturer</li>
-          <li><b>Wits Business School</b>Advisor</li>
-          <li><b>University of Johannesburg Business School</b>Lecturer</li>
-        </ul>
-      </div>
+    </div>
+
+    <div class="xb-row">
+      <p class="eyebrow ruled">Teaches and advises at</p>
+    </div>
+    <div class="xb-teach">
+      <div><span class="lg"><img src="assets/logos/edu/gibs-white.svg" alt="GIBS Business School" loading="lazy"></span><span><b>GIBS</b><span>Part-time lecturer</span></span></div>
+      <div><span class="lg"><img src="assets/logos/edu/wits-business-school.svg" alt="Wits Business School" loading="lazy"></span><span><b>Wits Business School</b><span>Advisor</span></span></div>
+      <div><span class="lg sq"><img src="assets/logos/edu/jbs.png" alt="Johannesburg Business School, University of Johannesburg" loading="lazy"></span><span><b>Johannesburg Business School</b><span>Lecturer, University of Johannesburg</span></span></div>
     </div>
   </div>
 </section>
@@ -1900,6 +2030,27 @@ var SB = {
   } else {
     load();
   }
+})();
+
+/* A career across borders: draw the route when the section comes into view,
+   and light the matching map pin while a stop is hovered. */
+(function () {
+  var xb = document.getElementById('creds');
+  if (!xb) return;
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      if (entries.some(function (e) { return e.isIntersecting; })) { xb.classList.add('in'); io.disconnect(); }
+    }, { threshold: 0.2 });
+    io.observe(xb);
+  } else {
+    xb.classList.add('in');
+  }
+  [].forEach.call(xb.querySelectorAll('.xb-stops li[data-pin]'), function (li) {
+    var pin = xb.querySelector('.xb-pin[data-pin="' + li.getAttribute('data-pin') + '"]');
+    if (!pin) return;
+    li.addEventListener('mouseenter', function () { pin.classList.add('on'); });
+    li.addEventListener('mouseleave', function () { pin.classList.remove('on'); });
+  });
 })();
 
 /* In the Press: show the first four items of each list, the rest behind a

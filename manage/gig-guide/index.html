@@ -226,6 +226,17 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
         </div>
         <div class="two">
           <div class="f">
+            <label for="fStartT">Start time</label>
+            <input id="fStartT" name="start_time" type="time" step="300">
+          </div>
+          <div class="f">
+            <label for="fEndT">End time</label>
+            <input id="fEndT" name="end_time" type="time" step="300">
+            <p class="hint">Optional, South African time. With times, "Add to calendar" books the exact hours.</p>
+          </div>
+        </div>
+        <div class="two">
+          <div class="f">
             <label for="fCity">City</label>
             <input id="fCity" name="city" type="text" maxlength="80">
           </div>
@@ -325,7 +336,7 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
   var SB_KEY = 'sb_publishable_RldFFBVH4R8nPDyRlxA0tA__j8mMICa';
   var REDIRECT = location.origin + '/manage/gig-guide/';
   var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var FIELDS = ['event_name','organisation','starts_on','ends_on','city','country','category','link',
+  var FIELDS = ['event_name','organisation','starts_on','ends_on','start_time','end_time','city','country','category','link',
                 'venue','theme','expected_attendance','audience','dress_code','notes'];
 
   // A failed or expired email link comes back with the error in the URL hash.
@@ -506,7 +517,11 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
   function openEditor(ev) {
     editing = ev || null;
     form.reset();
-    FIELDS.forEach(function (k) { form.elements[k].value = ev && ev[k] != null ? ev[k] : ''; });
+    FIELDS.forEach(function (k) {
+      var v = ev && ev[k] != null ? String(ev[k]) : '';
+      // The database returns times as HH:MM:SS; the time input wants HH:MM.
+      form.elements[k].value = (k === 'start_time' || k === 'end_time') ? v.slice(0, 5) : v;
+    });
     if (!ev) form.elements.country.value = 'South Africa';
     form.elements['private'].checked = !!(ev && ev['private']);
     form.elements.published.checked = ev ? !!ev.published : true;
@@ -540,6 +555,9 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
     if (!row.starts_on || !/^\d{4}-\d{2}-\d{2}$/.test(row.starts_on)) return 'Please choose a start date.';
     if (row.ends_on && row.ends_on < row.starts_on) return "The end date can't be before the start date.";
     if (row.ends_on === row.starts_on) row.ends_on = null;
+    if (row.end_time && !row.start_time) return 'Please add a start time, or clear the end time.';
+    if (row.start_time && row.end_time && !row.ends_on && row.end_time <= row.start_time)
+      return 'The end time must be after the start time.';
     if (row.link && !/^https:\/\/\S+$/i.test(row.link)) return 'The event link must start with https://';
     return null;
   }
@@ -553,7 +571,8 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
     var bits = [];
     if (!row['private'] && row.organisation && row.organisation !== row.event_name) bits.push(row.organisation);
     if (place(row)) bits.push(place(row));
-    pv.textContent = [w.d + ' ' + w.m, title].concat(bits).join('  ·  ');
+    var when2 = w.d + ' ' + w.m + (row.start_time ? ', ' + row.start_time.slice(0, 5) + (row.end_time ? ' to ' + row.end_time.slice(0, 5) : '') : '');
+    pv.textContent = [when2, title].concat(bits).join('  ·  ');
   }
   form.addEventListener('input', preview);
   form.addEventListener('change', preview);
