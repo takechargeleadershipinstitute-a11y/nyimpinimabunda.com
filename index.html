@@ -448,6 +448,17 @@ a{color:inherit}
 .press-list a:hover .pr-t{color:var(--amber)}
 .press-list a:hover .pr-go{color:var(--amber);transform:translate(3px,-3px)}
 .press-note{margin-top:26px;font-size:12px;letter-spacing:.04em;color:var(--grey-2)}
+/* Two groups: Watch and listen, then Read. Each list beyond four items folds
+   behind a Show all button, so the room stays short on a phone. */
+.press-sub{font-family:var(--body);font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--grey);margin:52px 0 0}
+.press-sub + .press-list{margin-top:14px}
+.press-list li.is-more{display:none}
+.press-list.open li.is-more{display:block}
+.press-more{margin-top:18px;background:none;border:0;padding:0 0 2px;cursor:pointer;font-family:var(--body);
+  font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);
+  box-shadow:inset 0 -1px 0 var(--amber)}
+.press-more:hover{color:var(--amber)}
 
 /* IMPACT */
 .impact{background:var(--off);border-top:1px solid var(--line);padding:120px 0}
@@ -680,6 +691,11 @@ body{background:var(--off)}
     padding-bottom:6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
   .ev-grid::-webkit-scrollbar,.ib-grid::-webkit-scrollbar{display:none}
   .ev-grid > .ev,.ib-grid > .ib{flex:0 0 84%;scroll-snap-align:start}
+
+  /* In the Press: source line above the headline, no arrow column, so each
+     item is two short lines instead of a narrow three-column squeeze */
+  .press-list a{grid-template-columns:1fr;gap:6px;padding:20px 0}
+  .pr-go{display:none}
 
   /* Book room: a smaller cover so the words arrive sooner */
   .book{padding:84px 0}
@@ -1147,14 +1163,72 @@ body{background:var(--off)}
     <div class="press-head">
       <p class="eyebrow" data-i18n="press.eyebrow">Press</p>
       <h2><span data-i18n="press.h2">In the</span><span class="hand" data-i18n="press.hand">press.</span></h2>
-      <p class="press-lead" data-i18n="press.lead">Articles, interviews and coverage: the thinking behind the work, collected in one place.</p>
+      <p class="press-lead" data-i18n="press.lead">Television, podcasts and articles: the thinking behind the work, collected in one place.</p>
     </div>
 
+    <!-- Every item below was opened and checked on 11 Sept 2026 (YouTube via
+         oEmbed for title and channel; articles for status and headline).
+         Headlines are the publishers' own. Lists longer than four collapse
+         behind a "Show all" button (script at the end of the page). -->
+    <h3 class="press-sub">Watch and listen</h3>
     <ul class="press-list">
       <li>
-        <a href="https://www.fineminds.co.za/ceo-nyimpini-mabunda-advocates-for-a-personal-board-of-directors/" target="_blank" rel="noopener">
-          <span class="pr-src">Financial Minds</span>
-          <span class="pr-t" data-i18n="press.a1">CEO Nyimpini Mabunda advocates for a personal board of directors</span>
+        <a href="https://www.youtube.com/watch?v=yyNsuzLq6dk" target="_blank" rel="noopener">
+          <span class="pr-src">African Speaker Bureau · Video · 2026</span>
+          <span class="pr-t">Power Without Position: Nyimpini Mabunda on Leadership, Responsibility, and Stewardship</span>
+          <span class="pr-go" aria-hidden="true">↗</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.youtube.com/watch?v=_hOkdigGEVI" target="_blank" rel="noopener">
+          <span class="pr-src">Non Fiction Book Club · Podcast · 2026</span>
+          <span class="pr-t">Nyimpini Mabunda talks Mindset by Dr Carol Dweck</span>
+          <span class="pr-go" aria-hidden="true">↗</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.youtube.com/watch?v=ueZjK0JYkNY" target="_blank" rel="noopener">
+          <span class="pr-src">NTV Uganda · Television · 2023</span>
+          <span class="pr-t">Former Uganda Breweries MD Nyimpini Mabunda launches book</span>
+          <span class="pr-go" aria-hidden="true">↗</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.youtube.com/watch?v=O7XzbiOCUqU" target="_blank" rel="noopener">
+          <span class="pr-src">Die Groot Ontbyt, kykNET · Television · 2022</span>
+          <span class="pr-t">Take Charge: Life Lessons on the Road to CEO, on breakfast television</span>
+          <span class="pr-go" aria-hidden="true">↗</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.youtube.com/watch?v=4fpL6ymkchE" target="_blank" rel="noopener">
+          <span class="pr-src">GIBS Business School · Video · 2022</span>
+          <span class="pr-t">Life lessons learned along the way to becoming CEO</span>
+          <span class="pr-go" aria-hidden="true">↗</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://anne-pratt.com/creating-social-impact-from-the-village-to-the-global-boardroom-with-nyimpini-mabunda/" target="_blank" rel="noopener">
+          <span class="pr-src">The Future of Leadership · Podcast · 2022</span>
+          <span class="pr-t">Creating Social Impact From The Village to The Global Boardroom</span>
+          <span class="pr-go" aria-hidden="true">↗</span>
+        </a>
+      </li>
+    </ul>
+
+    <h3 class="press-sub">Read</h3>
+    <ul class="press-list">
+      <li>
+        <a href="https://www.mccci.org/business/mabunda-urges-purposeful-leadership-and-accountability-at-business-leaders-summit/" target="_blank" rel="noopener">
+          <span class="pr-src">MCCCI, Malawi · 2026</span>
+          <span class="pr-t">Mabunda Urges Purposeful Leadership and Accountability at Business Leaders' Summit</span>
+          <span class="pr-go" aria-hidden="true">↗</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.news24.com/citypress/trending/archie-moroka-was-the-inspiration-behind-nyimpini-mabundas-business-success-20240915" target="_blank" rel="noopener">
+          <span class="pr-src">City Press · 2024</span>
+          <span class="pr-t">Archie Moroka was the inspiration behind Nyimpini Mabunda's business success</span>
           <span class="pr-go" aria-hidden="true">↗</span>
         </a>
       </li>
@@ -1166,9 +1240,37 @@ body{background:var(--off)}
         </a>
       </li>
       <li>
-        <a href="https://news.frontierafricareports.com/article/general-electric-appoints-new-ceo-for-southern-africa" target="_blank" rel="noopener">
-          <span class="pr-src">Frontier Africa Reports · 2020</span>
-          <span class="pr-t" data-i18n="press.a3">General Electric appoints new CEO for Southern Africa</span>
+        <a href="https://www.sundaytimes.timeslive.co.za/sunday-times/books/non-fiction/2022-06-05-nyimpini-mabunda-on-writing-take-charge/" target="_blank" rel="noopener">
+          <span class="pr-src">Sunday Times Books · 2022</span>
+          <span class="pr-t">Nyimpini Mabunda on writing Take Charge</span>
+          <span class="pr-go" aria-hidden="true">↗</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.uschamber.com/international/ge-s-nyimpini-mabunda-named-chair-of-us-chamber-s-us-south-africa-business-council" target="_blank" rel="noopener">
+          <span class="pr-src">U.S. Chamber of Commerce · 2021</span>
+          <span class="pr-t">GE's Nyimpini Mabunda Named Chair of the U.S.–South Africa Business Council</span>
+          <span class="pr-go" aria-hidden="true">↗</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://fm.co.za/your-money/2020-12-10-backstory-general-electric-s-nyimpini-mabunda/" target="_blank" rel="noopener">
+          <span class="pr-src">Financial Mail · 2020</span>
+          <span class="pr-t">Backstory: General Electric's Nyimpini Mabunda</span>
+          <span class="pr-go" aria-hidden="true">↗</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.esi-africa.com/industry-sectors/business-and-markets/nyimpini-mabunda-named-new-ceo-for-general-electric-in-southern-africa/" target="_blank" rel="noopener">
+          <span class="pr-src">ESI Africa · 2020</span>
+          <span class="pr-t">Nyimpini Mabunda named new CEO for General Electric in Southern Africa</span>
+          <span class="pr-go" aria-hidden="true">↗</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.fineminds.co.za/ceo-nyimpini-mabunda-advocates-for-a-personal-board-of-directors/" target="_blank" rel="noopener">
+          <span class="pr-src">Financial Minds</span>
+          <span class="pr-t" data-i18n="press.a1">CEO Nyimpini Mabunda advocates for a personal board of directors</span>
           <span class="pr-go" aria-hidden="true">↗</span>
         </a>
       </li>
@@ -1721,6 +1823,27 @@ var SB = {
   } else {
     load();
   }
+})();
+
+/* In the Press: show the first four items of each list, the rest behind a
+   Show all button. Without JavaScript every item stays visible. */
+(function () {
+  var SHOW = 4;
+  [].forEach.call(document.querySelectorAll('.press-list'), function (list) {
+    var items = list.querySelectorAll('li');
+    if (items.length <= SHOW) return;
+    [].forEach.call(items, function (li, i) { if (i >= SHOW) li.classList.add('is-more'); });
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'press-more';
+    b.textContent = 'Show all ' + items.length;
+    b.setAttribute('aria-expanded', 'false');
+    b.addEventListener('click', function () {
+      var open = list.classList.toggle('open');
+      b.textContent = open ? 'Show fewer' : 'Show all ' + items.length;
+      b.setAttribute('aria-expanded', String(open));
+    });
+    list.insertAdjacentElement('afterend', b);
+  });
 })();
 
 /* Phones: collapse the long paragraphs to a few lines with a Read more toggle.
