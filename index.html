@@ -693,6 +693,15 @@ body{background:var(--off)}
    (visible on the live site in the client's own screenshot). Push the road down
    far enough for the label to clear. */
 @media(max-width:899px){.road{margin-top:118px}}
+/* Small phones (360px Android): the road gets shorter as the screen narrows, and
+   the labels, already capped at 100vw-190px wide, wrap to more lines, so the
+   General Electric and Now labels touched. Slightly smaller label type keeps
+   every stop clear of the next without changing the layout. */
+@media(max-width:380px){
+  .stop-year{font-size:26px}
+  .stop-co{font-size:14.5px}
+  .stop-role{font-size:12px;line-height:1.38;margin-top:4px}
+}
 @media(max-width:699px){
   .clamp{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:var(--lines,3);overflow:hidden}
   .clamp.open{display:block;-webkit-line-clamp:unset;overflow:visible}
