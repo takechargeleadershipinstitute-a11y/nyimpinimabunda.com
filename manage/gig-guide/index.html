@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gig guide manager | Take Charge Leadership Institute</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cbbhgoahhykpckbtlzkr.supabase.co" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#051A52; --ink-2:#0A2568; --grey:#6B6459; --grey-2:#8C8478;
+  --white:#FFFFFF; --off:#FAF6EF; --line:#E6DFD2;
+  --dark:#051A52; --amber:#D4AD66; --red:#8E332C;
+  --disp:"Antonio",Impact,sans-serif;
+  --body:"Hanken Grotesk",-apple-system,Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--off);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:980px;margin:0 auto;padding:0 28px}
+@media(max-width:560px){.wrap{padding:0 18px}}
+.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--amber)}
+.muted{color:var(--grey)}
+h1{font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:clamp(34px,4.6vw,52px);line-height:.95;margin:10px 0 10px}
+a{color:var(--ink)}
+
+/* Top bar */
+.bar{background:var(--dark);color:#fff}
+.bar-in{display:flex;align-items:center;gap:18px;min-height:68px}
+.brand img{height:32px;width:auto;display:block}
+.bar-t{font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--amber)}
+.bar-r{margin-left:auto;display:flex;gap:16px;align-items:center;font-size:13px;color:#C9D2E6;min-width:0}
+.bar-r #whoEmail{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:240px}
+@media(max-width:600px){.bar-t{display:none}.bar-r #whoEmail{max-width:150px}}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--body);font-weight:600;font-size:11.5px;
+  letter-spacing:.18em;text-transform:uppercase;padding:14px 20px;border:0;cursor:pointer;background:var(--ink);color:#fff;
+  text-decoration:none;line-height:1}
+.btn:hover{background:var(--ink-2)}
+.btn:disabled{opacity:.55;cursor:default}
+.btn.line{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.btn.line:hover{background:var(--ink);color:#fff}
+.btn.danger{background:var(--red)}
+.link{background:none;border:0;cursor:pointer;font-family:var(--body);font-weight:600;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:inherit;box-shadow:inset 0 -1px 0 var(--amber);padding-bottom:2px}
+.link.danger{color:var(--red);box-shadow:inset 0 -1px 0 rgba(142,51,44,.45)}
+
+/* Messages */
+.msg{font-size:14px;line-height:1.5;padding:11px 13px;margin-top:12px}
+.msg.err{background:rgba(180,69,60,.08);color:var(--red);box-shadow:inset 0 0 0 1px rgba(180,69,60,.3)}
+.msg.ok{background:rgba(212,173,102,.14);color:var(--ink);box-shadow:inset 0 0 0 1px rgba(212,173,102,.5)}
+
+/* Sign-in and no-access cards */
+.card{background:var(--white);border:1px solid var(--line);padding:36px 34px;margin:64px auto;max-width:500px;box-shadow:0 26px 60px rgba(5,26,82,.08)}
+@media(max-width:560px){.card{margin:28px auto;padding:28px 22px}}
+.card form{margin-top:22px}
+
+/* Fields */
+.f{margin-bottom:14px}
+.f label,.lbl{display:block;font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);margin-bottom:7px}
+.f label i{font-style:normal;color:var(--red)}
+input[type=text],input[type=email],input[type=date],input[type=url],textarea{width:100%;font-family:var(--body);font-size:16px;color:var(--ink);
+  background:#fff;border:0;border-radius:0;padding:12px 14px;box-shadow:inset 0 0 0 1px var(--line);-webkit-appearance:none;appearance:none}
+input[type=date]{min-height:46px}
+textarea{min-height:84px;resize:vertical}
+input:focus,textarea:focus{outline:0;box-shadow:inset 0 0 0 2px var(--ink)}
+.card .btn{width:100%;margin-top:4px}
+.two{display:grid;gap:0 14px}
+@media(min-width:560px){.two{grid-template-columns:1fr 1fr}}
+.hint{font-size:12.5px;color:var(--grey-2);margin-top:6px;line-height:1.45}
+
+/* App */
+.app-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;padding:42px 0 22px}
+.app-head p{max-width:56ch}
+.tabs{display:flex;border-bottom:1px solid var(--line)}
+.tabs button{background:none;border:0;cursor:pointer;padding:13px 2px;margin-right:26px;font-family:var(--body);font-weight:600;font-size:11.5px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--grey-2);box-shadow:inset 0 -2px 0 transparent}
+.tabs button[aria-selected="true"]{color:var(--ink);box-shadow:inset 0 -2px 0 var(--amber)}
+.tabs span{color:var(--grey-2);font-weight:500}
+.toast{margin:16px 0 0}
+.elist{list-style:none;margin-bottom:60px}
+.erow{display:grid;grid-template-columns:74px 1fr auto;gap:18px;align-items:center;width:100%;text-align:left;cursor:pointer;
+  background:none;border:0;border-bottom:1px solid var(--line);padding:16px 6px;font:inherit;color:inherit}
+.erow:hover{background:rgba(5,26,82,.035)}
+.erow:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
+.tile{background:var(--white);border:1px solid var(--line);text-align:center;padding:10px 4px 9px}
+.tile .d{display:block;font-family:var(--disp);font-size:23px;line-height:1;color:var(--ink)}
+.tile .m{display:block;font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin-top:6px}
+.erow h3{font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:20px;line-height:1.1}
+.erow .meta{font-size:14px;color:var(--grey);margin-top:2px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tag{font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:4px 8px;background:rgba(212,173,102,.22);color:var(--ink)}
+.tag.priv{background:rgba(5,26,82,.07);color:var(--grey)}
+.tag.hid{background:rgba(180,69,60,.1);color:var(--red)}
+.edit-cue{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;box-shadow:inset 0 -1px 0 var(--amber);padding-bottom:2px}
+@media(max-width:560px){.erow{grid-template-columns:60px 1fr;gap:14px}.edit-cue{display:none}}
+.empty{padding:28px 0;color:var(--grey)}
+
+/* Editor dialog */
+dialog#ed{border:0;padding:0;width:min(760px,calc(100vw - 24px));max-width:none;max-height:92vh;margin:auto;
+  background:var(--off);color:var(--ink);box-shadow:0 40px 90px rgba(0,0,0,.45)}
+dialog#ed::backdrop{background:rgba(3,12,38,.72)}
+#edForm{display:flex;flex-direction:column;max-height:92vh}
+.ed-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:20px 28px;background:var(--white);border-bottom:1px solid var(--line)}
+.ed-head h2{font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:28px;line-height:1}
+.x{width:38px;height:38px;border:0;background:none;cursor:pointer;font-size:24px;line-height:1;color:var(--grey)}
+.ed-body{overflow:auto;padding:4px 28px 24px}
+.ed-foot{padding:14px 28px 18px;background:var(--white);border-top:1px solid var(--line)}
+@media(max-width:600px){
+  dialog#ed{width:100vw;height:100dvh;max-height:100dvh}
+  #edForm{height:100dvh;max-height:none}
+  .ed-head,.ed-body,.ed-foot{padding-left:18px;padding-right:18px}
+}
+fieldset{border:0;margin-top:22px}
+legend{font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:19px;margin-bottom:12px}
+legend span{display:block;font-family:var(--body);text-transform:none;font-size:12.5px;font-weight:400;color:var(--grey);margin-top:2px}
+.check{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:#fff;box-shadow:inset 0 0 0 1px var(--line);margin-bottom:10px;cursor:pointer}
+.check input{width:18px;height:18px;flex:0 0 18px;margin-top:3px;accent-color:var(--ink)}
+.check b{display:block;font-size:14.5px;font-weight:600}
+.check span{display:block;font-size:13px;color:var(--grey);line-height:1.45}
+.preview{margin-top:14px;padding:13px 16px;background:rgba(212,173,102,.12);border-left:2px solid var(--amber)}
+.preview p{font-size:14.5px;margin-top:4px}
+.ed-acts{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.grow{flex:1}
+.confirm{margin-top:12px;padding:14px;background:rgba(180,69,60,.06);box-shadow:inset 0 0 0 1px rgba(180,69,60,.25)}
+.confirm p{font-size:14px;margin-bottom:12px}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap bar-in">
+    <a class="brand" href="/" aria-label="Nyimpini Mabunda, home"><img src="../../assets/nm-logo-white.png" alt="Nyimpini Mabunda" width="99" height="32"></a>
+    <span class="bar-t">Gig guide manager</span>
+    <div class="bar-r" id="who" hidden>
+      <span id="whoEmail"></span>
+      <button class="link" type="button" id="signOut">Sign out</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="vLoading">
+    <p class="muted" style="padding:60px 0" id="loadingMsg">Loading…</p>
+  </section>
+
+  <section id="vSignIn" hidden>
+    <div class="card">
+      <p class="eyebrow">TCLI team</p>
+      <h1>Manage the gig guide</h1>
+      <p class="muted">Enter your email and we'll send you a sign-in link. No password needed, and you'll stay signed in on this device.</p>
+      <form id="signInForm" novalidate>
+        <div class="f">
+          <label for="siEmail">Email address</label>
+          <input id="siEmail" type="email" autocomplete="email" placeholder="name@takechargeli.co.za" required>
+        </div>
+        <button class="btn" id="siGo" type="submit">Email me a sign-in link</button>
+        <p class="msg" id="siMsg" role="status" aria-live="polite" hidden></p>
+      </form>
+    </div>
+  </section>
+
+  <section id="vNoAccess" hidden>
+    <div class="card">
+      <p class="eyebrow">TCLI team</p>
+      <h1>No access yet</h1>
+      <p class="muted">You're signed in as <b id="naEmail"></b>, but that email isn't on the gig guide team. Ask the site administrator to add it, then sign in again.</p>
+      <p style="margin-top:22px"><button class="btn line" type="button" id="naSignOut">Sign out</button></p>
+    </div>
+  </section>
+
+  <section id="vApp" hidden>
+    <div class="app-head">
+      <div>
+        <p class="eyebrow">Gig guide</p>
+        <h1>Events</h1>
+        <p class="muted">Changes go live on the <a href="/gig-guide/" target="_blank" rel="noopener">gig guide</a> and the home page as soon as you save.</p>
+      </div>
+      <button class="btn" type="button" id="addBtn">+ Add event</button>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Events">
+      <button type="button" role="tab" id="tabUp" aria-selected="true" data-tab="up">Coming up <span id="nUp"></span></button>
+      <button type="button" role="tab" id="tabPast" aria-selected="false" data-tab="past">Past <span id="nPast"></span></button>
+    </div>
+    <p class="msg ok toast" id="toast" role="status" aria-live="polite" hidden></p>
+    <ol class="elist" id="list"></ol>
+    <p class="empty" id="empty" hidden></p>
+  </section>
+
+</main>
+
+<dialog id="ed" aria-labelledby="edH">
+  <form id="edForm" novalidate>
+    <div class="ed-head">
+      <h2 id="edH">Add event</h2>
+      <button type="button" class="x" data-close aria-label="Close">&times;</button>
+    </div>
+
+    <div class="ed-body">
+      <fieldset>
+        <legend>On the website</legend>
+        <div class="f">
+          <label for="fName">Event name <i>*</i></label>
+          <input id="fName" name="event_name" type="text" maxlength="120" required>
+        </div>
+        <div class="f">
+          <label for="fOrg">Host or organisation</label>
+          <input id="fOrg" name="organisation" type="text" maxlength="120" placeholder="e.g. TCLI, KPMG">
+        </div>
+        <div class="two">
+          <div class="f">
+            <label for="fStart">Start date <i>*</i></label>
+            <input id="fStart" name="starts_on" type="date" required>
+          </div>
+          <div class="f">
+            <label for="fEnd">End date</label>
+            <input id="fEnd" name="ends_on" type="date">
+            <p class="hint">Leave empty for a one-day event.</p>
+          </div>
+        </div>
+        <div class="two">
+          <div class="f">
+            <label for="fCity">City</label>
+            <input id="fCity" name="city" type="text" maxlength="80">
+          </div>
+          <div class="f">
+            <label for="fCountry">Country</label>
+            <input id="fCountry" name="country" type="text" maxlength="80">
+          </div>
+        </div>
+        <div class="two">
+          <div class="f">
+            <label for="fCat">Type</label>
+            <input id="fCat" name="category" type="text" maxlength="40" list="cats" placeholder="Choose or type">
+          </div>
+          <div class="f">
+            <label for="fLink">Event link</label>
+            <input id="fLink" name="link" type="url" placeholder="https://">
+            <p class="hint">Optional. Adds an "Event details" button.</p>
+          </div>
+        </div>
+
+        <label class="check" for="fPrivate">
+          <input id="fPrivate" name="private" type="checkbox">
+          <span><b>Private corporate session</b><span>The website shows "Private corporate session" and the city only, never the event or client name.</span></span>
+        </label>
+        <label class="check" for="fPublished">
+          <input id="fPublished" name="published" type="checkbox">
+          <span><b>Show on the website</b><span>Untick to hide this event from the site without deleting it.</span></span>
+        </label>
+
+        <div class="preview">
+          <span class="lbl">How it appears on the gig guide</span>
+          <p id="pv"></p>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Planning notes<span>For the TCLI team only. Never shown on the website.</span></legend>
+        <div class="two">
+          <div class="f"><label for="fVenue">Venue</label><input id="fVenue" name="venue" type="text"></div>
+          <div class="f"><label for="fTheme">Theme</label><input id="fTheme" name="theme" type="text"></div>
+        </div>
+        <div class="two">
+          <div class="f"><label for="fAtt">Expected attendance</label><input id="fAtt" name="expected_attendance" type="text"></div>
+          <div class="f"><label for="fAud">Audience</label><input id="fAud" name="audience" type="text"></div>
+        </div>
+        <div class="f"><label for="fDress">Dress code</label><input id="fDress" name="dress_code" type="text"></div>
+        <div class="f"><label for="fNotes">Notes</label><textarea id="fNotes" name="notes"></textarea></div>
+      </fieldset>
+    </div>
+
+    <div class="ed-foot">
+      <div class="ed-acts">
+        <button type="button" class="link danger" id="delBtn" hidden>Delete event</button>
+        <span class="grow"></span>
+        <button type="button" class="btn line" data-close>Cancel</button>
+        <button type="submit" class="btn" id="saveBtn">Save</button>
+      </div>
+      <p class="msg err" id="edMsg" role="alert" hidden></p>
+      <div class="confirm" id="delConfirm" hidden>
+        <p><b>Delete this event permanently?</b> This can't be undone. To take it off the website but keep it, untick "Show on the website" instead.</p>
+        <div class="ed-acts">
+          <span class="grow"></span>
+          <button type="button" class="btn line" id="delNo">Keep it</button>
+          <button type="button" class="btn danger" id="delYes">Yes, delete</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<datalist id="cats">
+  <option value="Conference"><option value="Keynote"><option value="CEO Nights"><option value="Masterclass">
+  <option value="Programme"><option value="Gathering"><option value="Corporate session">
+</datalist>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.js"
+        integrity="sha384-iLddHTLokph6Omwoyid4XKxHaWa6w41BnoEj0q5oOrzmYPpHIKt1wyjReA7s//pP"
+        crossorigin="anonymous"></script>
+<script>
+/* Gig guide manager.
+
+   Sign-in is a Supabase Auth email link (implicit flow, so the link works on
+   whichever device the email is opened on). Signing in grants nothing by
+   itself: every read and write goes through RLS, which only lets emails listed
+   in public.gig_guide_editors touch public.gig_guide
+   (supabase/gig_guide_editors.sql). Table text is only ever set with
+   textContent. */
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+
+  if (!window.supabase || !window.supabase.createClient) {
+    $('loadingMsg').textContent = 'The manager could not load. Please check your connection and refresh.';
+    return;
+  }
+
+  var SB_URL = 'https://cbbhgoahhykpckbtlzkr.supabase.co';
+  var SB_KEY = 'sb_publishable_RldFFBVH4R8nPDyRlxA0tA__j8mMICa';
+  var REDIRECT = location.origin + '/manage/gig-guide/';
+  var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var FIELDS = ['event_name','organisation','starts_on','ends_on','city','country','category','link',
+                'venue','theme','expected_attendance','audience','dress_code','notes'];
+
+  // A failed or expired email link comes back with the error in the URL hash.
+  // Read it before the client does, then clean the address bar.
+  var linkError = null;
+  (function () {
+    var hp = new URLSearchParams(location.hash.slice(1));
+    if (hp.get('error') || hp.get('error_code')) {
+      linkError = hp.get('error_code') === 'otp_expired'
+        ? 'That sign-in link has expired or was already used. Request a new one below.'
+        : 'That sign-in link did not work. Request a new one below.';
+      history.replaceState(null, '', location.pathname);
+    }
+  })();
+
+  var sb = window.supabase.createClient(SB_URL, SB_KEY, {
+    auth: { flowType: 'implicit', persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+  });
+
+  var rows = [], tab = 'up', editing = null, currentUser = null, toastTimer = null;
+
+  var today = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Africa/Johannesburg', year: 'numeric', month: '2-digit', day: '2-digit'
+  }).format(new Date());
+
+  // ── helpers ────────────────────────────────────────────────────────────────
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+  function msg(node, text, isErr) {
+    node.textContent = text;
+    node.className = 'msg ' + (isErr ? 'err' : 'ok') + (node.id === 'toast' ? ' toast' : '');
+    node.hidden = !text;
+  }
+  function show(view) {
+    ['vLoading', 'vSignIn', 'vNoAccess', 'vApp'].forEach(function (id) { $(id).hidden = id !== view; });
+  }
+  function toast(text) {
+    msg($('toast'), text, false);
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { $('toast').hidden = true; }, 6000);
+  }
+  function parts(iso) { var p = iso.split('-'); return { y: +p[0], m: +p[1] - 1, d: +p[2] }; }
+  function lastDay(ev) { return ev.ends_on || ev.starts_on; }
+  function when(start, end) {
+    var a = parts(start), b = end ? parts(end) : a;
+    if (a.y === b.y && a.m === b.m)
+      return { d: a.d === b.d ? String(a.d) : a.d + '–' + b.d, m: MON[a.m] + ' ' + a.y };
+    if (a.y === b.y) return { d: a.d + '–' + b.d, m: MON[a.m] + '–' + MON[b.m] + ' ' + a.y };
+    return { d: a.d + '–' + b.d, m: MON[a.m] + ' ' + a.y + '–' + MON[b.m] + ' ' + b.y };
+  }
+  function place(ev) { return [ev.city, ev.country].filter(Boolean).join(', '); }
+  function friendlyError(error) {
+    if (!error) return 'Something went wrong. Please try again.';
+    var m = (error.message || '') + ' ' + (error.details || '');
+    if (error.code === '42501') return 'Your account is not allowed to make this change. Ask the site administrator to check your access.';
+    if (error.code === '23514') {
+      if (/ends_on/.test(m)) return "The end date can't be before the start date.";
+      if (/link/.test(m)) return 'The event link must start with https://';
+      return 'One of the fields is too long or not in the right format. Please check and try again.';
+    }
+    if (error.code === 'PGRST301' || /JWT/i.test(m)) return 'Your sign-in has expired. Please refresh the page and sign in again.';
+    return 'Something went wrong: ' + (error.message || 'please try again') + '.';
+  }
+
+  // ── auth ───────────────────────────────────────────────────────────────────
+  async function route(session) {
+    var user = session && session.user;
+    if (!user) {
+      currentUser = null;
+      $('who').hidden = true;
+      show('vSignIn');
+      if (linkError) { msg($('siMsg'), linkError, true); linkError = null; }
+      return;
+    }
+    if (currentUser === user.id && !$('vApp').hidden) return;   // already showing this user
+    currentUser = user.id;
+    $('whoEmail').textContent = user.email;
+    $('who').hidden = false;
+
+    var res = await sb.rpc('is_gig_guide_editor');
+    if (res.error) {
+      console.error('is_gig_guide_editor:', res.error);
+      show('vSignIn');
+      msg($('siMsg'), 'We could not check your access just now. Please refresh the page.', true);
+      return;
+    }
+    if (!res.data) {
+      $('naEmail').textContent = user.email;
+      show('vNoAccess');
+      return;
+    }
+    show('vApp');
+    load();
+  }
+
+  sb.auth.onAuthStateChange(function (event, session) {
+    if (event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') return;
+    // Defer: Supabase advises against calling other client methods inside this callback.
+    setTimeout(function () { route(session); }, 0);
+  });
+
+  $('signInForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var email = $('siEmail').value.trim().toLowerCase(), btn = $('siGo');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return msg($('siMsg'), 'Please enter a valid email address.', true);
+    btn.disabled = true; btn.textContent = 'Sending…';
+    var res = await sb.auth.signInWithOtp({ email: email, options: { emailRedirectTo: REDIRECT, shouldCreateUser: true } });
+    btn.disabled = false; btn.textContent = 'Email me a sign-in link';
+    if (res.error) {
+      console.error('signInWithOtp:', res.error);
+      var rate = res.error.status === 429 || /rate limit|security purposes|seconds/i.test(res.error.message || '');
+      return msg($('siMsg'), rate
+        ? 'Too many sign-in emails have been sent recently. Please wait a while and try again.'
+        : 'We could not send the email just now. Please try again.', true);
+    }
+    msg($('siMsg'), 'Check your inbox for an email from Supabase and tap the link inside. It can take a minute and sometimes lands in spam. The link works once and expires after an hour.', false);
+  });
+
+  async function signOut() { await sb.auth.signOut(); }
+  $('signOut').addEventListener('click', signOut);
+  $('naSignOut').addEventListener('click', signOut);
+
+  // ── list ───────────────────────────────────────────────────────────────────
+  async function load() {
+    var res = await sb.from('gig_guide').select('*').order('starts_on', { ascending: true });
+    if (res.error) { console.error('load:', res.error); msg($('toast'), friendlyError(res.error), true); return; }
+    rows = res.data || [];
+    render();
+  }
+
+  function render() {
+    var up = rows.filter(function (e) { return lastDay(e) >= today; });
+    var past = rows.filter(function (e) { return lastDay(e) < today; }).reverse();
+    $('nUp').textContent = '(' + up.length + ')';
+    $('nPast').textContent = '(' + past.length + ')';
+    $('tabUp').setAttribute('aria-selected', String(tab === 'up'));
+    $('tabPast').setAttribute('aria-selected', String(tab === 'past'));
+
+    var list = $('list'), items = tab === 'up' ? up : past;
+    list.textContent = '';
+    items.forEach(function (ev) {
+      var li = el('li'), b = el('button', 'erow'), w = when(ev.starts_on, ev.ends_on);
+      b.type = 'button';
+      var tile = el('div', 'tile');
+      tile.appendChild(el('span', 'd', w.d));
+      tile.appendChild(el('span', 'm', w.m));
+      var body = el('div');
+      body.appendChild(el('h3', null, ev.event_name));
+      var meta = [ev.organisation, place(ev)].filter(Boolean).join(' · ');
+      if (meta) body.appendChild(el('p', 'meta', meta));
+      var tags = el('div', 'tags');
+      if (ev.category) tags.appendChild(el('span', 'tag', ev.category));
+      if (ev.private) tags.appendChild(el('span', 'tag priv', 'Private on website'));
+      if (!ev.published) tags.appendChild(el('span', 'tag hid', 'Hidden from website'));
+      if (tags.childNodes.length) body.appendChild(tags);
+      b.appendChild(tile);
+      b.appendChild(body);
+      b.appendChild(el('span', 'edit-cue', 'Edit'));
+      b.addEventListener('click', function () { openEditor(ev); });
+      li.appendChild(b);
+      list.appendChild(li);
+    });
+    $('empty').textContent = tab === 'up' ? 'No upcoming events yet. Use "Add event" to add the next one.' : 'No past events yet.';
+    $('empty').hidden = items.length > 0;
+  }
+
+  [$('tabUp'), $('tabPast')].forEach(function (t) {
+    t.addEventListener('click', function () { tab = t.getAttribute('data-tab'); render(); });
+  });
+
+  // ── editor ─────────────────────────────────────────────────────────────────
+  var dlg = $('ed'), form = $('edForm');
+
+  function openEditor(ev) {
+    editing = ev || null;
+    form.reset();
+    FIELDS.forEach(function (k) { form.elements[k].value = ev && ev[k] != null ? ev[k] : ''; });
+    if (!ev) form.elements.country.value = 'South Africa';
+    form.elements['private'].checked = !!(ev && ev['private']);
+    form.elements.published.checked = ev ? !!ev.published : true;
+    $('edH').textContent = ev ? 'Edit event' : 'Add event';
+    $('delBtn').hidden = !ev;
+    $('delConfirm').hidden = true;
+    $('edMsg').hidden = true;
+    $('saveBtn').disabled = false; $('saveBtn').textContent = 'Save';
+    preview();
+    dlg.showModal();
+    form.elements.event_name.focus();
+  }
+
+  function closeEditor() { if (dlg.open) dlg.close(); }
+  [].forEach.call(dlg.querySelectorAll('[data-close]'), function (b) { b.addEventListener('click', closeEditor); });
+  $('addBtn').addEventListener('click', function () { openEditor(null); });
+
+  function collect() {
+    var row = {};
+    FIELDS.forEach(function (k) {
+      var v = form.elements[k].value.trim();
+      row[k] = v === '' ? null : v;
+    });
+    row['private'] = form.elements['private'].checked;
+    row.published = form.elements.published.checked;
+    return row;
+  }
+
+  function validate(row) {
+    if (!row.event_name) return 'Please give the event a name.';
+    if (!row.starts_on || !/^\d{4}-\d{2}-\d{2}$/.test(row.starts_on)) return 'Please choose a start date.';
+    if (row.ends_on && row.ends_on < row.starts_on) return "The end date can't be before the start date.";
+    if (row.ends_on === row.starts_on) row.ends_on = null;
+    if (row.link && !/^https:\/\/\S+$/i.test(row.link)) return 'The event link must start with https://';
+    return null;
+  }
+
+  function preview() {
+    var row = collect(), pv = $('pv');
+    if (!row.published) { pv.textContent = 'Hidden. This event will not appear on the website.'; return; }
+    if (!row.starts_on) { pv.textContent = 'Add a start date to see the preview.'; return; }
+    var w = when(row.starts_on, row.ends_on && row.ends_on >= row.starts_on ? row.ends_on : null);
+    var title = row['private'] ? 'Private corporate session' : (row.event_name || 'Event name');
+    var bits = [];
+    if (!row['private'] && row.organisation && row.organisation !== row.event_name) bits.push(row.organisation);
+    if (place(row)) bits.push(place(row));
+    pv.textContent = [w.d + ' ' + w.m, title].concat(bits).join('  ·  ');
+  }
+  form.addEventListener('input', preview);
+  form.addEventListener('change', preview);
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    $('edMsg').hidden = true;
+    var row = collect(), problem = validate(row);
+    if (problem) return msg($('edMsg'), problem, true);
+
+    var btn = $('saveBtn');
+    btn.disabled = true; btn.textContent = 'Saving…';
+    var res = editing
+      ? await sb.from('gig_guide').update(row).eq('id', editing.id).select().single()
+      : await sb.from('gig_guide').insert(row).select().single();
+    btn.disabled = false; btn.textContent = 'Save';
+
+    if (res.error) { console.error('save:', res.error); return msg($('edMsg'), friendlyError(res.error), true); }
+
+    var saved = res.data;
+    if (editing) rows = rows.map(function (r) { return r.id === saved.id ? saved : r; });
+    else rows.push(saved);
+    rows.sort(function (a, b) { return a.starts_on < b.starts_on ? -1 : a.starts_on > b.starts_on ? 1 : 0; });
+    tab = lastDay(saved) >= today ? 'up' : 'past';
+    closeEditor();
+    render();
+    toast(saved.published ? 'Saved. It is live on the gig guide.' : 'Saved. This event is hidden from the website.');
+  });
+
+  $('delBtn').addEventListener('click', function () { $('delConfirm').hidden = false; });
+  $('delNo').addEventListener('click', function () { $('delConfirm').hidden = true; });
+  $('delYes').addEventListener('click', async function () {
+    if (!editing) return;
+    var b = $('delYes');
+    b.disabled = true; b.textContent = 'Deleting…';
+    var res = await sb.from('gig_guide').delete().eq('id', editing.id);
+    b.disabled = false; b.textContent = 'Yes, delete';
+    if (res.error) { console.error('delete:', res.error); return msg($('edMsg'), friendlyError(res.error), true); }
+    var id = editing.id;
+    rows = rows.filter(function (r) { return r.id !== id; });
+    closeEditor();
+    render();
+    toast('Event deleted.');
+  });
+})();
+</script>
+</body>
+</html>

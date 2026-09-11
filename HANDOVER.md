@@ -135,9 +135,21 @@ Supabase  ── stores the row in public.book_preorders   (status starts as 'ne
 The page at `/gig-guide/`, linked from **Upcoming Events**, reads its list straight from
 Supabase. **Nobody has to touch the website code to update it.**
 
-- **To add an event:** Supabase → Table Editor → `gig_guide` → **Insert row**. Fill in
-  `event_name` and `starts_on` (plus `ends_on` for a multi-day event), and whatever you
-  have of `organisation`, `city`, `country` and `link`. Save, and it is on the site.
+- **To add or change an event, use the manager at `/manage/gig-guide/`.** Enter your email,
+  tap the sign-in link that arrives (no password), then **Add event** or tap an event to
+  edit, hide or delete it. Saving puts it live on the site immediately. The page shows a
+  preview of exactly how the event will appear.
+- **Who can use the manager:** only emails listed in the Supabase table
+  `gig_guide_editors` (Zimasa, the TCLI Gmail and Gerald to start with). Anyone else who
+  signs in sees "No access yet" and cannot read or change anything. To add a team member,
+  insert their email (lower case) into that table in the Supabase Table Editor.
+- **Sign-in emails are limited.** Supabase's built-in email service sends at most 2
+  sign-in emails an hour for the whole project, and each link expires after an hour. You
+  stay signed in on a device, so this rarely matters. Once DNS for `takechargeli.co.za` is
+  sorted, connect Resend as custom SMTP in Supabase (Authentication → Emails → SMTP) to
+  lift the limit and send from a TCLI address. Until then the email comes from Supabase
+  and may land in spam.
+- **Direct editing still works** in Supabase → Table Editor → `gig_guide` if ever needed.
 - **Coming up and Recently sort themselves.** Once an event's last day has passed, it
   moves to "Recently". Nothing needs deleting.
 - **`category`** is the small tag shown on each event: Conference, Keynote, CEO Nights,
