@@ -61,6 +61,7 @@ begin
       'interest_tcli',       (select count(*) from w where 'tcli' = any(interests)),
       'interest_ceo_nights', (select count(*) from w where 'ceo-nights' = any(interests)),
       'interest_book',       (select count(*) from w where 'book' = any(interests)),
+      'interest_ugrip',      (select count(*) from w where 'ugrip' = any(interests)),
       'preorders',           (select count(*) from p),
       'preorders_7d',        (select count(*) from p where created_at >= now() - interval '7 days'),
       'preorder_copies',     (select coalesce(sum(copies), 0) from p),

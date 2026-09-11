@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>U-GRIP | Unemployed Graduate Reskilling &amp; Integration Programme</title>
+<meta name="description" content="U-GRIP, the Unemployed Graduate Reskilling &amp; Integration Programme: a national graduate development initiative bringing industry, government and universities together to prepare unemployed graduates for meaningful work in South Africa's economy.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cbbhgoahhykpckbtlzkr.supabase.co" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Antonio:wght@300;400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<!-- U-GRIP (client request, 11 Sept 2026: "a major focus of the site").
+     Every statement on this page is from TCLI's own programme summary, emailed by
+     Zimasa Mamase on 11 Sept 2026. No figures, intake dates or outcomes are claimed
+     that TCLI has not supplied. The next date comes live from the gig guide. -->
+<style>
+:root{
+  --ink:#051A52; --ink-2:#0A2568; --ink-3:#12307A; --grey:#6B6459; --grey-2:#8C8478;
+  --white:#FFFFFF; --off:#FAF6EF; --sand:#F2ECE1; --line:#E6DFD2;
+  --dark:#041443; --amber:#D4AD66; --amber-2:#E6C88C; --sky:#C9D2E6;
+  --disp:"Antonio",Impact,sans-serif;
+  --body:"Hanken Grotesk",-apple-system,Arial,sans-serif;
+  --hand:"Caveat",cursive;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{background:var(--off);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+@media(max-width:600px){.wrap{padding:0 20px}}
+.eyebrow{display:inline-flex;align-items:center;gap:12px;font-size:11px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--amber)}
+.eyebrow::before{content:"";width:34px;height:1px;background:currentColor}
+.js .rv{opacity:0;transform:translateY(22px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.js .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none;transition:none}}
+h2.h{font-family:var(--disp);font-weight:400;text-transform:uppercase;font-size:clamp(40px,5.6vw,80px);line-height:.9;margin-top:18px}
+h2.h .hand{display:block;font-family:var(--hand);font-weight:700;text-transform:none;color:var(--amber);font-size:.62em;line-height:1.05;margin-top:.08em}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--body);font-weight:600;font-size:12px;
+  letter-spacing:.18em;text-transform:uppercase;padding:16px 22px;border:0;cursor:pointer;text-decoration:none;line-height:1;
+  transition:background .2s,color .2s,box-shadow .2s}
+.btn svg{width:16px;height:16px;flex:0 0 16px}
+.btn-gold{background:var(--amber);color:var(--dark)}
+.btn-gold:hover{background:var(--amber-2)}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-ink:hover{background:var(--ink-3)}
+.btn-ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.45)}
+.btn-ghost:hover{background:#fff;color:var(--dark)}
+
+/* ── HERO ──────────────────────────────────────────────────────────────── */
+.hero{position:relative;background:var(--dark);color:#fff;overflow:hidden;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;
+  background:radial-gradient(55% 70% at 85% 55%,rgba(212,173,102,.2),rgba(212,173,102,0) 60%),
+             radial-gradient(50% 60% at 8% 0%,rgba(18,48,122,.95),rgba(4,20,67,0) 70%)}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;opacity:.5;
+  background-image:radial-gradient(rgba(255,255,255,.09) 1px,transparent 1.2px);background-size:22px 22px;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 40%,#000 75%,transparent);mask-image:linear-gradient(90deg,transparent,#000 40%,#000 75%,transparent)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:28px 0}
+.bar img{height:38px;width:auto}
+.bar a.back{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;color:#fff;box-shadow:inset 0 -1px 0 var(--amber);padding-bottom:3px}
+.hero-grid{display:grid;gap:40px;align-items:center;padding:34px 0 96px}
+@media(min-width:960px){.hero-grid{grid-template-columns:1.1fr .9fr;gap:64px;padding:50px 0 120px}}
+.hero h1{font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:clamp(84px,13vw,180px);line-height:.82;letter-spacing:-.01em;margin-top:20px}
+.hero h1 .hand{display:block;font-family:var(--hand);font-weight:700;text-transform:none;letter-spacing:0;color:var(--amber);font-size:.3em;line-height:1.05;margin-top:.16em}
+.hero .full{margin-top:22px;font-size:13px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#fff}
+.hero .lead{color:var(--sky);font-size:17px;line-height:1.7;max-width:52ch;margin-top:18px}
+.hero-acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+/* The name, spelled out: the acronym is the brand, so the hero art is the acronym. */
+.acro{list-style:none;position:relative;padding:30px 30px 26px;background:linear-gradient(160deg,rgba(18,48,122,.55),rgba(4,20,67,.35));
+  box-shadow:inset 0 0 0 1px rgba(212,173,102,.28),0 40px 90px rgba(0,0,0,.35)}
+.acro li{display:grid;grid-template-columns:78px 1fr;align-items:center;gap:18px;padding:12px 0;border-top:1px solid rgba(255,255,255,.1)}
+.acro li:first-child{border-top:0}
+.acro b{font-family:var(--disp);font-weight:600;font-size:64px;line-height:.9;color:var(--amber);text-align:center}
+.acro span{font-family:var(--disp);font-weight:400;text-transform:uppercase;font-size:clamp(22px,2.4vw,30px);letter-spacing:.04em;line-height:1}
+.acro small{display:block;margin-top:6px;font-family:var(--body);font-size:12.5px;letter-spacing:0;text-transform:none;color:var(--sky)}
+@media(max-width:600px){.acro{padding:18px 18px 14px}.acro li{grid-template-columns:52px 1fr;gap:12px;padding:9px 0}.acro b{font-size:44px}}
+
+/* Next date, live from the gig guide */
+.next{position:relative;z-index:2;margin-top:-44px}
+.next-in{display:flex;flex-wrap:wrap;align-items:center;gap:18px 28px;background:#fff;padding:22px 28px;box-shadow:0 30px 70px rgba(4,20,67,.16)}
+.next .flag{display:inline-flex;align-items:center;gap:8px;background:var(--amber);color:var(--dark);font-size:10.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:8px 12px}
+.next .flag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--dark);animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.next .flag::before{animation:none}}
+.next .d{font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:clamp(24px,2.6vw,32px);line-height:1}
+.next .p{color:var(--grey);font-size:15px}
+.next a{margin-left:auto;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;box-shadow:inset 0 -1px 0 var(--amber);padding-bottom:3px}
+@media(max-width:600px){.next-in{padding:18px 20px}.next a{margin-left:0}}
+
+/* ── SECTIONS ──────────────────────────────────────────────────────────── */
+.section{padding:110px 0}
+@media(max-width:700px){.section{padding:76px 0}}
+.head{max-width:62ch}
+.head p.sub{color:var(--grey);font-size:17px;line-height:1.7;margin-top:22px;max-width:56ch}
+
+/* The bridge: higher education to industry, through the programme */
+.bridge{display:grid;gap:14px;margin-top:54px;align-items:stretch}
+@media(min-width:880px){.bridge{grid-template-columns:1fr auto 1.25fr auto 1fr;gap:0}}
+.node{background:#fff;box-shadow:0 0 0 1px var(--line);padding:30px 28px;display:flex;flex-direction:column;gap:12px}
+.node .ic{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:rgba(212,173,102,.2);color:var(--ink)}
+.node .ic svg{width:24px;height:24px}
+.node b{font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:26px;line-height:1}
+.node p{color:var(--grey);font-size:14.5px;line-height:1.55}
+.node.core{background:var(--dark);color:#fff;box-shadow:0 30px 70px rgba(4,20,67,.22);position:relative}
+.node.core .ic{background:var(--amber);color:var(--dark)}
+.node.core p{color:var(--sky)}
+.node.core b{font-size:34px}
+.link{display:grid;place-items:center;color:var(--amber);padding:6px}
+.link svg{width:36px;height:36px}
+@media(max-width:879px){.link svg{transform:rotate(90deg);width:30px;height:30px}}
+
+.who{margin-top:70px}
+.who .k{display:block;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--grey-2);margin-bottom:18px}
+.chips{list-style:none;display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.chips li{display:flex;align-items:center;gap:12px;background:#fff;box-shadow:0 0 0 1px var(--line);padding:14px 16px;font-weight:600;font-size:14.5px;
+  transition:box-shadow .2s,transform .2s}
+.chips li:hover{box-shadow:0 0 0 1px var(--amber),0 14px 30px rgba(4,20,67,.08);transform:translateY(-2px)}
+.chips svg{width:20px;height:20px;flex:0 0 20px;color:var(--amber)}
+
+/* Vision and mission */
+.vm{display:grid;gap:18px;margin-top:0}
+@media(min-width:880px){.vm{grid-template-columns:1fr 1fr}}
+.vm article{position:relative;padding:48px 44px 46px;overflow:hidden;isolation:isolate}
+@media(max-width:600px){.vm article{padding:34px 24px}}
+.vm .k{font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--amber)}
+.vm p{font-family:var(--disp);font-weight:400;font-size:clamp(26px,2.8vw,38px);line-height:1.12;margin-top:18px}
+.vm .vis{background:var(--dark);color:#fff}
+.vm .vis::after{content:"";position:absolute;right:-60px;bottom:-60px;width:260px;height:260px;border-radius:50%;z-index:-1;
+  box-shadow:inset 0 0 0 1px rgba(212,173,102,.3),0 0 0 40px rgba(212,173,102,.05)}
+.vm .mis{background:#fff;box-shadow:0 0 0 1px var(--line)}
+
+/* Objectives */
+.obj{list-style:none;display:grid;gap:14px;margin-top:54px;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));counter-reset:o}
+.obj li{position:relative;background:#fff;box-shadow:0 0 0 1px var(--line);padding:24px 22px 24px;min-height:170px;display:flex;flex-direction:column;justify-content:space-between;gap:18px;
+  transition:transform .3s var(--ease),box-shadow .3s}
+.obj li:hover{transform:translateY(-4px);box-shadow:0 0 0 1px var(--amber),0 24px 50px rgba(4,20,67,.1)}
+.obj .top{display:flex;justify-content:space-between;align-items:flex-start}
+.obj .n{font-family:var(--disp);font-weight:400;font-size:40px;line-height:.8;color:var(--amber)}
+.obj svg{width:26px;height:26px;color:var(--ink)}
+.obj b{font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:21px;line-height:1.05}
+
+/* Photo band */
+.band{position:relative;min-height:520px;display:flex;align-items:flex-end;overflow:hidden;isolation:isolate;color:#fff}
+.band img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 40%;z-index:-2}
+.band::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(4,20,67,.05) 25%,rgba(4,20,67,.9))}
+.band blockquote{padding:0 0 64px;max-width:760px}
+.band blockquote p{font-family:var(--disp);font-weight:400;font-size:clamp(28px,3.6vw,48px);line-height:1.1}
+.band blockquote footer{margin-top:16px;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--amber)}
+@media(max-width:600px){.band{min-height:440px}.band blockquote{padding-bottom:40px}}
+
+/* Register and partner */
+.join{background:var(--sand);border-top:1px solid var(--line)}
+.join-grid{display:grid;gap:28px}
+@media(min-width:940px){.join-grid{grid-template-columns:1fr 1fr;gap:28px}}
+.path{padding:40px 38px;display:flex;flex-direction:column}
+@media(max-width:600px){.path{padding:30px 22px}}
+.path.grad{background:#fff;box-shadow:0 30px 70px rgba(4,20,67,.1)}
+.path.part{background:var(--dark);color:#fff}
+.path .k{font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--amber)}
+.path h3{font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:clamp(30px,3.2vw,42px);line-height:.95;margin:12px 0 12px}
+.path > p{color:var(--grey);font-size:15.5px;line-height:1.65}
+.path.part > p{color:var(--sky)}
+.path .list{list-style:none;margin:22px 0 30px;display:grid;gap:10px}
+.path .list li{display:flex;gap:12px;align-items:flex-start;font-size:15px;color:#fff}
+.path .list svg{width:18px;height:18px;flex:0 0 18px;color:var(--amber);margin-top:3px}
+.path .acts{margin-top:auto}
+form{margin-top:24px}
+.two{display:grid;gap:14px}
+@media(min-width:520px){.two{grid-template-columns:1fr 1fr}}
+.f{margin-bottom:14px}
+.f label{display:block;font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);margin-bottom:7px}
+.f input{width:100%;font-family:var(--body);font-size:16px;color:var(--ink);background:var(--off);border:0;padding:14px 15px;box-shadow:inset 0 0 0 1px var(--line)}
+.f input:focus{outline:0;box-shadow:inset 0 0 0 2px var(--ink)}
+.agree{display:flex;gap:10px;align-items:flex-start;margin:6px 0 20px}
+.agree input{margin-top:3px;accent-color:var(--ink);width:16px;height:16px;flex:0 0 16px}
+.agree label{font-size:13px;line-height:1.5;color:var(--grey)}
+.agree a{color:var(--ink)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+button.go{width:100%}
+.msg{margin-top:14px;font-size:14px;line-height:1.55;padding:12px 14px;display:none;background:rgba(180,69,60,.08);color:#8E332C;box-shadow:inset 0 0 0 1px rgba(180,69,60,.3)}
+.msg.show{display:block}
+.done{display:none;margin-top:24px}
+.done.show{display:block}
+.done .tick{width:44px;height:44px;border-radius:50%;background:var(--amber);display:grid;place-items:center;margin-bottom:14px}
+.done .tick svg{width:22px;height:22px;color:var(--dark)}
+.done b{display:block;font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:28px;line-height:1}
+.done p{color:var(--grey);margin-top:8px}
+
+/* Phones: shorter, calmer. Stakeholders become a two-up grid, objectives become
+   one-line rows, and the vision and mission quotes step down a size. */
+@media(max-width:600px){
+  .section{padding:64px 0}
+  .bridge{margin-top:36px}
+  .node{padding:22px 20px;gap:8px}
+  .node b{font-size:22px}.node.core b{font-size:28px}
+  .who{margin-top:44px}
+  .chips{grid-template-columns:1fr 1fr;gap:8px}
+  .chips li{padding:11px 10px;font-size:13px;gap:8px;line-height:1.25}
+  .chips svg{width:17px;height:17px;flex-basis:17px}
+  .vm p{font-size:22px;line-height:1.18}
+  .obj{grid-template-columns:1fr;gap:8px;margin-top:34px}
+  .obj li{min-height:0;flex-direction:row;align-items:center;gap:14px;padding:14px 16px}
+  .obj .top{display:contents}
+  .obj .n{font-size:28px;flex:0 0 34px;order:0}
+  .obj b{flex:1;font-size:17px;order:1}
+  .obj svg{order:2;width:22px;height:22px;flex:0 0 22px}
+  .band{min-height:380px}
+  .band blockquote p{font-size:26px}
+}
+
+.foot{border-top:1px solid var(--line);padding:30px 0 50px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
+.foot a{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;box-shadow:inset 0 -1px 0 var(--amber);padding-bottom:2px}
+.foot span{font-size:12px;color:var(--grey-2)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="bar">
+      <a href="/" aria-label="Nyimpini Mabunda, home"><img src="../assets/nm-logo-white.png" alt="Nyimpini Mabunda" width="124" height="40"></a>
+      <a class="back" href="/">Back to the site</a>
+    </div>
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">A Take Charge Leadership Institute programme</p>
+        <h1>U-GRIP<span class="hand">a grip on the future economy.</span></h1>
+        <p class="full">Unemployed Graduate Reskilling &amp; Integration Programme</p>
+        <p class="lead">A national graduate development initiative designed to prepare unemployed graduates for meaningful participation in South Africa's economy.</p>
+        <div class="hero-acts">
+          <a class="btn btn-gold" href="#register">Register your interest</a>
+          <a class="btn btn-ghost" href="#partner">Partner with U-GRIP</a>
+        </div>
+      </div>
+      <ol class="acro rv" aria-label="What U-GRIP stands for">
+        <li><b aria-hidden="true">U</b><span>Unemployed</span></li>
+        <li><b aria-hidden="true">G</b><span>Graduate</span></li>
+        <li><b aria-hidden="true">R</b><span>Reskilling</span></li>
+        <li><b aria-hidden="true">I</b><span>Integration</span></li>
+        <li><b aria-hidden="true">P</b><span>Programme</span></li>
+      </ol>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- Filled from the gig guide when a future U-GRIP date is published; hidden otherwise. -->
+  <section class="next" id="next" aria-label="Next U-GRIP date" hidden>
+    <div class="wrap">
+      <div class="next-in">
+        <span class="flag">Next U-GRIP</span>
+        <span class="d" id="nextD"></span>
+        <span class="p" id="nextP"></span>
+        <a href="/gig-guide/">See the gig guide</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="bridgeH">
+    <div class="wrap">
+      <div class="head rv">
+        <p class="eyebrow">The programme</p>
+        <h2 class="h" id="bridgeH">Higher education,<span class="hand">meet industry.</span></h2>
+        <p class="sub">U-GRIP creates a practical learning experience that equips graduates with the knowledge, confidence and networks required for long-term career success.</p>
+      </div>
+
+      <div class="bridge rv">
+        <div class="node">
+          <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg></span>
+          <b>Higher education</b>
+          <p>Graduates with qualifications, ready to put them to work.</p>
+        </div>
+        <span class="link" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="m14 6 6 6-6 6"/></svg></span>
+        <div class="node core">
+          <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M5 8l7-5 7 5"/><path d="M4 21h16"/><path d="M7 12h10"/></svg></span>
+          <b>U-GRIP</b>
+          <p>Practical workplace knowledge, future-ready skills, leadership capability and access to employment opportunities.</p>
+        </div>
+        <span class="link" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="m14 6 6 6-6 6"/></svg></span>
+        <div class="node">
+          <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/></svg></span>
+          <b>The economy</b>
+          <p>Meaningful employment pathways, and graduates connected directly with employers.</p>
+        </div>
+      </div>
+
+      <div class="who rv">
+        <span class="k">The programme brings together</span>
+        <ul class="chips">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg>Industry leaders</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/></svg>CEOs</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M15 20a4 4 0 0 1 6-3.5"/></svg>Human resources executives</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M4 10h16"/><path d="M12 3 4 7h16z"/><path d="M6 10v8M10 10v8M14 10v8M18 10v8"/></svg>Government departments</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M5 9a7 7 0 1 0 14 0"/><path d="M9 21h6"/><path d="M10 17h4"/></svg>Entrepreneurs</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg>Universities</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10z"/></svg>Development organisations</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>SETAs</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Graduate recruiters</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-label="Vision and mission">
+    <div class="wrap">
+      <div class="vm rv">
+        <article class="vis">
+          <span class="k">Programme vision</span>
+          <p>To become South Africa's leading graduate employability platform, connecting higher education with industry while preparing graduates for the future economy.</p>
+        </article>
+        <article class="mis">
+          <span class="k">Programme mission</span>
+          <p>To equip graduates with practical workplace knowledge, future-ready skills, leadership capability and access to employment opportunities through strategic partnerships between universities, industry and government.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-labelledby="objH">
+    <div class="wrap">
+      <div class="head rv">
+        <p class="eyebrow">Strategic objectives</p>
+        <h2 class="h" id="objH">Ten things<span class="hand">U-GRIP sets out to do.</span></h2>
+      </div>
+      <ol class="obj">
+        <li class="rv"><div class="top"><span class="n">01</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></div><b>Improve graduate employability</b></li>
+        <li class="rv"><div class="top"><span class="n">02</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18"/><path d="M5 18c0-6 3-9 7-9s7 3 7 9"/><path d="M12 9V5"/></svg></div><b>Bridge the gap between higher education and industry</b></li>
+        <li class="rv"><div class="top"><span class="n">03</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg></div><b>Equip graduates with practical workplace skills</b></li>
+        <li class="rv"><div class="top"><span class="n">04</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V16h8v-1.3A7 7 0 0 0 12 2z"/></svg></div><b>Promote entrepreneurship</b></li>
+        <li class="rv"><div class="top"><span class="n">05</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19c4-1 7-4 9-9l5-5-1 5c-5 2-8 5-9 9"/><path d="M5 19l3-3"/></svg></div><b>Introduce graduates to future industries</b></li>
+        <li class="rv"><div class="top"><span class="n">06</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22V4"/><path d="M4 4h13l-2 4 2 4H4"/></svg></div><b>Strengthen leadership capability</b></li>
+        <li class="rv"><div class="top"><span class="n">07</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20h8M12 16v4"/></svg></div><b>Increase digital literacy</b></li>
+        <li class="rv"><div class="top"><span class="n">08</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5z"/><path d="m9 12 2 2 4-4"/></svg></div><b>Build graduate confidence</b></li>
+        <li class="rv"><div class="top"><span class="n">09</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h8"/><path d="M10 8H7a4 4 0 0 0 0 8h3"/><path d="M14 8h3a4 4 0 0 1 0 8h-3"/></svg></div><b>Connect graduates directly with employers</b></li>
+        <li class="rv"><div class="top"><span class="n">10</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4v-6h4v-4h4V6h4"/></svg></div><b>Create meaningful employment pathways</b></li>
+      </ol>
+    </div>
+  </section>
+
+  <figure class="band" aria-label="A quote from Nyimpini Mabunda">
+    <picture>
+      <source srcset="../assets/impact-hero.webp" type="image/webp">
+      <img src="../assets/impact-hero.jpg" alt="Nyimpini Mabunda surrounded by learners on a school visit" width="1600" height="963" loading="lazy" decoding="async">
+    </picture>
+    <div class="wrap">
+      <blockquote>
+        <p>From the village to the global boardroom, and now bringing the next generation with me. That is the work.</p>
+        <footer>Nyimpini Mabunda</footer>
+      </blockquote>
+    </div>
+  </figure>
+
+  <section class="section join" aria-label="Take part in U-GRIP">
+    <div class="wrap join-grid">
+      <div class="path grad rv" id="register">
+        <span class="k">Graduates</span>
+        <h3>Register your interest</h3>
+        <p>Leave your details to hear from the Take Charge Leadership Institute about U-GRIP sessions and opportunities.</p>
+
+        <form id="ugForm" novalidate>
+          <div class="two">
+            <div class="f">
+              <label for="ugFirst">First name</label>
+              <input id="ugFirst" name="first" type="text" autocomplete="given-name" placeholder="Your first name" required maxlength="80">
+            </div>
+            <div class="f">
+              <label for="ugLast">Surname</label>
+              <input id="ugLast" name="last" type="text" autocomplete="family-name" placeholder="Your surname" required maxlength="80">
+            </div>
+          </div>
+          <div class="f">
+            <label for="ugEmail">Email address</label>
+            <input id="ugEmail" name="email" type="email" autocomplete="email" placeholder="name@example.com" required maxlength="254">
+          </div>
+          <div class="agree">
+            <input id="ugAgree" type="checkbox" required>
+            <label for="ugAgree">Email me about U-GRIP. I accept the <a href="/terms/" target="_blank" rel="noopener">terms and privacy notice</a>.</label>
+          </div>
+          <div class="hp" aria-hidden="true"><label for="ugCo">Company</label><input id="ugCo" name="company" type="text" tabindex="-1" autocomplete="off"></div>
+          <button class="btn btn-ink go" id="ugGo" type="submit">Register my interest</button>
+          <p class="msg" id="ugMsg" role="alert" aria-live="polite"></p>
+        </form>
+
+        <div class="done" id="ugDone" role="status" aria-live="polite">
+          <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+          <b id="ugDoneH">You are on the list.</b>
+          <p>Watch for an email from the Take Charge Leadership Institute about U-GRIP.</p>
+        </div>
+      </div>
+
+      <div class="path part rv" id="partner">
+        <span class="k">Industry, government and universities</span>
+        <h3>Partner with U-GRIP</h3>
+        <p>U-GRIP works through strategic partnerships between universities, industry and government. If your organisation can open doors for graduates, the Institute would like to hear from you.</p>
+        <ul class="list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Companies, CEOs and human resources teams</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Government departments and SETAs</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Universities and development organisations</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Entrepreneurs and graduate recruiters</li>
+        </ul>
+        <div class="acts">
+          <a class="btn btn-gold" href="/#contact">Talk to the Institute</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="foot">
+      <a href="/">← Back to the site</a>
+      <span>© <span id="yr">2026</span> Take Charge Leadership Institute</span>
+    </div>
+  </div>
+</main>
+
+<script>
+document.documentElement.classList.add('js');
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+(function () {
+  // TCLI Supabase project. The publishable key can read the gig guide's public
+  // columns and add a waitlist row, nothing else.
+  var SB = { url: 'https://cbbhgoahhykpckbtlzkr.supabase.co', key: 'sb_publishable_RldFFBVH4R8nPDyRlxA0tA__j8mMICa' };
+  var $ = function (id) { return document.getElementById(id); };
+
+  // ── reveal on scroll ─────────────────────────────────────────────────────
+  var rv = [].slice.call(document.querySelectorAll('.rv'));
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    rv.forEach(function (n) { io.observe(n); });
+  } else { rv.forEach(function (n) { n.classList.add('in'); }); }
+
+  // ── next U-GRIP date, from the gig guide ─────────────────────────────────
+  var MON = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var WD = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Johannesburg', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+  function nice(iso) { var p = iso.split('-').map(Number), d = new Date(Date.UTC(p[0], p[1] - 1, p[2])); return WD[d.getUTCDay()] + ' ' + p[2] + ' ' + MON[p[1] - 1] + ' ' + p[0]; }
+  fetch(SB.url + '/rest/v1/gig_guide?select=event_name,organisation,starts_on,ends_on,city,country&order=starts_on.asc', { headers: { apikey: SB.key } })
+    .then(function (r) { return r.ok ? r.json() : []; })
+    .then(function (rows) {
+      var ev = (rows || []).filter(function (e) { return /u-?grip/i.test(e.event_name || '') && (e.ends_on || e.starts_on) >= today; })[0];
+      if (!ev) return;
+      $('nextD').textContent = nice(ev.starts_on) + (ev.ends_on && ev.ends_on !== ev.starts_on ? ' to ' + nice(ev.ends_on) : '');
+      $('nextP').textContent = [ev.city, ev.country].filter(Boolean).join(', ') + (ev.organisation ? ' · Hosted by ' + ev.organisation : '');
+      $('next').hidden = false;
+    })
+    .catch(function () {});
+
+  // ── register interest: a waitlist row tagged ugrip ───────────────────────
+  var form = $('ugForm'), btn = $('ugGo'), msg = $('ugMsg'), done = $('ugDone'), LABEL = 'Register my interest';
+  function fail(t) { msg.textContent = t; msg.classList.add('show'); btn.disabled = false; btn.textContent = LABEL; }
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    msg.classList.remove('show');
+    var first = form.first.value.trim(), last = form.last.value.trim(), email = form.email.value.trim();
+    if (!first || !last) return fail('Please give your first name and surname.');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return fail('That email address does not look right. Please check it.');
+    if (!$('ugAgree').checked) return fail('Please tick the box so we can email you about U-GRIP.');
+    if (form.company.value) { form.style.display = 'none'; done.classList.add('show'); return; }
+    btn.disabled = true; btn.textContent = 'Sending…';
+    fetch(SB.url + '/rest/v1/waitlist', {
+      method: 'POST',
+      headers: { apikey: SB.key, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ first_name: first, last_name: last, email: email.toLowerCase(), interests: ['ugrip'], source: 'ugrip-page' })
+    })
+    .then(function (r) {
+      // 409: that address is already on the list, which is success for the visitor.
+      if (r.ok || r.status === 409) {
+        $('ugDoneH').textContent = 'Thank you, ' + first + '.';
+        form.style.display = 'none';
+        done.classList.add('show');
+        return;
+      }
+      return r.text().then(function (t) { throw new Error(t || r.status); });
+    })
+    .catch(function (err) {
+      console.error('ugrip:', err);
+      fail('Something went wrong on our side. Please try again, or email info@takechargeli.co.za.');
+    });
+  });
+})();
+</script>
+</body>
+</html>

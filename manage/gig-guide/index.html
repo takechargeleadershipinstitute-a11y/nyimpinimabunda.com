@@ -578,7 +578,7 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
     var s = stats.totals || {}, k = $('kpis');
     k.textContent = '';
     k.appendChild(tile('Mailing list', nfmt(s.mailing_list), '+' + nfmt(s.mailing_list_7d) + ' in the last 7 days', [
-      ['The Institute (TCLI)', s.interest_tcli], ['CEO Nights', s.interest_ceo_nights], ['Books', s.interest_book]
+      ['The Institute (TCLI)', s.interest_tcli], ['CEO Nights', s.interest_ceo_nights], ['Books', s.interest_book], ['U-GRIP', s.interest_ugrip]
     ]));
     k.appendChild(tile('CEO Nights book pre-orders', nfmt(s.preorders), '+' + nfmt(s.preorders_7d) + ' in the last 7 days', [
       ['Copies reserved', s.preorder_copies], ['Signed copies', s.preorder_signed]
