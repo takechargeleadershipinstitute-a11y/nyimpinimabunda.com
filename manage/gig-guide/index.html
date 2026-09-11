@@ -99,6 +99,48 @@ input:focus,textarea:focus{outline:0;box-shadow:inset 0 0 0 2px var(--ink)}
 .edit-cue{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;box-shadow:inset 0 -1px 0 var(--amber);padding-bottom:2px}
 @media(max-width:560px){.erow{grid-template-columns:60px 1fr;gap:14px}.edit-cue{display:none}}
 .empty{padding:28px 0;color:var(--grey)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.h-disp{font-family:var(--disp);font-weight:500;text-transform:uppercase;line-height:.95}
+.app-head .h-disp{font-size:clamp(34px,4.6vw,52px);margin:10px 0 10px}
+
+/* Dashboard: counts only, never names. Stat tiles, then one column chart. */
+.dash{padding:42px 0 6px}
+.dash-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.dash-head .h-disp{font-size:clamp(28px,3.4vw,38px);margin:8px 0 6px}
+.dash-head p{font-size:14px;max-width:60ch}
+.kpis{display:grid;gap:12px;margin-top:20px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.kpi{background:var(--white);border:1px solid var(--line);padding:18px 18px 14px;min-width:0}
+.kpi .l{display:block;font-size:12.5px;font-weight:600;color:var(--grey)}
+.kpi .v{display:block;font-family:var(--body);font-weight:600;font-size:34px;line-height:1.1;margin-top:8px;color:var(--ink)}
+.kpi .d{display:block;font-size:13px;color:var(--grey);margin-top:3px}
+.kpi ul{list-style:none;margin-top:12px;padding-top:10px;border-top:1px solid var(--line);font-size:13px;color:var(--grey)}
+.kpi li{display:flex;justify-content:space-between;gap:10px;padding:2px 0}
+.kpi li b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.chart-card{position:relative;background:var(--white);border:1px solid var(--line);padding:18px 18px 10px;margin-top:12px}
+.chart-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.chart-top h3{font-size:14.5px;font-weight:600;line-height:1.3}
+.chart-top p{font-size:12.5px;color:var(--grey)}
+.chart{margin-top:12px}
+.chart svg{display:block;width:100%;height:auto}
+.chart .gl{stroke:#EEE8DC;stroke-width:1;shape-rendering:crispEdges}
+.chart .base{stroke:#D9D1C2;stroke-width:1;shape-rendering:crispEdges}
+.chart text{font-family:var(--body);font-size:11px;fill:var(--grey-2);font-variant-numeric:tabular-nums}
+.chart text.cap{font-size:12px;font-weight:600;fill:var(--ink)}
+/* #2F5AAE: brand blue at a mid lightness, so the bars pass the palette checks
+   (lightness band, chroma, 3:1 against the white card); navy is too dark for a mark. */
+.chart .bar{fill:#2F5AAE;transition:fill .15s}
+.chart .col.on .bar{fill:#4468B0}
+.chart .hit{fill:transparent;outline:none}
+.tip{position:absolute;z-index:5;pointer-events:none;transform:translate(-50%,calc(-100% - 10px));background:var(--ink);color:#fff;
+  padding:9px 11px;font-size:12.5px;line-height:1.45;white-space:nowrap;box-shadow:0 10px 26px rgba(5,26,82,.25)}
+.tip b{display:block;font-size:15px;font-weight:600}
+.tip span{display:block;color:#C9D2E6}
+.tip i{font-style:normal;float:right;margin-left:14px;color:#fff;font-variant-numeric:tabular-nums}
+.dtable{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0 8px}
+.dtable th,.dtable td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums}
+.dtable th{font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--grey)}
+.dtable th:first-child,.dtable td:first-child{text-align:left}
+.dash.busy .kpis,.dash.busy .chart-card{opacity:.55;transition:opacity .2s}
 
 /* Editor dialog */
 dialog#ed{border:0;padding:0;width:min(760px,calc(100vw - 24px));max-width:none;max-height:92vh;margin:auto;
@@ -135,7 +177,7 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
 <header class="bar">
   <div class="wrap bar-in">
     <a class="brand" href="/" aria-label="Nyimpini Mabunda, home"><img src="../../assets/nm-logo-white.png" alt="Nyimpini Mabunda" width="99" height="32"></a>
-    <span class="bar-t">Gig guide manager</span>
+    <span class="bar-t">Website manager</span>
     <div class="bar-r" id="who" hidden>
       <span id="whoEmail"></span>
       <button class="link" type="button" id="signOut">Sign out</button>
@@ -175,10 +217,36 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
   </section>
 
   <section id="vApp" hidden>
+    <h1 class="sr-only">Website manager</h1>
+
+    <section class="dash" id="dash" aria-labelledby="dashH">
+      <div class="dash-head">
+        <div>
+          <p class="eyebrow">Website</p>
+          <h2 class="h-disp" id="dashH">At a glance</h2>
+          <p class="muted" id="dashNote" role="status" aria-live="polite">Loading the sign-up figures…</p>
+        </div>
+        <button class="link" type="button" id="dashRefresh">Refresh</button>
+      </div>
+      <div class="kpis" id="kpis" hidden></div>
+      <div class="chart-card" id="chartCard" hidden>
+        <div class="chart-top">
+          <div>
+            <h3>Registrations per week</h3>
+            <p>Mailing list sign-ups, CEO Nights pre-orders and paid book orders, last 12 weeks</p>
+          </div>
+          <button class="link" type="button" id="tableToggle" aria-expanded="false" aria-controls="chartTable">Show as table</button>
+        </div>
+        <div class="chart" id="chart"></div>
+        <div class="tip" id="tip" hidden></div>
+        <div id="chartTable" hidden></div>
+      </div>
+    </section>
+
     <div class="app-head">
       <div>
         <p class="eyebrow">Gig guide</p>
-        <h1>Events</h1>
+        <h2 class="h-disp">Events</h2>
         <p class="muted">Changes go live on the <a href="/gig-guide/" target="_blank" rel="noopener">gig guide</a> and the home page as soon as you save.</p>
       </div>
       <button class="btn" type="button" id="addBtn">+ Add event</button>
@@ -434,6 +502,7 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
     }
     show('vApp');
     load();
+    loadStats();
   }
 
   sb.auth.onAuthStateChange(function (event, session) {
@@ -462,6 +531,210 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
   async function signOut() { await sb.auth.signOut(); }
   $('signOut').addEventListener('click', signOut);
   $('naSignOut').addEventListener('click', signOut);
+
+  // ── dashboard ──────────────────────────────────────────────────────────────
+  // public.site_stats() returns counts only (supabase/site_stats.sql). No names,
+  // emails or numbers reach this page.
+  var stats = null, WEEK_MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function nfmt(n) { return Number(n || 0).toLocaleString('en-ZA'); }
+  function rands(cents) { return 'R' + Math.round((cents || 0) / 100).toLocaleString('en-ZA'); }
+  function weekLabel(iso) { var p = parts(iso); return p.d + ' ' + WEEK_MON[p.m]; }
+
+  async function loadStats() {
+    $('dash').classList.add('busy');
+    var res = await sb.rpc('site_stats');
+    $('dash').classList.remove('busy');
+    if (res.error) {
+      console.error('site_stats:', res.error);
+      $('dashNote').textContent = stats
+        ? 'Could not refresh just now. Showing the last figures.'
+        : 'The sign-up figures could not load just now. Try Refresh in a moment.';
+      return;
+    }
+    stats = res.data;
+    renderStats();
+  }
+  $('dashRefresh').addEventListener('click', loadStats);
+
+  function tile(label, value, detail, rowsList) {
+    var t = el('div', 'kpi');
+    t.appendChild(el('span', 'l', label));
+    t.appendChild(el('span', 'v', value));
+    if (detail) t.appendChild(el('span', 'd', detail));
+    if (rowsList && rowsList.length) {
+      var ul = el('ul');
+      rowsList.forEach(function (r) {
+        var li = el('li');
+        li.appendChild(el('span', null, r[0]));
+        li.appendChild(el('b', null, nfmt(r[1])));
+        ul.appendChild(li);
+      });
+      t.appendChild(ul);
+    }
+    return t;
+  }
+
+  function renderStats() {
+    var s = stats.totals || {}, k = $('kpis');
+    k.textContent = '';
+    k.appendChild(tile('Mailing list', nfmt(s.mailing_list), '+' + nfmt(s.mailing_list_7d) + ' in the last 7 days', [
+      ['The Institute (TCLI)', s.interest_tcli], ['CEO Nights', s.interest_ceo_nights], ['Books', s.interest_book]
+    ]));
+    k.appendChild(tile('CEO Nights book pre-orders', nfmt(s.preorders), '+' + nfmt(s.preorders_7d) + ' in the last 7 days', [
+      ['Copies reserved', s.preorder_copies], ['Signed copies', s.preorder_signed]
+    ]));
+    k.appendChild(tile('Take Charge orders paid', nfmt(s.orders_paid), rands(s.orders_paid_cents) + ' received', [
+      ['Copies sold', s.orders_paid_copies], ['Paid, not yet sent', s.orders_to_send]
+    ].concat(s.orders_test ? [['Test orders, not counted', s.orders_test]] : [])));
+    k.appendChild(tile('Upcoming events', nfmt(s.events_upcoming), 'Showing on the gig guide', [
+      ['Hidden from the website', s.events_hidden]
+    ]));
+    k.hidden = false;
+
+    var at = new Intl.DateTimeFormat('en-ZA', { timeZone: 'Africa/Johannesburg', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+      .format(new Date(stats.generated_at));
+    $('dashNote').textContent = 'Sign-ups and orders from the website. Test entries are not counted. Updated ' + at + '.';
+
+    $('chartCard').hidden = false;
+    renderChart();
+    renderTable();
+  }
+
+  function weeksData() {
+    return (stats.weekly || []).map(function (w) {
+      return { week: w.week, ml: w.mailing_list || 0, pre: w.preorders || 0, ord: w.orders || 0,
+               total: (w.mailing_list || 0) + (w.preorders || 0) + (w.orders || 0) };
+    });
+  }
+
+  function niceStep(max) {
+    var c = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 2500, 5000];
+    for (var i = 0; i < c.length; i++) if (Math.ceil(max / c[i]) <= 4) return c[i];
+    return Math.pow(10, Math.ceil(Math.log10(max / 4)));
+  }
+
+  function renderChart() {
+    var NS = 'http://www.w3.org/2000/svg', box = $('chart'), data = weeksData();
+    box.textContent = '';
+    hideTip();
+    if (!data.length) return;
+
+    var W = Math.max(280, Math.round(box.clientWidth || 600)), H = 210,
+        padL = 30, padR = 6, padT = 22, padB = 26,
+        plotW = W - padL - padR, plotH = H - padT - padB,
+        max = Math.max.apply(null, data.map(function (d) { return d.total; }).concat([1])),
+        step = niceStep(max), top = Math.ceil(max / step) * step,
+        band = plotW / data.length, bw = Math.min(24, band * 0.56),
+        every = W < 440 ? 3 : 2;
+
+    function svgEl(tag, attrs) {
+      var n = document.createElementNS(NS, tag);
+      for (var a in attrs) n.setAttribute(a, attrs[a]);
+      return n;
+    }
+    function yOf(v) { return padT + plotH - (v / top) * plotH; }
+
+    var svg = svgEl('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img',
+      'aria-label': 'Registrations per week for the last 12 weeks. The same figures are in the table view.' });
+
+    for (var v = 0; v <= top; v += step) {
+      var y = Math.round(yOf(v)) + 0.5;
+      svg.appendChild(svgEl('line', { class: v === 0 ? 'base' : 'gl', x1: padL, x2: W - padR, y1: y, y2: y }));
+      var tk = svgEl('text', { x: padL - 8, y: y, 'text-anchor': 'end', 'dominant-baseline': 'middle' });
+      tk.textContent = nfmt(v);
+      svg.appendChild(tk);
+    }
+
+    data.forEach(function (d, i) {
+      var g = svgEl('g', { class: 'col' }), cx = padL + i * band + band / 2, x = cx - bw / 2,
+          y0 = yOf(0), h = y0 - yOf(d.total);
+      if (h > 0) {
+        var r = Math.min(4, h, bw / 2), yt = y0 - h;
+        g.appendChild(svgEl('path', { class: 'bar',
+          d: 'M' + x + ',' + y0 + 'V' + (yt + r) + 'Q' + x + ',' + yt + ' ' + (x + r) + ',' + yt +
+             'H' + (x + bw - r) + 'Q' + (x + bw) + ',' + yt + ' ' + (x + bw) + ',' + (yt + r) + 'V' + y0 + 'Z' }));
+      }
+      // Label only the latest week on its cap; the axis, tooltip and table carry the rest.
+      if (i === data.length - 1 && d.total > 0) {
+        var cap = svgEl('text', { class: 'cap', x: cx, y: yOf(d.total) - 7, 'text-anchor': 'middle' });
+        cap.textContent = nfmt(d.total);
+        g.appendChild(cap);
+      }
+      if ((data.length - 1 - i) % every === 0) {
+        var xl = svgEl('text', { x: cx, y: H - 8, 'text-anchor': 'middle' });
+        xl.textContent = weekLabel(d.week);
+        g.appendChild(xl);
+      }
+      // The whole column band is the hover and focus target, not just the bar.
+      var hit = svgEl('rect', { class: 'hit', x: padL + i * band, y: padT, width: band, height: plotH, tabindex: '0',
+        'aria-label': 'Week of ' + weekLabel(d.week) + ': ' + d.total + ' registrations, ' + d.ml + ' mailing list, ' +
+                      d.pre + ' pre-orders, ' + d.ord + ' paid orders' });
+      function on() { g.classList.add('on'); showTip(d, cx, yOf(d.total), W); }
+      function off() { g.classList.remove('on'); hideTip(); }
+      hit.addEventListener('pointerenter', on);
+      hit.addEventListener('pointerleave', off);
+      hit.addEventListener('focus', on);
+      hit.addEventListener('blur', off);
+      g.appendChild(hit);
+      svg.appendChild(g);
+    });
+
+    box.appendChild(svg);
+  }
+
+  function showTip(d, cx, cy, W) {
+    var tip = $('tip'), box = $('chart'), card = $('chartCard'), scale = box.clientWidth / W;
+    tip.textContent = '';
+    tip.appendChild(el('b', null, nfmt(d.total) + (d.total === 1 ? ' registration' : ' registrations')));
+    tip.appendChild(el('span', null, 'Week of ' + weekLabel(d.week)));
+    [['Mailing list', d.ml], ['Pre-orders', d.pre], ['Paid orders', d.ord]].forEach(function (r) {
+      var row = el('span', null, r[0]);
+      row.appendChild(el('i', null, nfmt(r[1])));
+      tip.appendChild(row);
+    });
+    tip.hidden = false;
+    var half = tip.offsetWidth / 2,
+        left = box.offsetLeft + cx * scale,
+        clamp = Math.min(Math.max(left, half + 6), card.clientWidth - half - 6);
+    tip.style.left = clamp + 'px';
+    // Above the bar when there is room inside the card; otherwise just below its top,
+    // so a tall bar's readout never covers the tiles above the chart.
+    var anchor = box.offsetTop + cy * scale, below = anchor - tip.offsetHeight - 12 < 0;
+    tip.style.top = anchor + 'px';
+    tip.style.transform = below ? 'translate(-50%, 12px)' : '';
+  }
+  function hideTip() { $('tip').hidden = true; }
+
+  function renderTable() {
+    var wrap = $('chartTable'), data = weeksData();
+    wrap.textContent = '';
+    var t = el('table', 'dtable'), thead = el('thead'), hr = el('tr');
+    ['Week of', 'Mailing list', 'Pre-orders', 'Paid orders', 'Total'].forEach(function (h) {
+      var th = el('th', null, h); th.scope = 'col'; hr.appendChild(th);
+    });
+    thead.appendChild(hr); t.appendChild(thead);
+    var tb = el('tbody');
+    data.slice().reverse().forEach(function (d) {
+      var tr = el('tr');
+      [weekLabel(d.week), nfmt(d.ml), nfmt(d.pre), nfmt(d.ord), nfmt(d.total)].forEach(function (c) { tr.appendChild(el('td', null, c)); });
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb);
+    wrap.appendChild(t);
+  }
+
+  $('tableToggle').addEventListener('click', function () {
+    var open = $('chartTable').hidden;
+    $('chartTable').hidden = !open;
+    this.setAttribute('aria-expanded', String(open));
+    this.textContent = open ? 'Hide table' : 'Show as table';
+  });
+
+  var resizeTimer = null;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () { if (stats && !$('chartCard').hidden) renderChart(); }, 150);
+  });
 
   // ── list ───────────────────────────────────────────────────────────────────
   async function load() {
