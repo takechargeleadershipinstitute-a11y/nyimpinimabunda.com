@@ -32,10 +32,10 @@
 <script type="application/ld+json">
 {
   "@context":"https://schema.org","@type":"Person","name":"Nyimpini Mabunda",
-  "url":"https://nyimpinimabundacom-phi.vercel.app/","jobTitle":"Chairperson, Schindler South Africa",
-  "description":"Board chairman, executive coach, keynote speaker, host of CEO Nights and author of Take Charge.",
+  "url":"https://nyimpinimabundacom-phi.vercel.app/","jobTitle":["Founder and CEO, Take Charge Leadership Institute","Chairman, Schindler South Africa"],
+  "description":"Founder and CEO of the Take Charge Leadership Institute, board chairman, executive coach, keynote speaker, host of CEO Nights and bestselling author of Take Charge.",
   "homeLocation":{"@type":"Place","name":"Johannesburg, South Africa"},
-  "alumniOf":[{"@type":"CollegeOrUniversity","name":"University of Cape Town"},{"@type":"CollegeOrUniversity","name":"INSEAD"}],
+  "alumniOf":[{"@type":"CollegeOrUniversity","name":"University of Cape Town"},{"@type":"CollegeOrUniversity","name":"INSEAD"},{"@type":"CollegeOrUniversity","name":"Harvard Business School"}],
   "sameAs":["https://www.linkedin.com/in/nyimpini-mabunda-mba-amp-ceo-chairman/","https://www.youtube.com/@ceonightswithnyimpini","https://www.instagram.com/nyimpinimabunda/"]
 }
 </script>
@@ -657,6 +657,31 @@ body{background:var(--off)}
 .ep:hover{background:#0A2568}
 .eps{background:#16306B}
 
+/* EDUCATION AND REACH — four compact cards under the Story road. On phones they
+   swipe sideways like the Events cards, so the room adds almost no scroll. */
+.creds{background:#F2ECE1;border-top:1px solid var(--line);padding:84px 0 90px}
+.creds-head{max-width:60ch}
+.creds h2{font-family:var(--disp);font-weight:400;text-transform:uppercase;font-size:clamp(34px,4.6vw,60px);line-height:.96;margin-top:14px}
+.creds h2 .hand{display:inline-block;color:var(--amber);padding-left:.18em}
+.creds-grid{display:grid;gap:18px;margin-top:40px}
+@media(min-width:700px){.creds-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1060px){.creds-grid{grid-template-columns:repeat(4,1fr)}}
+.cr{background:var(--white);border:1px solid var(--line);padding:24px 22px 22px}
+.cr-k{display:block;font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--amber);margin-bottom:14px}
+.cr ul{list-style:none}
+.cr li{padding:10px 0;border-top:1px solid var(--line);font-size:13.5px;line-height:1.4;color:var(--grey)}
+.cr li:first-child{border-top:0;padding-top:0}
+.cr li b{display:block;font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:17px;line-height:1.1;color:var(--ink);margin-bottom:3px}
+.cr.stat{background:var(--dark);border-color:var(--dark);display:flex;flex-direction:column;justify-content:center}
+.cr-n{display:block;font-family:var(--disp);font-weight:400;font-size:clamp(58px,6vw,78px);line-height:.9;color:#fff}
+.cr-t{display:block;margin-top:12px;color:#C9D2E6;font-size:14.5px;line-height:1.5}
+@media(max-width:699px){
+  .creds{padding:64px 0 70px}
+  .creds-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;padding-bottom:6px;scrollbar-width:none}
+  .creds-grid::-webkit-scrollbar{display:none}
+  .creds-grid > .cr{flex:0 0 84%;scroll-snap-align:start}
+}
+
 /* ── PHONES: LESS TEXT ─────────────────────────────────────────────────────
    Mr Mabunda, 11 Sept 2026: the site reads text-heavy on mobile. Desktop is
    untouched and nothing is deleted. On phones, long paragraphs collapse to a few
@@ -777,11 +802,11 @@ body{background:var(--off)}
       <div class="rc rc-l">
       <div class="role">
         <h3 data-i18n="roles.speaker.h">Speaker</h3>
-        <p data-i18n-html="roles.speaker.p">Conferences, corporate events, business schools and graduate intakes, speaking on career acceleration, leadership, and what AI means for business in Africa. <a href="#contact">Check available dates</a>.</p>
+        <p data-i18n-html="roles.speaker.p">More than 130 keynotes in 11 countries across Africa, the Middle East and Europe, on career acceleration, leadership, and what AI means for business. <a href="#contact">Check available dates</a>.</p>
       </div>
       <div class="role">
         <h3 data-i18n="roles.author.h">Bestselling Author</h3>
-        <p data-i18n-html="roles.author.p"><em>Take Charge: Life Lessons on the Road to CEO</em> has been reprinted several times since Jonathan Ball published it. One book, one argument: the road up is walkable. <a href="#book">Read about the book</a>.</p>
+        <p data-i18n-html="roles.author.p"><em>Take Charge: Life Lessons on the Road to CEO</em> is now in its ninth reprint since Jonathan Ball published it. One book, one argument: the road up is walkable. <a href="#book">Read about the book</a>.</p>
       </div>
       </div>
 
@@ -845,7 +870,7 @@ body{background:var(--off)}
         <span class="stop-txt">
           <span class="stop-year">2006</span>
           <span class="stop-co" data-i18n="rd.s1.co">Nando's</span>
-          <span class="stop-role" data-i18n="rd.s1.r">Leaves the corporate world to run a cluster of franchises as owner-operator.</span>
+          <span class="stop-role" data-i18n="rd.s1.r">Leaves the corporate world to own and grow six franchise restaurants, later sold.</span>
         </span>
       </div>
       <div class="stop below" data-t="0.40" data-side="below">
@@ -853,7 +878,7 @@ body{background:var(--off)}
         <span class="stop-txt">
           <span class="stop-year">2008</span>
           <span class="stop-co" data-i18n="rd.s2.co">Diageo</span>
-          <span class="stop-role" data-i18n="rd.s2.r">Regional Marketing Manager in the UK, 2008 to 2012. Then CEO of Uganda Breweries, 2013 to 2016.</span>
+          <span class="stop-role" data-i18n="rd.s2.r">Back at Diageo, in London: Regional Marketing Manager, 2008 to 2012. Then CEO of Uganda Breweries, 2013 to 2016.</span>
         </span>
       </div>
       <div class="stop above" data-t="0.60" data-side="above">
@@ -877,8 +902,51 @@ body{background:var(--off)}
         <span class="stop-txt">
           <span class="stop-year" data-i18n="rd.s5.y">The chair</span>
           <span class="stop-co" data-i18n="rd.s5.co">Chairperson, Schindler South Africa</span>
-          <span class="stop-role" data-i18n="rd.s5.r">Board chair. Non-executive director. Executive coach. Host of CEO Nights. The climb is finished. The work now is lifting other people up it.</span>
+          <span class="stop-role" data-i18n="rd.s5.r">Founder and CEO of the Take Charge Leadership Institute. Board chair, executive coach and host of CEO Nights. The work now is lifting other people up the climb.</span>
         </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Education and reach (Mr Mabunda's voice note, 11 Sept 2026: "we're trying
+     to build a global brand... education... the international journey").
+     Every line is from his own LinkedIn profile, read 11 Sept 2026. -->
+<section class="creds" id="creds" aria-labelledby="credsH">
+  <div class="wrap">
+    <div class="creds-head">
+      <p class="eyebrow">Education and reach</p>
+      <h2 id="credsH">A career<span class="hand">across borders.</span></h2>
+    </div>
+    <div class="creds-grid">
+      <div class="cr">
+        <span class="cr-k">Education</span>
+        <ul>
+          <li><b>MBA</b>University of Cape Town, 2004</li>
+          <li><b>Advanced Management Program</b>INSEAD, 2021</li>
+          <li><b>Finance for Senior Executives</b>Harvard Business School, 2023</li>
+        </ul>
+      </div>
+      <div class="cr">
+        <span class="cr-k">Led businesses in</span>
+        <ul>
+          <li><b>South Africa</b>Procter &amp; Gamble, Diageo, Vodacom, GE</li>
+          <li><b>United Kingdom</b>Diageo, London, 2008 to 2012</li>
+          <li><b>Uganda</b>Uganda Breweries, Kampala, 2013 to 2016</li>
+        </ul>
+      </div>
+      <div class="cr stat">
+        <span class="cr-k">On stage</span>
+        <span class="cr-n">130+</span>
+        <span class="cr-t">keynotes in 11 countries across Africa, the Middle East and Europe</span>
+      </div>
+      <div class="cr">
+        <span class="cr-k">Business schools</span>
+        <ul>
+          <li><b>GIBS</b>Part-time lecturer</li>
+          <li><b>Wits Business School</b>Advisor</li>
+          <li><b>University of Johannesburg Business School</b>Lecturer</li>
+        </ul>
       </div>
     </div>
   </div>
