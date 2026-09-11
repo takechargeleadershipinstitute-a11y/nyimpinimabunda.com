@@ -560,7 +560,11 @@ document.getElementById('yr').textContent = new Date().getFullYear();
       var now = Date.now(), a = startMs(ev), b = endMs(ev);
       count.textContent = '';
       if (now >= a && now < b) { count.className = 'count live'; count.appendChild(el('span', 'tag', 'Happening now')); return; }
-      var diff = Math.max(0, a - now), dd = Math.floor(diff / 864e5), hh = Math.floor(diff / 36e5) % 24, mm = Math.floor(diff / 6e4) % 60;
+      // Left open past the end: say so, and stop ticking, instead of sitting on 00 00 00.
+      // The next visit picks the following event.
+      if (now >= b) { clearInterval(countTimer); count.className = 'count live'; count.appendChild(el('span', 'tag', 'This event has ended')); return; }
+      // Round minutes UP, so the clock only reads 00 00 00 at the moment it starts.
+      var mins = Math.ceil((a - now) / 6e4), dd = Math.floor(mins / 1440), hh = Math.floor(mins / 60) % 24, mm = mins % 60;
       count.className = 'count';
       [[dd, dd === 1 ? 'Day' : 'Days'], [hh, 'Hours'], [mm, 'Mins']].forEach(function (u) {
         var c = el('div'); c.appendChild(el('b', null, String(u[0]).padStart(2, '0'))); c.appendChild(el('span', null, u[1])); count.appendChild(c);

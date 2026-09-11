@@ -261,13 +261,31 @@ a{color:inherit}
 .stop-year{display:block;font-family:var(--disp);font-weight:400;font-size:clamp(30px,3vw,40px);line-height:.9;color:var(--amber);letter-spacing:-.01em}
 .stop-co{display:block;font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:clamp(16px,1.6vw,21px);line-height:1.05;color:var(--ink);margin-top:8px}
 .stop-role{display:block;font-size:13px;line-height:1.45;color:var(--grey);margin-top:5px}
+/* Degrees share the road with the jobs. A navy-and-gold double ring, a cap badge
+   and an "Education" tag tell them apart without a second timeline. */
+.stop-pin.edu{box-shadow:0 0 0 3px var(--ink),0 0 0 7px var(--amber),0 14px 34px rgba(5,26,82,.18)}
+.stop-pin.edu img{width:74%;height:74%}
+.stop-pin.duo{gap:3px}
+.stop-pin.duo img{width:38%;height:48%}
+.stop-cap{position:absolute;left:18px;top:-50px;z-index:2;width:30px;height:30px;border-radius:50%;background:var(--amber);color:var(--ink);
+  display:grid;place-items:center;box-shadow:0 0 0 3px #fff}
+.stop-cap svg{width:17px;height:17px}
+.stop-tag{display:inline-block;margin-bottom:6px;padding:2px 7px;font-size:9.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;background:var(--ink);color:#fff}
+/* Eight stops on the S: the first and last labels are narrower so neighbours never touch. */
+.stop[data-align="start"] .stop-txt{width:200px}
+.stop[data-align="end"] .stop-txt{width:210px}
 @media(max-width:899px){
-  .road{aspect-ratio:420/1300;max-width:420px;margin-top:44px}
+  .road{aspect-ratio:420/1040;max-width:420px;margin-top:44px}
   .road-h{display:none}.road-v{display:block}
   .road-bed{stroke-width:36}
   .stop-pin{width:72px;height:72px}
   .stop-pin .stop-age{font-size:26px}
   .stop-pin.now .stop-age{font-size:15px}
+  .stop-cap{left:10px;top:-42px;width:26px;height:26px}
+  .stop-cap svg{width:15px;height:15px}
+  /* Phones and tablets: year, company or degree only; the one-line detail is
+     desktop's. Keeps eight stops short enough to read in one scroll. */
+  .stop-role{display:none}
   /* every label sits to the right of its pin on the vertical road */
   .stop .stop-txt,.stop[data-align] .stop-txt{left:50px;right:auto;top:auto;bottom:auto;transform:translateY(-50%);width:min(220px,calc(100vw - 190px));text-align:left}
 }
@@ -675,19 +693,16 @@ body{background:var(--off)}
 .ep:hover{background:#0A2568}
 .eps{background:#16306B}
 
-/* A CAREER ACROSS BORDERS — Mr Mabunda wants the education and the
-   international journey to be a big part of the site. A dotted map with the
-   route drawn in gold (Johannesburg, Cape Town, London, Kampala), the stops
-   with company marks, a reach band, then the schools with their own logos. */
-.xb{background:#F2ECE1;border-top:1px solid var(--line);padding:110px 0 120px;overflow:hidden}
-.xb-head{max-width:64ch}
-.xb h2{font-family:var(--disp);font-weight:400;text-transform:uppercase;font-size:clamp(46px,6.6vw,96px);line-height:.9;margin-top:18px}
+/* REACH — the international journey Mr Mabunda wants front and centre, kept
+   short and apart from the Story: the dotted map with the route drawn in gold
+   (Johannesburg, Cape Town, London, Kampala) beside the reach figures and the
+   business schools he teaches at. */
+.xb{background:#F2ECE1;border-top:1px solid var(--line);padding:92px 0 100px;overflow:hidden}
+.xb-grid{display:grid;gap:36px;align-items:center}
+@media(min-width:960px){.xb-grid{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px}}
+.xb h2{font-family:var(--disp);font-weight:400;text-transform:uppercase;font-size:clamp(40px,5vw,72px);line-height:.9;margin-top:16px}
 .xb h2 .hand{display:block;font-size:.74em;line-height:1.02;color:var(--amber);text-transform:none}
-.xb-lead{color:var(--grey);font-size:17px;line-height:1.65;max-width:54ch;margin-top:24px}
-
-.xb-journey{display:grid;grid-template-columns:minmax(0,1fr);margin-top:56px;background:var(--dark);color:#fff;box-shadow:0 40px 90px rgba(5,26,82,.2)}
-@media(min-width:960px){.xb-journey{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr)}}
-.xb-map{margin:0;padding:36px 30px 30px;background:radial-gradient(75% 65% at 50% 55%,#12307A,#051A52 72%)}
+.xb-map{margin:0;padding:30px 24px 22px;background:radial-gradient(75% 65% at 50% 55%,#12307A,#051A52 72%);box-shadow:0 40px 90px rgba(5,26,82,.2)}
 .xb-map-in{position:relative;max-width:520px;margin:0 auto}
 .xb-map-in img{display:block;width:100%;height:auto;opacity:.6}
 .xb-routes{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
@@ -706,25 +721,11 @@ body{background:var(--off)}
 @media(max-width:599px){.xb-map{padding:26px 14px 18px}.xb-pin text{font-size:44px}.xb-pin text.yr{display:none}}
 @media (prefers-reduced-motion:reduce){.xb-route{transition:none;stroke-dashoffset:0}.xb.in .xb-pin .halo{animation:none}}
 
-.xb-stops{list-style:none;padding:34px 42px;display:flex;flex-direction:column;justify-content:center}
-@media(max-width:600px){.xb-stops{padding:18px 20px 26px}}
-.xb-stops li{display:grid;grid-template-columns:58px minmax(0,1fr);gap:4px 16px;align-items:center;padding:18px 0;border-top:1px solid rgba(255,255,255,.12)}
-@media(min-width:600px){.xb-stops li{grid-template-columns:72px minmax(0,1fr) auto;gap:4px 18px}}
-.xb-stops li:first-child{border-top:0}
-.xb-stops .yr{font-family:var(--disp);font-weight:400;font-size:30px;line-height:1;color:var(--amber)}
-.xb-stops b{display:block;font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:23px;line-height:1;letter-spacing:.02em;transition:color .2s}
-.xb-stops li:hover b{color:var(--amber)}
-.xb-stops .r{display:block;font-size:14px;line-height:1.5;color:#C9D2E6;margin-top:6px}
-.xb-badges{display:flex;flex-wrap:wrap;gap:8px;grid-column:2;margin-top:10px}
-@media(min-width:600px){.xb-badges{grid-column:auto;flex-direction:column;align-items:flex-end}}
-.xb-badge{display:flex;align-items:center;justify-content:center;width:112px;height:44px;padding:0 14px;background:#fff;border-radius:6px;box-shadow:0 8px 20px rgba(0,0,0,.25)}
-.xb-badge img{max-width:100%;max-height:24px;width:auto;height:auto;object-fit:contain}
-@media(max-width:599px){.xb-badge{width:100px;height:40px;padding:0 12px}}
-
-.xb-reach{display:grid;grid-template-columns:repeat(2,1fr);margin-top:18px;background:#fff;border:1px solid var(--line)}
-@media(min-width:900px){.xb-reach{grid-template-columns:repeat(4,1fr)}}
-.xb-reach div{padding:30px 26px 28px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
-.xb-reach b{display:block;font-family:var(--disp);font-weight:400;font-size:clamp(48px,5.4vw,70px);line-height:.88;color:var(--ink)}
+.xb-reach{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:26px;background:#fff;border:1px solid var(--line)}
+.xb-reach div{padding:22px 22px 20px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.xb-reach div:nth-child(2n){border-right:0}
+.xb-reach div:nth-child(n+3){border-bottom:0}
+.xb-reach b{display:block;font-family:var(--disp);font-weight:400;font-size:clamp(40px,4.2vw,58px);line-height:.88;color:var(--ink)}
 .xb-reach b i{font-style:normal;color:var(--amber)}
 .xb-reach b.sm{font-size:clamp(40px,4.2vw,56px);color:var(--amber)}
 .xb-reach span{display:block;margin-top:12px;font-size:13.5px;line-height:1.45;color:var(--grey)}
@@ -732,39 +733,25 @@ body{background:var(--off)}
 .xb-reach .cap::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(5,26,82,.8),rgba(5,26,82,.94))}
 .xb-reach .cap span{color:#E3E9F5}
 
-.xb-row{margin:70px 0 24px}
 
-/* Education rows share the career list, lifted onto white with the school's logo. */
-.xb-stops li.edu{background:#fff;border-top:0;margin:10px -22px;padding:20px 22px;box-shadow:0 18px 44px rgba(0,0,0,.3)}
-.xb-stops li.edu + li{border-top:0}
-.xb-stops li.edu b,.xb-stops li.edu:hover b{color:var(--ink)}
-.xb-stops li.edu .r{color:var(--grey)}
-.xb-stops .tag{display:inline-block;margin-bottom:8px;padding:3px 8px;font-size:10px;font-weight:600;letter-spacing:.18em;
-  text-transform:uppercase;background:rgba(212,173,102,.26);color:var(--ink)}
-.xb-stops li.edu .xb-badge{width:156px;height:58px;box-shadow:none;border:1px solid var(--line)}
-.xb-stops li.edu .xb-badge img{max-height:38px}
-@media(max-width:599px){.xb-stops li.edu{margin:10px -12px;padding:16px 12px}.xb-stops li.edu .xb-badge{width:140px;height:52px}}
-
-/* Merged into the Story: no band of its own. overflow:clip (not hidden) keeps
-   stray map labels in check without breaking the sticky map. */
-.xb.xb-merged{background:none;border-top:0;padding:110px 0 0;overflow:clip}
-.xb-merged h2{font-size:clamp(40px,5.4vw,80px)}
-@media(min-width:960px){.xb-merged .xb-map-in{position:sticky;top:96px}}
-@media(max-width:699px){.xb.xb-merged{padding:72px 0 0}}
-
-.xb-teach{display:grid;gap:14px}
-@media(min-width:760px){.xb-teach{grid-template-columns:repeat(3,1fr)}}
+.xb-sub{margin:26px 0 12px;font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--grey)}
 /* The schools' own marks are white-lettered (GIBS, Wits) or a solid orange
-   square (UJ), so these tiles sit on navy. */
-.xb-teach > div{display:flex;flex-direction:column;justify-content:space-between;gap:26px;min-height:190px;
-  background:var(--dark);color:#fff;padding:28px 26px 24px;transition:transform .3s,box-shadow .3s}
-.xb-teach > div:hover{transform:translateY(-4px);box-shadow:0 26px 54px rgba(5,26,82,.25)}
-.xb-teach .lg{height:58px;display:flex;align-items:center}
-.xb-teach .lg img{max-height:48px;max-width:220px;width:auto;height:auto;object-fit:contain}
-.xb-teach .lg.sq img{max-height:58px;border-radius:4px}
-.xb-teach b{display:block;font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:22px;line-height:1.05;color:#fff}
-.xb-teach b + span{display:block;margin-top:6px;font-size:13.5px;color:#C9D2E6}
-@media(max-width:699px){.xb{padding:76px 0 84px}.xb-row{margin:52px 0 18px}.xb-reach div{padding:22px 18px}}
+   square (UJ), so they sit on one navy strip. */
+.xb-teach{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:var(--dark);color:#fff}
+.xb-teach li{display:flex;flex-direction:column;justify-content:space-between;gap:14px;padding:18px 18px 16px;border-right:1px solid rgba(255,255,255,.1);min-width:0}
+.xb-teach li:last-child{border-right:0}
+.xb-teach .lg{height:40px;display:flex;align-items:center}
+.xb-teach .lg img{max-height:34px;max-width:100%;width:auto;height:auto;object-fit:contain}
+.xb-teach .lg.sq img{max-height:40px;border-radius:3px}
+.xb-teach b{display:block;font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:17px;line-height:1.05;color:#fff}
+.xb-teach b + span{display:block;margin-top:4px;font-size:12.5px;line-height:1.35;color:#C9D2E6}
+@media(max-width:599px){
+  .xb-teach{grid-template-columns:minmax(0,1fr)}
+  .xb-teach li{flex-direction:row;align-items:center;border-right:0;border-bottom:1px solid rgba(255,255,255,.1);padding:14px 16px}
+  .xb-teach li:last-child{border-bottom:0}
+  .xb-teach .lg{flex:0 0 118px;height:36px}
+}
+@media(max-width:699px){.xb{padding:64px 0 72px}.xb-reach div{padding:18px 16px}}
 
 /* ── PHONES: LESS TEXT ─────────────────────────────────────────────────────
    Mr Mabunda, 11 Sept 2026: the site reads text-heavy on mobile. Desktop is
@@ -930,7 +917,7 @@ body{background:var(--off)}
     <div class="tl-head-in">
       <p class="eyebrow" data-i18n="story.eyebrow">The Story</p>
       <h2><span data-i18n="story.h2a">From a village in Mpumalanga</span><span class="hand" data-i18n="story.h2b">to the chairman's seat.</span></h2>
-      <p data-i18n="story.p">He was fifteen when he matriculated, nineteen when he walked into a multinational, and twenty-one when he first led a team. Four companies mark the road from there to the chair.</p>
+      <p data-i18n="story.p">He was fifteen when he matriculated, nineteen when he walked into a multinational, and twenty-one when he first led a team. Five companies and three business schools mark the road from there to the chair.</p>
     </div>
 
     <!-- The road is drawn once for desktop (horizontal S) and once for phones
@@ -940,82 +927,102 @@ body{background:var(--off)}
          Diageo UK 2008-2012 and Uganda 2013-2016 confirmed by Zimasa, 11 Sept 2026. -->
     <div class="road" id="road" aria-label="Career journey">
       <svg class="road-svg road-h" viewBox="0 0 1200 640" aria-hidden="true" focusable="false">
-        <path class="road-shadow" d="M70,440 C170,440 190,220 290,220 C390,220 410,440 510,440 C610,440 630,220 730,220 C830,220 850,440 950,440 C1010,440 1070,440 1130,440"/>
-        <path class="road-bed"    d="M70,440 C170,440 190,220 290,220 C390,220 410,440 510,440 C610,440 630,220 730,220 C830,220 850,440 950,440 C1010,440 1070,440 1130,440"/>
-        <path class="road-line"   d="M70,440 C170,440 190,220 290,220 C390,220 410,440 510,440 C610,440 630,220 730,220 C830,220 850,440 950,440 C1010,440 1070,440 1130,440"/>
+        <path class="road-shadow" d="M70,440 C145,440 145,220 220,220 C295,220 295,440 370,440 C445,440 445,220 520,220 C595,220 595,440 670,440 C745,440 745,220 820,220 C895,220 895,440 970,440 C1030,440 1070,440 1130,440"/>
+        <path class="road-bed"    d="M70,440 C145,440 145,220 220,220 C295,220 295,440 370,440 C445,440 445,220 520,220 C595,220 595,440 670,440 C745,440 745,220 820,220 C895,220 895,440 970,440 C1030,440 1070,440 1130,440"/>
+        <path class="road-line"   d="M70,440 C145,440 145,220 220,220 C295,220 295,440 370,440 C445,440 445,220 520,220 C595,220 595,440 670,440 C745,440 745,220 820,220 C895,220 895,440 970,440 C1030,440 1070,440 1130,440"/>
       </svg>
-      <svg class="road-svg road-v" viewBox="0 0 420 1300" aria-hidden="true" focusable="false">
-        <path class="road-shadow" d="M80,40 C80,220 130,290 130,470 C130,650 60,720 60,900 C60,1080 100,1130 100,1260"/>
-        <path class="road-bed"    d="M80,40 C80,220 130,290 130,470 C130,650 60,720 60,900 C60,1080 100,1130 100,1260"/>
-        <path class="road-line"   d="M80,40 C80,220 130,290 130,470 C130,650 60,720 60,900 C60,1080 100,1130 100,1260"/>
+      <svg class="road-svg road-v" viewBox="0 0 420 1040" aria-hidden="true" focusable="false">
+        <path class="road-shadow" d="M80,30 C80,180 130,230 130,380 C130,530 60,580 60,730 C60,880 100,920 100,1010"/>
+        <path class="road-bed"    d="M80,30 C80,180 130,230 130,380 C130,530 60,580 60,730 C60,880 100,920 100,1010"/>
+        <path class="road-line"   d="M80,30 C80,180 130,230 130,380 C130,530 60,580 60,730 C60,880 100,920 100,1010"/>
       </svg>
 
-      <div class="stop below" data-t="0.02" data-align="start" data-side="below">
+      <!-- Eight stops, jobs and degrees on the one road (client, 11 Sept 2026:
+           education belongs in the timeline, not in a section of its own).
+           data-t sits each stop on a bend of the desktop S (outer side of the
+           bend = data-side); data-tv spaces them evenly on the phone road.
+           Degree stops carry a navy-and-gold ring, a cap badge and an
+           "Education" tag. Details are from his LinkedIn, read 11 Sept 2026. -->
+      <div class="stop below" data-t="0" data-tv="0.02" data-align="start" data-side="below">
         <span class="stop-pin"><span class="stop-age">15</span></span>
         <span class="stop-txt">
           <span class="stop-year" data-i18n="rd.s0.y">Mpumalanga</span>
           <span class="stop-co" data-i18n="rd.s0.co">Matriculates at fifteen</span>
-          <span class="stop-role" data-i18n="rd.s0.r">A village school in an apartheid-era homeland. At nineteen he joins Procter &amp; Gamble; at twenty-one he leads his first team.</span>
+          <span class="stop-role">Joins Procter &amp; Gamble at nineteen and leads his first team at twenty-one.</span>
         </span>
       </div>
-      <div class="stop above" data-t="0.20" data-side="above">
+      <div class="stop above edu" data-t="0.1522" data-tv="0.157" data-side="above">
+        <span class="stop-pin edu"><img src="assets/logos/edu/uct-roundel.svg" alt="University of Cape Town" loading="lazy" decoding="async"></span>
+        <span class="stop-cap" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg></span>
+        <span class="stop-txt">
+          <span class="stop-tag">Education</span>
+          <span class="stop-year">2004</span>
+          <span class="stop-co">MBA, UCT</span>
+          <span class="stop-role">University of Cape Town Graduate School of Business, while at Diageo.</span>
+        </span>
+      </div>
+      <div class="stop below" data-t="0.3045" data-tv="0.294" data-side="below">
         <span class="stop-pin"><img src="assets/logos/nandos.png" alt="Nando's" width="2217" height="1295" loading="lazy" decoding="async"></span>
         <span class="stop-txt">
           <span class="stop-year">2006</span>
           <span class="stop-co" data-i18n="rd.s1.co">Nando's</span>
-          <span class="stop-role" data-i18n="rd.s1.r">Leaves the corporate world to own and grow six franchise restaurants, later sold.</span>
+          <span class="stop-role">Leaves corporate life to own and grow six franchise restaurants.</span>
         </span>
       </div>
-      <div class="stop below" data-t="0.40" data-side="below">
+      <div class="stop above" data-t="0.4567" data-tv="0.431" data-side="above">
         <span class="stop-pin"><img src="assets/logos/diageo.png" alt="Diageo" width="400" height="89" loading="lazy" decoding="async"></span>
         <span class="stop-txt">
           <span class="stop-year">2008</span>
           <span class="stop-co" data-i18n="rd.s2.co">Diageo</span>
-          <span class="stop-role" data-i18n="rd.s2.r">Back at Diageo, in London: Regional Marketing Manager, 2008 to 2012. Then CEO of Uganda Breweries, 2013 to 2016.</span>
+          <span class="stop-role">London, 2008 to 2012. Then CEO of Uganda Breweries, 2013 to 2016.</span>
         </span>
       </div>
-      <div class="stop above" data-t="0.60" data-side="above">
+      <div class="stop below" data-t="0.6090" data-tv="0.569" data-side="below">
         <span class="stop-pin"><img src="assets/logos/vodacom.svg" alt="Vodacom" width="260" height="76" loading="lazy" decoding="async"></span>
         <span class="stop-txt">
           <span class="stop-year">2016</span>
           <span class="stop-co" data-i18n="rd.s3.co">Vodacom</span>
-          <span class="stop-role" data-i18n="rd.s3.r">CEO, Consumer Business. Then Senior Advisor to BCG across sub-Saharan Africa.</span>
+          <span class="stop-role">CEO, Consumer Business. Then Senior Advisor to BCG.</span>
         </span>
       </div>
-      <div class="stop below" data-t="0.80" data-side="below">
+      <div class="stop above" data-t="0.7612" data-tv="0.706" data-side="above">
         <span class="stop-pin"><img src="assets/logos/general-electric.png" alt="General Electric" width="800" height="348" loading="lazy" decoding="async"></span>
         <span class="stop-txt">
           <span class="stop-year">2020</span>
           <span class="stop-co" data-i18n="rd.s4.co">General Electric</span>
-          <span class="stop-role" data-i18n="rd.s4.r">CEO, GE Southern Africa. CEO of an international company before forty; a year later, Chair of the U.S.–South Africa Business Council.</span>
+          <span class="stop-role">CEO, GE Southern Africa. Chair of the U.S.–South Africa Business Council.</span>
         </span>
       </div>
-      <div class="stop above" data-t="1" data-align="end" data-side="above">
+      <div class="stop below edu" data-t="0.9135" data-tv="0.843" data-side="below">
+        <span class="stop-pin edu duo"><img src="assets/logos/edu/insead-roundel.png" alt="INSEAD" loading="lazy" decoding="async"><img src="assets/logos/edu/hbs-shield.svg" alt="Harvard Business School" loading="lazy" decoding="async"></span>
+        <span class="stop-cap" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg></span>
+        <span class="stop-txt">
+          <span class="stop-tag">Education</span>
+          <span class="stop-year">2021–23</span>
+          <span class="stop-co">INSEAD and Harvard</span>
+          <span class="stop-role">Advanced Management Program, INSEAD. Finance for Senior Executives, Harvard Business School.</span>
+        </span>
+      </div>
+      <div class="stop above" data-t="1" data-tv="0.98" data-align="end" data-side="above">
         <span class="stop-pin now"><span class="stop-age" data-i18n="rd.now">Now</span></span>
         <span class="stop-txt">
           <span class="stop-year" data-i18n="rd.s5.y">The chair</span>
           <span class="stop-co" data-i18n="rd.s5.co">Chairperson, Schindler South Africa</span>
-          <span class="stop-role" data-i18n="rd.s5.r">Founder and CEO of the Take Charge Leadership Institute. Board chair, executive coach and host of CEO Nights.</span>
+          <span class="stop-role">Founder and CEO of the Take Charge Leadership Institute.</span>
         </span>
       </div>
     </div>
 
-    <!-- Career and education, merged into the Story at the client's request
-         (11 Sept 2026). The road tells it in six stops; the panel below is the
-         full record, with work and study in one year-by-year list, then reach
-         and teaching. Every line is from his LinkedIn profile, read 11 Sept 2026.
-         Mr Mabunda's voice note: "we're trying to build a global brand...
-         education... the international journey". -->
-    <div class="xb xb-merged" id="creds" role="region" aria-labelledby="xbH">
-    <div class="xb-head">
-      <p class="eyebrow ruled">Career and education</p>
-      <h2 id="xbH">Work and study,<span class="hand">year by year.</span></h2>
-      <p class="xb-lead">Three countries, four multinationals and three of the world's leading business schools, on the road from a village classroom to the boardroom.</p>
-    </div>
+  </div>
+</section>
 
-    <!-- The journey: a dotted map generated from Natural Earth land data
-         (assets/journey-map.svg, public domain) with the route drawn over it. -->
-    <div class="xb-journey">
+<!-- Reach: the international footprint and where he teaches. Kept apart from the
+     Story so the timeline stays short (client, 11 Sept 2026). Mr Mabunda's voice
+     note: "we're trying to build a global brand... the international journey".
+     The map is generated from Natural Earth land data (assets/journey-map.svg,
+     public domain) with the route drawn over it. -->
+<section class="xb" id="creds" aria-labelledby="xbH">
+  <div class="wrap xb-grid">
       <figure class="xb-map" aria-hidden="true">
         <div class="xb-map-in">
           <img src="assets/journey-map.svg" alt="" width="840" height="980" loading="lazy" decoding="async">
@@ -1031,83 +1038,23 @@ body{background:var(--off)}
           </svg>
         </div>
       </figure>
-      <!-- Work and study in one chronology. Education rows are lifted onto white
-           with the school's own logo, so the degrees read as part of the career. -->
-      <ol class="xb-stops">
-        <li data-pin="jhb">
-          <span class="yr">1996</span>
-          <div><b>Johannesburg</b><span class="r">Graduate recruit to trade marketing at Procter &amp; Gamble</span></div>
-          <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/procter-gamble.png" alt="Procter &amp; Gamble" loading="lazy"></span></span>
-        </li>
-        <li data-pin="cpt">
-          <span class="yr">2000</span>
-          <div><b>Cape Town</b><span class="r">Marketing, portfolio and strategy at Diageo</span></div>
-          <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/diageo.png" alt="Diageo" loading="lazy"></span></span>
-        </li>
-        <li class="edu" data-pin="cpt">
-          <span class="yr">2004</span>
-          <div><span class="tag">Education</span><b>MBA, University of Cape Town</b><span class="r">Graduate School of Business, earned while building brands at Diageo</span></div>
-          <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/edu/uct-gsb.svg" alt="UCT Graduate School of Business" loading="lazy"></span></span>
-        </li>
-        <li>
-          <span class="yr">2006</span>
-          <div><b>Nando's</b><span class="r">Leaves the corporate world to own and grow six franchise restaurants, later sold</span></div>
-          <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/nandos.png" alt="Nando's" loading="lazy"></span></span>
-        </li>
-        <li data-pin="lon">
-          <span class="yr">2008</span>
-          <div><b>London</b><span class="r">Regional Marketing Manager, running Diageo's soft drinks business across Africa</span></div>
-          <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/diageo.png" alt="Diageo" loading="lazy"></span></span>
-        </li>
-        <li data-pin="kla">
-          <span class="yr">2013</span>
-          <div><b>Kampala</b><span class="r">Managing Director and CEO of Uganda Breweries, brought in to turn it around</span></div>
-          <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/diageo.png" alt="Diageo" loading="lazy"></span></span>
-        </li>
-        <li data-pin="jhb">
-          <span class="yr">2016</span>
-          <div><b>Johannesburg</b><span class="r">CEO, Consumer Business at Vodacom. Then Senior Advisor to BCG across sub-Saharan Africa</span></div>
-          <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/vodacom.svg" alt="Vodacom" loading="lazy"></span></span>
-        </li>
-        <li data-pin="jhb">
-          <span class="yr">2020</span>
-          <div><b>Johannesburg</b><span class="r">CEO, GE Southern Africa. A year later, Chair of the U.S.–South Africa Business Council</span></div>
-          <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/general-electric.png" alt="General Electric" loading="lazy"></span></span>
-        </li>
-        <li class="edu">
-          <span class="yr">2021</span>
-          <div><span class="tag">Education</span><b>INSEAD</b><span class="r">Advanced Management Program, Business Administration and Management</span></div>
-          <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/edu/insead.svg" alt="INSEAD" loading="lazy"></span></span>
-        </li>
-        <li class="edu">
-          <span class="yr">2023</span>
-          <div><span class="tag">Education</span><b>Harvard Business School</b><span class="r">Finance for Senior Executives, Executive Education</span></div>
-          <span class="xb-badges"><span class="xb-badge"><img src="assets/logos/edu/hbs.svg" alt="Harvard Business School" loading="lazy"></span></span>
-        </li>
-        <li data-pin="jhb">
-          <span class="yr">Now</span>
-          <div><b>The chair</b><span class="r">Chairperson, Schindler South Africa. Founder and CEO of the Take Charge Leadership Institute</span></div>
-          <span class="xb-badges"><span class="xb-badge"><img src="assets/tcli-logo.png" alt="Take Charge Leadership Institute" loading="lazy"></span></span>
-        </li>
-      </ol>
-    </div>
 
-    <div class="xb-reach">
-      <div><b>130<i>+</i></b><span>keynotes delivered</span></div>
-      <div><b>11</b><span>countries across Africa, the Middle East and Europe</span></div>
-      <div><b>3</b><span>countries where he has led businesses</span></div>
-      <div class="cap"><b class="sm">Chair</b><span>U.S.–South Africa Business Council, Washington DC, from 2021</span></div>
-    </div>
-
-    <div class="xb-row">
-      <p class="eyebrow ruled">Teaches and advises at</p>
-    </div>
-    <div class="xb-teach">
-      <div><span class="lg"><img src="assets/logos/edu/gibs-white.svg" alt="GIBS Business School" loading="lazy"></span><span><b>GIBS</b><span>Part-time lecturer</span></span></div>
-      <div><span class="lg"><img src="assets/logos/edu/wits-business-school.svg" alt="Wits Business School" loading="lazy"></span><span><b>Wits Business School</b><span>Advisor</span></span></div>
-      <div><span class="lg sq"><img src="assets/logos/edu/jbs.png" alt="Johannesburg Business School, University of Johannesburg" loading="lazy"></span><span><b>Johannesburg Business School</b><span>Lecturer, University of Johannesburg</span></span></div>
-    </div>
-    </div>
+      <div class="xb-side">
+        <p class="eyebrow ruled">Reach</p>
+        <h2 id="xbH">A career<span class="hand">across borders.</span></h2>
+        <div class="xb-reach">
+          <div><b>130<i>+</i></b><span>keynotes delivered</span></div>
+          <div><b>11</b><span>countries across Africa, the Middle East and Europe</span></div>
+          <div><b>3</b><span>countries where he has led businesses</span></div>
+          <div class="cap"><b class="sm">Chair</b><span>U.S.–South Africa Business Council, Washington DC, from 2021</span></div>
+        </div>
+        <p class="xb-sub">Teaches and advises at</p>
+        <ul class="xb-teach">
+          <li><span class="lg"><img src="assets/logos/edu/gibs-white.svg" alt="GIBS Business School" loading="lazy"></span><span><b>GIBS</b><span>Part-time lecturer</span></span></li>
+          <li><span class="lg"><img src="assets/logos/edu/wits-business-school.svg" alt="Wits Business School" loading="lazy"></span><span><b>Wits Business School</b><span>Advisor</span></span></li>
+          <li><span class="lg sq"><img src="assets/logos/edu/jbs.png" alt="Johannesburg Business School, University of Johannesburg" loading="lazy"></span><span><b>Johannesburg Business School</b><span>Lecturer, University of Johannesburg</span></span></li>
+        </ul>
+      </div>
   </div>
 </section>
 
@@ -2450,7 +2397,7 @@ window.addEventListener('scroll',s,{passive:true});s();
     var path = svg.querySelector('.road-line'), L = path.getTotalLength(),
         vb = svg.viewBox.baseVal, vertical = svg.classList.contains('road-v');
     stops.forEach(function(st){
-      var t = parseFloat(st.getAttribute('data-t')) || 0,
+      var t = parseFloat(st.getAttribute(vertical && st.hasAttribute('data-tv') ? 'data-tv' : 'data-t')) || 0,
           p = path.getPointAtLength(L * t);
       st.style.left = (p.x / vb.width * 100) + '%';
       st.style.top  = (p.y / vb.height * 100) + '%';
