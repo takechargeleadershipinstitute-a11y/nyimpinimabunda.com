@@ -41,7 +41,7 @@ a card on file.
 | 1 | **Google** | Owns everything below; password resets land here | `takechargeleadershipinstitute@gmail.com` | Free |
 | 2 | **GitHub** | Stores the website code | Org `takechargeleadershipinstitute-a11y`, repo `nyimpinimabunda.com` | Free |
 | 3 | **Cloudflare** | Hosts the website | Pages project `nyimpinimabunda-com` | Free |
-| 4 | **Supabase** | Database behind the waitlist | Org "Take Charge Leadership Institute", project `cbbhgoahhykpckbtlzkr` | Free |
+| 4 | **Supabase** | Database behind the waitlist and the CEO Nights book pre-orders | Org "Take Charge Leadership Institute", project `cbbhgoahhykpckbtlzkr` | Free |
 | 5 | **beehiiv** | Mailing list and newsletters | Publication "Take Charge's Newsletter"<br>`pub_4cac3614-a9f4-4d2b-9346-d5543f0ca78c` | Max trial → **Launch (free)** |
 | 6 | **Resend** | Sends the "someone signed up" alert | API key named `supabase-waitlist` | Free |
 
@@ -97,6 +97,24 @@ Edge Function "waitlist-sync"
         └──► Resend    emails TCLI that someone joined
 ```
 
+### Book pre-orders (added 11 September 2026)
+
+```
+Visitor clicks "Pre-order the book" → pop-up form
+        │  first name, surname, email, contact number, copies, signed yes/no
+        ▼
+Supabase  ── stores the row in public.book_preorders   (status starts as 'new')
+```
+
+- **Where to see orders:** Supabase → Table Editor → `book_preorders`, newest first.
+- **Track each order with the `status` column:** `new` → `contacted` → `paid` →
+  `fulfilled` (or `cancelled`). Change it in the Table Editor. The website itself can
+  never set or read it.
+- **Nobody is emailed when a pre-order arrives yet.** Check the table, or ask the
+  developer to add a database webhook like the waitlist one.
+- Schema and security rules: [`supabase/book_preorders.sql`](supabase/book_preorders.sql).
+  Like the waitlist, the public key can add an order and do nothing else.
+
 **Pushing code to GitHub `main` redeploys the site automatically.** There is no build
 step: the repository contains exactly what is published.
 
@@ -128,7 +146,8 @@ step: the repository contains exactly what is published.
 | 🔴 **DNS access for `takechargeli.co.za`** | Blocks three things at once: connecting the real domain, sending the newsletter from `@takechargeli.co.za`, and system email. Nobody has identified who holds the registrar login | TCLI |
 | 🟡 **`nyimpini.com` is registered to someone** | It resolves to `102.211.205.136`. Earlier versions of this site pointed at it, which suggests it was once theirs. Worth establishing who controls it | TCLI |
 | 🟡 **Meta tags point at the old review URL** | `canonical`, `og:url` and `og:image` still read `nyimpinimabundacom-phi.vercel.app`. Must be repointed the day the real domain goes live, or Google treats that address as the canonical one | Developer |
-| 🟡 **CEO Nights pre-order has no payment route** | The button opens a pre-filled email. Needs a Paystack product | TCLI |
+| 🟡 **CEO Nights pre-order has no payment route** | The button now opens a pop-up that saves the order to Supabase (`book_preorders`), but nothing is charged. TCLI contacts each person to confirm and take payment | TCLI |
+| 🟡 **No alert when a pre-order arrives** | Orders are only visible in Supabase → Table Editor → `book_preorders`. A webhook + email (like `waitlist-sync`) would fix it | Developer |
 | 🟡 **"Get your signed copy" has no order route** | Same — currently a pre-filled email | TCLI |
 | 🟡 **Terms page is not legally reviewed** | Written around what the site actually does and shaped to POPIA, but **not by a lawyer**. Have TCLI's attorney read it, particularly payments and the filming clause | TCLI |
 

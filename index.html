@@ -581,7 +581,7 @@ a{color:inherit}
 .mdl .f{margin-bottom:14px}
 .mdl .f label{display:block;font-size:10.5px;font-weight:600;letter-spacing:.16em;
   text-transform:uppercase;color:var(--grey);margin-bottom:7px}
-.mdl .f input[type=text],.mdl .f input[type=email]{width:100%;font-family:var(--body);
+.mdl .f input[type=text],.mdl .f input[type=email],.mdl .f input[type=tel],.mdl .f input[type=number]{width:100%;font-family:var(--body);
   font-size:16px;color:var(--ink);background:#fff;border:0;padding:14px 15px;
   box-shadow:inset 0 0 0 1px var(--line)}
 .mdl .f input:focus{outline:0;box-shadow:inset 0 0 0 2px var(--ink)}
@@ -591,6 +591,9 @@ a{color:inherit}
 .mdl .agree input{margin-top:3px;accent-color:var(--ink);width:16px;height:16px;flex:0 0 16px}
 .mdl .agree label{font-size:12.5px;line-height:1.5;color:var(--grey)}
 .mdl .agree a{color:var(--ink)}
+/* The pre-order dialog stacks two tick rows (signed copy, consent). */
+.mdl .agree + .agree{margin-top:-6px}
+.mdl .f-copies input[type=number]{max-width:130px}
 .mdl button.go{width:100%;font-family:var(--body);font-weight:600;font-size:12px;
   letter-spacing:.2em;text-transform:uppercase;padding:17px 30px;border:0;cursor:pointer;
   background:var(--ink);color:#fff}
@@ -1082,9 +1085,9 @@ body{background:var(--off)}
         <span class="nb-tag" data-i18n="nb.tag">The next book · Coming soon</span>
         <p class="nb-h" data-i18n="nb.h">CEO Nights.</p>
         <p class="nb-sub" data-i18n="nb.sub">Insights on Leadership, Career and Growth from Top CEOs</p>
-        <p class="nb-d" data-i18n="nb.d">The conversations become a book. What the people running South Africa's biggest companies said about the climb, gathered from the show and set down in one place. Pre-orders open soon.</p>
+        <p class="nb-d" data-i18n="nb.d">The conversations become a book. What the people running South Africa's biggest companies said about the climb, gathered from the show and set down in one place. Reserve your copy now.</p>
       </div>
-      <a class="cta line on-dark nb-cta" href="mailto:info@takechargeli.co.za?subject=CEO%20Nights%20book%20pre-order&amp;body=Hello%20TCLI%20team%2C%0A%0AI%20would%20like%20to%20pre-order%20CEO%20Nights.%0A%0AName%3A%0ANumber%20of%20copies%3A%0A%0AThank%20you." data-i18n="nb.cta">Pre-order the book</a>
+      <a class="cta line on-dark nb-cta" data-bk-open href="mailto:info@takechargeli.co.za?subject=CEO%20Nights%20book%20pre-order&amp;body=Hello%20TCLI%20team%2C%0A%0AI%20would%20like%20to%20pre-order%20CEO%20Nights.%0A%0AName%3A%0ANumber%20of%20copies%3A%0A%0AThank%20you." data-i18n="nb.cta">Pre-order the book</a>
     </div>
   </div>
 </section>
@@ -1317,6 +1320,67 @@ body{background:var(--off)}
   </div>
 </div>
 
+<!-- CEO Nights book pre-order. The trigger keeps its mailto href, so with
+     JavaScript off a visitor can still email the order in. -->
+<div class="mdl" id="bkModal" role="dialog" aria-modal="true" aria-labelledby="bkH" hidden>
+  <div class="mdl-veil" data-bk-close></div>
+  <div class="mdl-box">
+    <button class="mdl-x" type="button" data-bk-close aria-label="Close">&times;</button>
+
+    <form id="bkForm">
+      <p class="mdl-k">The next book · Coming soon</p>
+      <h2 class="mdl-h" id="bkH">Pre-order CEO Nights.</h2>
+      <p class="mdl-d">Leave your details and the TCLI team will contact you to confirm your order before the book is released.</p>
+
+      <div class="two">
+        <div class="f">
+          <label for="bkFirst">First name</label>
+          <input id="bkFirst" name="first" type="text" autocomplete="given-name" placeholder="Your first name" required maxlength="80">
+        </div>
+        <div class="f">
+          <label for="bkLast">Surname</label>
+          <input id="bkLast" name="last" type="text" autocomplete="family-name" placeholder="Your surname" required maxlength="80">
+        </div>
+      </div>
+      <div class="f">
+        <label for="bkEmail">Email address</label>
+        <input id="bkEmail" name="email" type="email" autocomplete="email" placeholder="name@example.com" required maxlength="254">
+      </div>
+      <div class="f">
+        <label for="bkPhone">Contact number</label>
+        <input id="bkPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="072 123 4567" required maxlength="25">
+      </div>
+      <div class="f f-copies">
+        <label for="bkCopies">Number of copies</label>
+        <input id="bkCopies" name="copies" type="number" inputmode="numeric" min="1" max="50" step="1" value="1" required>
+      </div>
+
+      <div class="agree">
+        <input id="bkSigned" name="signed" type="checkbox">
+        <label for="bkSigned">I would like my copy signed and personalised by Nyimpini.</label>
+      </div>
+      <div class="agree">
+        <input id="bkAgree" type="checkbox" required>
+        <label for="bkAgree">Contact me about this pre-order. I accept the <a href="/terms/" target="_blank" rel="noopener">terms and privacy notice</a>.</label>
+      </div>
+
+      <div class="mdl-hp" aria-hidden="true">
+        <label for="bkCo">Company</label><input id="bkCo" name="company" type="text" tabindex="-1" autocomplete="off">
+      </div>
+
+      <button class="go" id="bkGo" type="submit">Reserve my copy</button>
+      <p class="mdl-msg" id="bkMsg" role="alert" aria-live="polite"></p>
+    </form>
+
+    <div class="mdl-done" id="bkDone" role="status" aria-live="polite">
+      <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+      <h2 class="mdl-h" id="bkDoneH">Thank you.</h2>
+      <p class="mdl-d">Your pre-order is in. The TCLI team will contact you to confirm it before CEO Nights is released.</p>
+      <button class="go" type="button" data-bk-close>Close</button>
+    </div>
+  </div>
+</div>
+
 <footer class="foot">
   <div class="wrap">
     <a class="foot-mark" href="#top" aria-label="Nyimpini Mabunda"><img src="assets/nm-logo.png" alt="Nyimpini Mabunda"></a>
@@ -1338,6 +1402,13 @@ body{background:var(--off)}
 <script>
 document.getElementById('yr').textContent=new Date().getFullYear();
 
+/* TCLI Supabase project, shared by both dialogs. The publishable key is public
+   by design: RLS lets it insert into waitlist and book_preorders, nothing else. */
+var SB = {
+  url: 'https://cbbhgoahhykpckbtlzkr.supabase.co',
+  key: 'sb_publishable_RldFFBVH4R8nPDyRlxA0tA__j8mMICa'
+};
+
 /* CEO Nights seat request dialog.
 
    Writes to the same waitlist table as /waitlist/, tagged 'ceo-nights', so the
@@ -1345,8 +1416,8 @@ document.getElementById('yr').textContent=new Date().getFullYear();
    triggers keep their href, so with JavaScript off they still reach the
    waitlist page — the dialog is an enhancement, not a dependency. */
 (function () {
-  var SB_URL  = 'https://cbbhgoahhykpckbtlzkr.supabase.co';
-  var SB_KEY  = 'sb_publishable_RldFFBVH4R8nPDyRlxA0tA__j8mMICa';
+  var SB_URL  = SB.url;
+  var SB_KEY  = SB.key;
 
   var mdl  = document.getElementById('cnModal');
   if (!mdl) return;
@@ -1432,6 +1503,113 @@ document.getElementById('yr').textContent=new Date().getFullYear();
     })
     .catch(function (err) {
       console.error('ceo-nights:', err);
+      fail('Something went wrong on our side. Please try again, or email info@takechargeli.co.za.');
+    });
+  });
+})();
+
+/* CEO Nights book pre-order dialog.
+
+   Writes to public.book_preorders (supabase/book_preorders.sql), not the
+   waitlist: an order needs a contact number and a quantity, and one person may
+   order more than once. The trigger keeps its mailto href, so with JavaScript
+   off the order can still be emailed in. */
+(function () {
+  var mdl = document.getElementById('bkModal');
+  if (!mdl) return;
+  var form  = document.getElementById('bkForm'),
+      btn   = document.getElementById('bkGo'),
+      msg   = document.getElementById('bkMsg'),
+      done  = document.getElementById('bkDone'),
+      LABEL = 'Reserve my copy',
+      last  = null;
+
+  function open(e){
+    if (e) e.preventDefault();
+    last = document.activeElement;
+    // Reopening after a completed order starts a fresh form.
+    if (done.classList.contains('show')) {
+      form.reset(); form.style.display = ''; done.classList.remove('show');
+    }
+    mdl.hidden = false; mdl.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(function(){ document.getElementById('bkFirst').focus(); }, 40);
+  }
+  function close(){
+    mdl.classList.remove('open'); mdl.hidden = true;
+    document.body.style.overflow = '';
+    if (last && last.focus) last.focus();
+  }
+
+  [].forEach.call(document.querySelectorAll('[data-bk-open]'), function (t) {
+    t.addEventListener('click', open);
+  });
+  [].forEach.call(mdl.querySelectorAll('[data-bk-close]'), function (t) {
+    t.addEventListener('click', close);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && mdl.classList.contains('open')) close();
+    if (e.key === 'Tab' && mdl.classList.contains('open')) {
+      var f = mdl.querySelectorAll('button, input, a[href], [tabindex]:not([tabindex="-1"])');
+      f = [].filter.call(f, function (n) { return n.offsetParent !== null; });
+      if (!f.length) return;
+      var first = f[0], lastEl = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); lastEl.focus(); }
+      else if (!e.shiftKey && document.activeElement === lastEl) { e.preventDefault(); first.focus(); }
+    }
+  });
+
+  function fail(t){
+    msg.textContent = t; msg.classList.add('show');
+    btn.disabled = false; btn.textContent = LABEL;
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    msg.classList.remove('show');
+
+    var first  = form.first.value.trim(),
+        lastN  = form.last.value.trim(),
+        email  = form.email.value.trim(),
+        phone  = form.phone.value.trim(),
+        digits = phone.replace(/\D/g, ''),
+        copies = parseInt(form.copies.value, 10);
+
+    if (!first || !lastN) return fail('Please give your first name and surname.');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      return fail('That email address does not look right. Please check it.');
+    // Same rule as the table's check constraint: 9 to 15 digits.
+    if (!/^\+?[0-9 ()-]+$/.test(phone) || digits.length < 9 || digits.length > 15)
+      return fail('That contact number does not look right. Please check it.');
+    if (!(copies >= 1 && copies <= 50))
+      return fail('Please choose between 1 and 50 copies. For a bigger order, email info@takechargeli.co.za.');
+    if (!document.getElementById('bkAgree').checked)
+      return fail('Please tick the box so we can contact you about your order.');
+    if (form.company.value) { form.style.display = 'none'; done.classList.add('show'); return; }
+
+    btn.disabled = true; btn.textContent = 'Sending…';
+
+    fetch(SB.url + '/rest/v1/book_preorders', {
+      method: 'POST',
+      headers: { 'apikey': SB.key, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify({
+        book: 'ceo-nights', first_name: first, last_name: lastN,
+        email: email.toLowerCase(), phone: phone, copies: copies,
+        signed: form.signed.checked, source: 'book-preorder-dialog'
+      })
+    })
+    .then(function (r) {
+      if (r.ok) {
+        document.getElementById('bkDoneH').textContent = 'Thank you, ' + first + '.';
+        form.style.display = 'none';
+        done.classList.add('show');
+        btn.disabled = false; btn.textContent = LABEL;
+        return;
+      }
+      return r.text().then(function (t) { throw new Error(t || r.status); });
+    })
+    .catch(function (err) {
+      console.error('book-preorder:', err);
       fail('Something went wrong on our side. Please try again, or email info@takechargeli.co.za.');
     });
   });
