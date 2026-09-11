@@ -1557,6 +1557,19 @@ body{background:var(--off)}
 
     <div class="ev-grid">
       <article class="ev">
+        <div class="slot"><img src="assets/hero-keynote.jpg" alt="Nyimpini Mabunda delivering a keynote" width="1100" height="783" loading="lazy" decoding="async"></div>
+        <div class="ev-txt">
+          <span class="ev-k" data-i18n="events.e3.k">Upcoming</span>
+          <h3 data-i18n="events.e3.h">Upcoming Events</h3>
+          <p data-i18n="events.e3.d">Keynotes, masterclasses and Take Charge experiences. The gig guide shows where Nyimpini is speaking next.</p>
+          <!-- Filled from the gig_guide table when the section scrolls near; stays
+               hidden if the list is empty or cannot load. -->
+          <ul class="ev-next" id="evNext" aria-label="Next dates" hidden></ul>
+          <a class="ev-link" href="/gig-guide/" data-i18n="events.e3.link">See the full gig guide</a>
+          <span class="ev-when" data-i18n="events.e3.w">Updated by the TCLI team</span>
+        </div>
+      </article>
+      <article class="ev">
         <div class="slot"><img src="assets/episodes/mohale.jpg" alt="A CEO Nights live recording" width="1280" height="720" loading="lazy" decoding="async"></div>
         <div class="ev-txt">
           <span class="ev-k" data-i18n="events.e1.k">Live recording</span>
@@ -1572,19 +1585,6 @@ body{background:var(--off)}
           <h3 data-i18n="events.e2.h">Leading the Women's Table</h3>
           <p data-i18n="events.e2.d">Women in business, one table, and the practical conversation about getting to the top and staying there.</p>
           <span class="ev-when" data-i18n="events.e2.w">By invitation</span>
-        </div>
-      </article>
-      <article class="ev">
-        <div class="slot"><img src="assets/hero-keynote.jpg" alt="Nyimpini Mabunda delivering a keynote" width="1100" height="783" loading="lazy" decoding="async"></div>
-        <div class="ev-txt">
-          <span class="ev-k" data-i18n="events.e3.k">Upcoming</span>
-          <h3 data-i18n="events.e3.h">Upcoming Events</h3>
-          <p data-i18n="events.e3.d">Keynotes, masterclasses and Take Charge experiences. The gig guide shows where Nyimpini is speaking next.</p>
-          <!-- Filled from the gig_guide table when the section scrolls near; stays
-               hidden if the list is empty or cannot load. -->
-          <ul class="ev-next" id="evNext" aria-label="Next dates" hidden></ul>
-          <a class="ev-link" href="/gig-guide/" data-i18n="events.e3.link">See the full gig guide</a>
-          <span class="ev-when" data-i18n="events.e3.w">Updated by the TCLI team</span>
         </div>
       </article>
     </div>
