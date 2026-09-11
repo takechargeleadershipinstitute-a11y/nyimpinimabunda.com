@@ -1522,6 +1522,9 @@ var SB = {
       msg   = document.getElementById('bkMsg'),
       done  = document.getElementById('bkDone'),
       LABEL = 'Reserve my copy',
+      // The "Last updated" date on /terms/. Stored with each order as the record
+      // of which terms the visitor accepted, so bump it whenever that page changes.
+      TERMS_VERSION = '2026-09-11',
       last  = null;
 
   function open(e){
@@ -1595,7 +1598,10 @@ var SB = {
       body: JSON.stringify({
         book: 'ceo-nights', first_name: first, last_name: lastN,
         email: email.toLowerCase(), phone: phone, copies: copies,
-        signed: form.signed.checked, source: 'book-preorder-dialog'
+        signed: form.signed.checked,
+        accepted_terms: document.getElementById('bkAgree').checked,
+        terms_version: TERMS_VERSION,
+        source: 'book-preorder-dialog'
       })
     })
     .then(function (r) {

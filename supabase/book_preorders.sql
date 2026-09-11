@@ -29,10 +29,22 @@ create table if not exists public.book_preorders (
   signed      boolean not null default false,
   source      text check (source is null or length(source) <= 60),
 
+  -- The consent tick is kept with the order, plus which version of /terms/
+  -- (its "Last updated" date) the visitor accepted.
+  accepted_terms boolean,
+  terms_version  text check (terms_version is null or length(terms_version) <= 40),
+
   -- Moved along by TCLI in the dashboard. The page cannot write this column.
   status      text not null default 'new'
                 check (status in ('new', 'contacted', 'paid', 'fulfilled', 'cancelled'))
 );
+
+-- For a table created before the consent columns existed (the live table was,
+-- on 11 Sept 2026). No-ops on a fresh install.
+alter table public.book_preorders
+  add column if not exists accepted_terms boolean,
+  add column if not exists terms_version  text
+    check (terms_version is null or length(terms_version) <= 40);
 
 create index if not exists book_preorders_created_at_idx
   on public.book_preorders (created_at desc);
@@ -46,10 +58,11 @@ create policy "anon can place a pre-order"
   on public.book_preorders
   for insert
   to anon
-  with check (status = 'new');
+  with check (status = 'new' and accepted_terms is true and terms_version is not null);
 
 -- Belt and braces: revoke everything, then grant INSERT on the visitor-supplied
 -- columns only, so nobody can post a row that arrives already marked 'paid'.
 revoke all on public.book_preorders from anon, authenticated;
-grant insert (book, first_name, last_name, email, phone, copies, signed, source)
+grant insert (book, first_name, last_name, email, phone, copies, signed,
+              accepted_terms, terms_version, source)
   on public.book_preorders to anon;

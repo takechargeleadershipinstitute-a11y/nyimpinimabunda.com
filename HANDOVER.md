@@ -51,7 +51,7 @@ a card on file.
 |---|---|
 | **Domain** `takechargeli.co.za` | Nameservers `ns1.tld-ns.net` / `ns2.tld-ns.com`, mail on `mx1.tld-mx.com`. **Registrar login not yet identified — see §6.** |
 | **Mailboxes** | `info@takechargeli.co.za`, `bookings@takechargeli.co.za` |
-| **Paystack** | Book sales. ⚠️ Currently a **test** link — see §6 |
+| **Paystack** | Book sales. ⚠️ Still a **test** link, so it cannot take payment yet. Zimasa is also setting up a **Yoco** payment link. Check in with her on how far the Yoco link is, while the Paystack account is still being sorted out |
 | **YouTube** | `@ceonightswithnyimpini` |
 | **Instagram** | `@nyimpinimabunda`, `@takecharge_li` |
 | **LinkedIn** | Nyimpini Mabunda's personal profile |
@@ -59,6 +59,10 @@ a card on file.
 ---
 
 ## 3. Where the credentials live
+
+> **Next step.** Gerald will phone Zimasa to go through this section in more detail. On
+> **Monday 14 September 2026** he will give her access to all the other services listed
+> here, so she has access to everything he has.
 
 | Credential | Where to get it | Who can |
 |---|---|---|
@@ -101,7 +105,8 @@ Edge Function "waitlist-sync"
 
 ```
 Visitor clicks "Pre-order the book" → pop-up form
-        │  first name, surname, email, contact number, copies, signed yes/no
+        │  first name, surname, email, contact number, copies, signed yes/no,
+        │  terms accepted (and which version of the terms page)
         ▼
 Supabase  ── stores the row in public.book_preorders   (status starts as 'new')
 ```
@@ -110,8 +115,18 @@ Supabase  ── stores the row in public.book_preorders   (status starts as 'ne
 - **Track each order with the `status` column:** `new` → `contacted` → `paid` →
   `fulfilled` (or `cancelled`). Change it in the Table Editor. The website itself can
   never set or read it.
-- **Nobody is emailed when a pre-order arrives yet.** Check the table, or ask the
-  developer to add a database webhook like the waitlist one.
+- **Every pre-order is saved in Supabase, so nobody is lost.** Each row keeps the
+  person's name, email address, contact number, how many copies they want, whether
+  they want them signed, and that they accepted the terms (with the date of the terms
+  version they saw). Everything on the form is kept. That makes the table a ready-made list: once enough pre-orders
+  have been collected, TCLI can export it (Table Editor → Export → CSV) and email
+  everyone on it in one go, for example to tell them the book is ready to buy.
+- **Before that email goes out, TCLI must prepare a real link to buy the book.** The
+  pop-up reserves a copy but takes no payment. Once the payment gateway (Paystack or
+  Yoco) is sorted out, create a live payment link for *CEO Nights*, so the email can
+  send people straight to pay.
+- **No email is sent automatically when a pre-order arrives.** Check the table, or ask
+  the developer to add an alert like the waitlist one.
 - Schema and security rules: [`supabase/book_preorders.sql`](supabase/book_preorders.sql).
   Like the waitlist, the public key can add an order and do nothing else.
 
