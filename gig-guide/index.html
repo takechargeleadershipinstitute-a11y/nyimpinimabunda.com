@@ -424,7 +424,10 @@ document.getElementById('yr').textContent = new Date().getFullYear();
     return o.year + '-' + o.month + '-' + o.day + 'T' + (o.hour === '24' ? '00' : o.hour) + ':' + o.minute + ':' + o.second;
   }
   function place(ev) { return [ev.city, ev.country].filter(Boolean).join(', '); }
-  function calTitle(ev) { return /nyimpini/i.test(ev.event_name) ? ev.event_name : ev.event_name + ' with Nyimpini Mabunda'; }
+  function calTitle(ev) { // avoid "…with Ben Magara with Nyimpini Mabunda"
+    var n = ev.event_name;
+    return /nyimpini/i.test(n) ? n : n + (/\bwith\b/i.test(n) ? ' · Nyimpini Mabunda' : ' with Nyimpini Mabunda');
+  }
   function calDetails(ev) {
     return [ev.organisation ? 'Hosted by ' + ev.organisation : '', ev.link ? 'Event details: ' + ev.link : '', 'Gig guide: ' + location.origin + '/gig-guide/'].filter(Boolean).join('\n');
   }
