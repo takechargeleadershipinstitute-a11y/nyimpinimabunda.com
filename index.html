@@ -2037,11 +2037,14 @@ var SB = {
 (function () {
   var xb = document.getElementById('creds');
   if (!xb) return;
-  if ('IntersectionObserver' in window) {
+  // Watch the map, not the section: the section is taller than four phone screens,
+  // so a threshold on it is never reached and the routes would never draw.
+  var map = xb.querySelector('.xb-map');
+  if (map && 'IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
       if (entries.some(function (e) { return e.isIntersecting; })) { xb.classList.add('in'); io.disconnect(); }
-    }, { threshold: 0.2 });
-    io.observe(xb);
+    }, { threshold: 0.3 });
+    io.observe(map);
   } else {
     xb.classList.add('in');
   }
