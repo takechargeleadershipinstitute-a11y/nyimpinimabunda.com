@@ -51,7 +51,7 @@ a card on file.
 |---|---|
 | **Domain** `takechargeli.co.za` | Nameservers `ns1.tld-ns.net` / `ns2.tld-ns.com`, mail on `mx1.tld-mx.com`. **Registrar login not yet identified — see §6.** |
 | **Mailboxes** | `info@takechargeli.co.za`, `bookings@takechargeli.co.za` |
-| **Paystack** | Book sales. ⚠️ Still a **test** link, so it cannot take payment yet. Zimasa is also setting up a **Yoco** payment link. Check in with her on how far the Yoco link is, while the Paystack account is still being sorted out |
+| **Yoco** | Book sales. Since 16 September 2026 "Buy the book · R320" opens the live Yoco payment link `pay.yoco.com/r/wDM1Oq` (merchant name shown to buyers: *Saseka DigiTech*). R320 flat, no delivery fee. The old Paystack link was a test page and is no longer used |
 | **YouTube** | `@ceonightswithnyimpini` |
 | **Instagram** | `@nyimpinimabunda`, `@takecharge_li` |
 | **LinkedIn** | Nyimpini Mabunda's personal profile |
@@ -193,7 +193,7 @@ step: the repository contains exactly what is published.
 | Item | Detail | Who |
 |---|---|---|
 | 🔴 **`nyimpinimabunda.com` is not registered** | A public DNS lookup returns *non-existent domain*. The site the whole project is named after has no domain, and anyone can register it. **Register it now.** | TCLI |
-| 🔴 **Paystack is a test link** | "Buy the book" opens Paystack's own *"Do not share with your customers"* page. **It cannot take payment.** Replace with the live product link | TCLI |
+| 🟡 **Yoco link may be single-use** | "Buy the book" now opens a live Yoco payment link (16 Sept 2026). It is a one-off bill for one copy at R320 with no delivery fee. If Yoco closes it after the first payment, the next buyer cannot pay. A reusable Yoco payment page, or the Checkout API already built behind `?yoco=test`, fixes it | TCLI |
 | 🔴 **DNS access for `takechargeli.co.za`** | Blocks three things at once: connecting the real domain, sending the newsletter from `@takechargeli.co.za`, and system email. Nobody has identified who holds the registrar login | TCLI |
 | 🟡 **`nyimpini.com` is registered to someone** | It resolves to `102.211.205.136`. Earlier versions of this site pointed at it, which suggests it was once theirs. Worth establishing who controls it | TCLI |
 | 🟡 **Meta tags point at the old review URL** | `canonical`, `og:url` and `og:image` still read `nyimpinimabundacom-phi.vercel.app`. Must be repointed the day the real domain goes live, or Google treats that address as the canonical one | Developer |
