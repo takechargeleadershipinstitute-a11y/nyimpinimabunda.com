@@ -1,4 +1,4 @@
--- Website sign-up figures for the manager dashboard (/manage/gig-guide/)
+-- Website sign-up figures for the manager dashboard (/admin/)
 --
 -- Run once in the Supabase SQL editor of the TCLI project (cbbhgoahhykpckbtlzkr),
 -- after gig_guide_editors.sql and book_orders.sql.

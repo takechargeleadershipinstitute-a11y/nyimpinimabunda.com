@@ -1,4 +1,4 @@
--- Gig guide editors: who may manage public.gig_guide from /manage/gig-guide/
+-- Gig guide editors: who may manage public.gig_guide from /admin/
 --
 -- Run once in the Supabase SQL editor of the TCLI project (cbbhgoahhykpckbtlzkr),
 -- after supabase/gig_guide.sql.
@@ -73,6 +73,6 @@ grant select, insert, update, delete on public.gig_guide to authenticated;
 
 insert into public.gig_guide_editors (email, note) values
   ('zimasa@takechargeli.co.za', 'TCLI, keeps the gig guide up to date'),
-  ('takechargeleadershipinstitute@gmail.com', 'TCLI admin account'),
+  ('takecharge.tcli@outlook.com', 'TCLI admin account'),
   ('ghoberts@gmail.com', 'Gerald Louw, developer. Remove at handover when no longer needed')
 on conflict (email) do nothing;

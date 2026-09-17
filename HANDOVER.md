@@ -3,7 +3,7 @@
 Everything the Take Charge Leadership Institute needs to own, run and pay for this
 site and its mailing list.
 
-**Prepared by** Gerald Louw · **Last updated** 7 September 2026
+**Prepared by** Gerald Louw · **Last updated** 17 September 2026
 
 > ### ⚠️ No passwords or API keys are in this document
 > That is deliberate. Secrets do not belong in a file that gets emailed, printed or
@@ -18,11 +18,11 @@ site and its mailing list.
 
 Every service is registered to **one Google account**, created specifically so that
 ownership sits with the Institute rather than with any individual. Whoever holds that
-Gmail controls everything else, because it is the password-reset address for all five
+mailbox controls everything else, because it is the password-reset address for all five
 services.
 
 ```
-        takechargeleadershipinstitute@gmail.com
+        takecharge.tcli@outlook.com
                         │
    ┌──────────┬─────────┼─────────┬──────────┐
  GitHub   Cloudflare  Supabase  beehiiv    Resend
@@ -38,7 +38,9 @@ a card on file.
 
 | # | Service | What it does | Account / identifier | Plan |
 |---|---|---|---|---|
-| 1 | **Google** | Owns everything below; password resets land here | `takechargeleadershipinstitute@gmail.com` | Free |
+| 1 | **Outlook** | Owns everything below; password resets land here | `takecharge.tcli@outlook.com` | Free |
+
+> ⚠️ **17 Sept 2026:** the services were registered under a Gmail address that has since been closed. Until the account email on GitHub, Cloudflare, Supabase, beehiiv and Resend is changed to the Outlook address, password resets for those services go nowhere. See the checklist in §5.
 | 2 | **GitHub** | Stores the website code | Org `takechargeleadershipinstitute-a11y`, repo `nyimpinimabunda.com` | Free |
 | 3 | **Cloudflare** | Hosts the website | Pages project `nyimpinimabunda-com` | Free |
 | 4 | **Supabase** | Database behind the waitlist and the CEO Nights book pre-orders | Org "Take Charge Leadership Institute", project `cbbhgoahhykpckbtlzkr` | Free |
@@ -66,8 +68,8 @@ a card on file.
 
 | Credential | Where to get it | Who can |
 |---|---|---|
-| Gmail password | Held by Gerald Louw — **hand over first** | — |
-| GitHub, Cloudflare, Supabase, beehiiv, Resend passwords | Password reset via the Gmail | Anyone with the Gmail |
+| Outlook mailbox password | Held by TCLI | — |
+| GitHub, Cloudflare, Supabase, beehiiv, Resend passwords | Password reset via the account email (must be the Outlook address, see §5) | Anyone with that mailbox |
 | **beehiiv API key** | Supabase → Edge Functions → Secrets → `BEEHIIV_API_KEY`. Not retrievable from beehiiv again; create a new one if lost | Supabase admin |
 | **Resend API key** | Supabase → Edge Functions → Secrets → `RESEND_API_KEY`. Same — create a new one if lost | Supabase admin |
 | **Supabase publishable key** | Visible in the page source. **Public by design** — it can only add a waitlist row, never read the list | Anyone |
@@ -82,7 +84,7 @@ Supabase → Edge Functions → Secrets:
 | `BEEHIIV_API_KEY` | Adds each signup to the mailing list |
 | `BEEHIIV_PUBLICATION_ID` | `pub_4cac3614-a9f4-4d2b-9346-d5543f0ca78c` |
 | `RESEND_API_KEY` | Sends the internal alert |
-| `NOTIFY_TO` | Who receives the alert. Currently the TCLI Gmail; becomes `info@takechargeli.co.za` once DNS is done |
+| `NOTIFY_TO` | Who receives the alert. Must match the Resend account's own email until a domain is verified; becomes `info@takechargeli.co.za` once DNS is done |
 | `NOTIFY_FROM` | Currently `onboarding@resend.dev`, which **only delivers to the account owner**. Becomes a real address once DNS is done |
 
 ---
@@ -135,12 +137,12 @@ Supabase  ── stores the row in public.book_preorders   (status starts as 'ne
 The page at `/gig-guide/`, linked from **Upcoming Events**, reads its list straight from
 Supabase. **Nobody has to touch the website code to update it.**
 
-- **To add or change an event, use the manager at `/manage/gig-guide/`.** Enter your email,
+- **To add or change an event, use the manager at `/admin/`.** Enter your email,
   tap the sign-in link that arrives (no password), then **Add event** or tap an event to
   edit, hide or delete it. Saving puts it live on the site immediately. The page shows a
   preview of exactly how the event will appear.
 - **Who can use the manager:** only emails listed in the Supabase table
-  `gig_guide_editors` (Zimasa, the TCLI Gmail and Gerald to start with). Anyone else who
+  `gig_guide_editors` (Zimasa, the TCLI Outlook mailbox and Gerald to start with). Anyone else who
   signs in sees "No access yet" and cannot read or change anything. To add a team member,
   insert their email (lower case) into that table in the Supabase Table Editor.
 - **Sign-in emails are limited.** Supabase's built-in email service sends at most 2
@@ -179,8 +181,8 @@ step: the repository contains exactly what is published.
 
 ## 5. Handover checklist
 
-- [ ] **Transfer the Gmail** to the Institute — change the password, and set the recovery phone and backup email to someone at TCLI. Everything else follows from this.
-- [ ] Turn on **2-factor authentication** on the Gmail and save the recovery codes somewhere that is *not* that inbox.
+- [ ] **Change the account email to `takecharge.tcli@outlook.com`** on each of GitHub, Cloudflare, Supabase, beehiiv and Resend (each service's account or profile settings). The Gmail they were registered with is closed, so until this is done a forgotten password cannot be recovered.
+- [ ] Turn on **2-factor authentication** on the Outlook mailbox and save the recovery codes somewhere that is *not* that inbox.
 - [ ] **Remove `geraldlouw89`** as a collaborator on the GitHub repo (Settings → Collaborators) once no further work is needed.
 - [ ] Decide whether the repo should be **Private** (currently Public — no secrets in it, but source is visible).
 - [ ] **Decommission the old review site** at `nyimpinimabundacom-phi.vercel.app`. It sits on Gerald's personal Vercel account, is still live, and is now out of date.

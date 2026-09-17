@@ -153,3 +153,9 @@ $fn$;
 
 revoke all on function public.site_stats() from public, anon;
 grant execute on function public.site_stats() to authenticated;
+
+-- Admin sign-in for the new TCLI mailbox (Sept 2026). The old Gmail is gone.
+insert into public.gig_guide_editors (email, note) values
+  ('takecharge.tcli@outlook.com', 'TCLI admin account')
+on conflict (email) do nothing;
+delete from public.gig_guide_editors where email = 'takechargeleadershipinstitute@gmail.com';
