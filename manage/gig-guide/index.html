@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gig guide manager | Take Charge Leadership Institute</title>
+<title>Website manager | Take Charge Leadership Institute</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -170,6 +170,35 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
 .grow{flex:1}
 .confirm{margin-top:12px;padding:14px;background:rgba(180,69,60,.06);box-shadow:inset 0 0 0 1px rgba(180,69,60,.25)}
 .confirm p{font-size:14px;margin-bottom:12px}
+/* Book orders: every order from the website, with status controls. */
+.orders{padding:34px 0 8px}
+.ofilters{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 6px}
+.chip{background:#fff;border:0;box-shadow:inset 0 0 0 1px var(--line);cursor:pointer;padding:9px 13px;font-family:var(--body);
+  font-weight:600;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey)}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;box-shadow:none}
+.chip b{font-weight:600;opacity:.75;margin-left:4px}
+.olist{list-style:none;margin:10px 0 0}
+.orow{background:#fff;border:1px solid var(--line);margin-bottom:8px}
+.orow summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:6px 16px;align-items:center;padding:14px 16px}
+.orow summary::-webkit-details-marker{display:none}
+.orow summary:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
+.oref{font-family:var(--disp);font-size:19px;letter-spacing:.04em;line-height:1}
+.oname{font-weight:600}
+.ometa{font-size:13px;color:var(--grey);grid-column:1/-1}
+.st{font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:5px 9px;white-space:nowrap}
+.st-new,.st-contacted{background:rgba(212,173,102,.25);color:var(--ink)}
+.st-paid{background:var(--ink);color:#fff}
+.st-fulfilled{background:rgba(5,26,82,.08);color:var(--grey)}
+.st-cancelled{background:rgba(180,69,60,.1);color:var(--red)}
+.obody{border-top:1px solid var(--line);padding:14px 16px 16px;display:grid;gap:16px}
+@media(min-width:700px){.obody{grid-template-columns:1fr 1fr}}
+.odl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px;margin:0}
+.odl dt{color:var(--grey);font-size:12.5px}
+.odl dd{margin:0;word-break:break-word}
+.oact .lbl{margin-bottom:8px}
+.obtns{display:flex;flex-wrap:wrap;gap:8px}
+.obtns .btn{padding:11px 14px;font-size:10.5px}
+.ohist{font-size:12.5px;color:var(--grey);margin-top:10px}
 </style>
 </head>
 <body>
@@ -241,6 +270,22 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
         <div class="tip" id="tip" hidden></div>
         <div id="chartTable" hidden></div>
       </div>
+    </section>
+
+    <section class="orders" id="orders" aria-labelledby="ordH">
+      <div class="dash-head">
+        <div>
+          <p class="eyebrow">Books</p>
+          <h2 class="h-disp" id="ordH">Book orders</h2>
+          <p class="muted" id="ordNote" role="status" aria-live="polite">Loading orders…</p>
+        </div>
+        <button class="link" type="button" id="ordRefresh">Refresh</button>
+      </div>
+      <div class="ofilters" id="ordStatus" role="group" aria-label="Filter by status"></div>
+      <div class="ofilters" id="ordBook" role="group" aria-label="Filter by book"></div>
+      <p class="msg ok toast" id="ordToast" role="status" aria-live="polite" hidden></p>
+      <ol class="olist" id="ordList"></ol>
+      <p class="empty" id="ordEmpty" hidden></p>
     </section>
 
     <div class="app-head">
@@ -503,6 +548,7 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
     show('vApp');
     load();
     loadStats();
+    loadOrders();
   }
 
   sb.auth.onAuthStateChange(function (event, session) {
@@ -580,12 +626,12 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
     k.appendChild(tile('Mailing list', nfmt(s.mailing_list), '+' + nfmt(s.mailing_list_7d) + ' in the last 7 days', [
       ['The Institute (TCLI)', s.interest_tcli], ['CEO Nights', s.interest_ceo_nights], ['Books', s.interest_book], ['U-GRIP', s.interest_ugrip]
     ]));
-    k.appendChild(tile('CEO Nights book pre-orders', nfmt(s.preorders), '+' + nfmt(s.preorders_7d) + ' in the last 7 days', [
-      ['Copies reserved', s.preorder_copies], ['Signed copies', s.preorder_signed]
+    k.appendChild(tile('CEO Nights pre-sale orders', nfmt(s.preorders), '+' + nfmt(s.preorders_7d) + ' in the last 7 days', [
+      ['Paid', s.cn_paid], ['Awaiting payment', s.cn_new], ['Paid, not yet sent', s.cn_to_send], ['Signed copies', s.preorder_signed]
     ]));
-    k.appendChild(tile('Take Charge orders paid', nfmt(s.orders_paid), rands(s.orders_paid_cents) + ' received', [
-      ['Copies sold', s.orders_paid_copies], ['Paid, not yet sent', s.orders_to_send]
-    ].concat(s.orders_test ? [['Test orders, not counted', s.orders_test]] : [])));
+    k.appendChild(tile('Take Charge orders', nfmt(s.tc_orders), '+' + nfmt(s.tc_orders_7d) + ' in the last 7 days', [
+      ['Paid', s.tc_paid], ['Awaiting payment', s.tc_new], ['Paid, not yet sent', s.tc_to_send]
+    ]));
     k.appendChild(tile('Upcoming events', nfmt(s.events_upcoming), 'Showing on the gig guide', [
       ['Hidden from the website', s.events_hidden]
     ]));
@@ -890,6 +936,117 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
     render();
     toast('Event deleted.');
   });
+
+  // ── book orders ────────────────────────────────────────────────────────────
+  // public.list_book_orders() and public.set_book_order_status() refuse anyone
+  // not on the editors list (supabase/book_orders_dashboard.sql).
+  var orders = [], oStatus = 'new', oBook = 'all';
+  var ST = { 'new': 'Awaiting payment', contacted: 'Contacted', paid: 'Paid, to send', fulfilled: 'Sent', cancelled: 'Cancelled' };
+  var BOOK = { 'take-charge': 'Take Charge', 'ceo-nights': 'CEO Nights pre-sale' };
+  var DELIV = { johannesburg: 'Delivery, Johannesburg', kzn: 'Delivery, KwaZulu-Natal', collection: 'Collection' };
+  var dt = new Intl.DateTimeFormat('en-ZA', { timeZone: 'Africa/Johannesburg', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+  async function loadOrders() {
+    var res = await sb.rpc('list_book_orders');
+    if (res.error) {
+      console.error('list_book_orders:', res.error);
+      $('ordNote').textContent = 'Orders could not load just now. Try Refresh in a moment.';
+      return;
+    }
+    orders = res.data || [];
+    $('ordNote').textContent = 'Every book order from the website. Match each Yoco payment by name, email and time, then mark it Paid.';
+    renderOrders();
+  }
+  $('ordRefresh').addEventListener('click', function () { loadOrders(); loadStats(); });
+
+  function inStatus(o, f) {
+    if (f === 'all') return true;
+    if (f === 'new') return o.status === 'new' || o.status === 'contacted';
+    return o.status === f;
+  }
+
+  function chips(box, list, current, onPick, countFor) {
+    box.textContent = '';
+    list.forEach(function (c) {
+      var b = el('button', 'chip', c[1]);
+      b.type = 'button';
+      b.setAttribute('aria-pressed', String(c[0] === current));
+      if (countFor) b.appendChild(el('b', null, String(countFor(c[0]))));
+      b.addEventListener('click', function () { onPick(c[0]); });
+      box.appendChild(b);
+    });
+  }
+
+  function renderOrders() {
+    var byBook = orders.filter(function (o) { return oBook === 'all' || o.book === oBook; });
+    chips($('ordStatus'), [['new', 'Awaiting payment'], ['paid', 'Paid, to send'], ['fulfilled', 'Sent'], ['cancelled', 'Cancelled'], ['all', 'All']],
+      oStatus, function (v) { oStatus = v; renderOrders(); },
+      function (v) { return byBook.filter(function (o) { return inStatus(o, v); }).length; });
+    chips($('ordBook'), [['all', 'Both books'], ['take-charge', 'Take Charge'], ['ceo-nights', 'CEO Nights']],
+      oBook, function (v) { oBook = v; renderOrders(); });
+
+    var items = byBook.filter(function (o) { return inStatus(o, oStatus); });
+    var list = $('ordList'); list.textContent = '';
+    $('ordEmpty').hidden = items.length > 0;
+    $('ordEmpty').textContent = 'No orders here.';
+
+    items.forEach(function (o) {
+      var li = el('li'), d = el('details', 'orow'), sm = el('summary');
+      var left = el('div');
+      left.appendChild(el('span', 'oref', o.order_ref || '—'));
+      left.appendChild(document.createTextNode('  '));
+      left.appendChild(el('span', 'oname', [o.title, o.first_name, o.last_name].filter(Boolean).join(' ')));
+      sm.appendChild(left);
+      sm.appendChild(el('span', 'st st-' + o.status, ST[o.status] || o.status));
+      sm.appendChild(el('span', 'ometa', [BOOK[o.book] || o.book, dt.format(new Date(o.created_at)), o.email].join(' · ')));
+      d.appendChild(sm);
+
+      var body = el('div', 'obody');
+      var dl = el('dl', 'odl');
+      [['Email', o.email], ['Phone', o.phone], ['Job title', o.job_title], ['Industry', o.industry],
+       ['Book', BOOK[o.book] || o.book], ['Copies', o.copies],
+       ['Delivery', o.delivery ? DELIV[o.delivery] || o.delivery : (o.book === 'ceo-nights' ? 'To confirm' : '')],
+       ['Address', o.delivery_address], ['Signed', o.signed ? 'Yes' + (o.sign_for ? ', for ' + o.sign_for : '') : 'No'],
+       ['Ordered', dt.format(new Date(o.created_at))]
+      ].forEach(function (r) {
+        if (r[1] == null || r[1] === '') return;
+        dl.appendChild(el('dt', null, r[0])); dl.appendChild(el('dd', null, String(r[1])));
+      });
+      body.appendChild(dl);
+
+      var act = el('div', 'oact');
+      act.appendChild(el('span', 'lbl', 'Change status'));
+      var btns = el('div', 'obtns');
+      [['paid', 'Mark paid'], ['fulfilled', 'Mark sent'], ['contacted', 'Contacted'], ['new', 'Awaiting payment'], ['cancelled', 'Cancel']].forEach(function (c) {
+        if (c[0] === o.status) return;
+        var b = el('button', 'btn' + (c[0] === 'cancelled' ? ' danger' : c[0] === 'paid' || c[0] === 'fulfilled' ? '' : ' line'), c[1]);
+        b.type = 'button';
+        b.addEventListener('click', function () { setStatus(o, c[0], b); });
+        btns.appendChild(b);
+      });
+      act.appendChild(btns);
+      if (o.status_changed_at) {
+        act.appendChild(el('p', 'ohist', 'Last changed ' + dt.format(new Date(o.status_changed_at)) + (o.status_changed_by ? ' by ' + o.status_changed_by : '') + '.'));
+      }
+      body.appendChild(act);
+      d.appendChild(body);
+      li.appendChild(d);
+      list.appendChild(li);
+    });
+  }
+
+  async function setStatus(o, status, btn) {
+    if (status === 'cancelled' && !confirm('Cancel order ' + (o.order_ref || '') + '?')) return;
+    btn.disabled = true;
+    var res = await sb.rpc('set_book_order_status', { p_id: o.id, p_status: status });
+    btn.disabled = false;
+    if (res.error) { console.error('set_book_order_status:', res.error); msg($('ordToast'), friendlyError(res.error), true); return; }
+    Object.assign(o, res.data);
+    msg($('ordToast'), (o.order_ref || 'Order') + ' is now: ' + ST[status] + '.', false);
+    setTimeout(function () { $('ordToast').hidden = true; }, 6000);
+    renderOrders();
+    loadStats();
+  }
 })();
 </script>
 </body>
