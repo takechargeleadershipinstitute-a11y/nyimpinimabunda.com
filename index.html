@@ -1576,11 +1576,12 @@ body{background:var(--off)}
   <div class="mdl-box">
     <button class="mdl-x" type="button" data-cn-close aria-label="Close">&times;</button>
 
-    <form id="cnForm">
+    <form data-steps id="cnForm">
       <p class="mdl-k">CEO Nights</p>
       <h2 class="mdl-h" id="cnH">Be invited to a live recording.</h2>
       <p class="mdl-d">Recordings are small and seats go to the list first. A few details and you are on it.</p>
 
+      <div class="step" data-label="About you">
       <div class="f">
         <label for="cnTitle">Title</label>
         <select id="cnTitle" name="title" autocomplete="honorific-prefix" required><option value="" disabled selected>Choose a title</option><option>Mr</option><option>Ms</option><option>Mrs</option><option>Dr</option><option>Prof</option><option>Adv</option></select>
@@ -1600,6 +1601,8 @@ body{background:var(--off)}
         <input id="cnEmail" name="email" type="email" autocomplete="email" placeholder="name@example.com" required maxlength="254">
       </div>
 
+      </div>
+      <div class="step" data-label="Your work">
       <div class="two">
         <div class="f">
           <label for="cnJob">Job title</label>
@@ -1613,6 +1616,8 @@ body{background:var(--off)}
       <div class="agree">
         <input id="cnAgree" type="checkbox" required>
         <label for="cnAgree">Email me about CEO Nights live recordings and related news. I accept the <a href="/terms/" target="_blank" rel="noopener">terms and privacy notice</a>.</label>
+      </div>
+
       </div>
 
       <div class="mdl-hp" aria-hidden="true">
@@ -1639,11 +1644,12 @@ body{background:var(--off)}
   <div class="mdl-box">
     <button class="mdl-x" type="button" data-bk-close aria-label="Close">&times;</button>
 
-    <form id="bkForm">
+    <form data-steps id="bkForm">
       <p class="mdl-k">The next book · Coming soon</p>
       <h2 class="mdl-h" id="bkH">Pre-order CEO Nights.</h2>
       <p class="mdl-d">Leave your details and the TCLI team will contact you to confirm your order before the book is released.</p>
 
+      <div class="step" data-label="About you">
       <div class="f">
         <label for="bkTitle">Title</label>
         <select id="bkTitle" name="title" autocomplete="honorific-prefix" required><option value="" disabled selected>Choose a title</option><option>Mr</option><option>Ms</option><option>Mrs</option><option>Dr</option><option>Prof</option><option>Adv</option></select>
@@ -1662,6 +1668,8 @@ body{background:var(--off)}
         <label for="bkEmail">Email address</label>
         <input id="bkEmail" name="email" type="email" autocomplete="email" placeholder="name@example.com" required maxlength="254">
       </div>
+      </div>
+      <div class="step" data-label="Your work">
       <div class="two">
         <div class="f">
           <label for="bkJob">Job title</label>
@@ -1672,6 +1680,8 @@ body{background:var(--off)}
           <select id="bkIndustry" name="industry" required><option value="" disabled selected>Choose one</option><option>Agriculture</option><option>Banking and financial services</option><option>Consulting and professional services</option><option>Education</option><option>Energy and utilities</option><option>FMCG and retail</option><option>Government and public sector</option><option>Healthcare and pharmaceuticals</option><option>Insurance</option><option>Legal</option><option>Manufacturing and engineering</option><option>Media and entertainment</option><option>Mining and resources</option><option>Non-profit and NGO</option><option>Property and construction</option><option>Technology and telecoms</option><option>Transport and logistics</option><option>Tourism and hospitality</option><option>Student</option><option>Other</option></select>
         </div>
       </div>
+      </div>
+      <div class="step" data-label="Your order">
       <div class="f">
         <label for="bkPhone">Contact number</label>
         <input id="bkPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="072 123 4567" required maxlength="25">
@@ -1688,6 +1698,8 @@ body{background:var(--off)}
       <div class="agree">
         <input id="bkAgree" type="checkbox" required>
         <label for="bkAgree">Contact me about this pre-order. I accept the <a href="/terms/" target="_blank" rel="noopener">terms and privacy notice</a>.</label>
+      </div>
+
       </div>
 
       <div class="mdl-hp" aria-hidden="true">
@@ -2524,5 +2536,6 @@ window.addEventListener('scroll',s,{passive:true});s();
   setTimeout(update, 400);
 })();
 </script>
+<script src="/assets/steps.js" defer></script>
 </body>
 </html>

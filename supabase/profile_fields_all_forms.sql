@@ -31,3 +31,6 @@ alter table public.book_orders
 --   check (title is not null and job_title is not null and industry is not null) not valid;
 -- alter table public.book_orders    add constraint book_orders_profile_required
 --   check (title is not null and job_title is not null and industry is not null) not valid;
+
+-- Part 1b: the pre-order table uses column-level grants, so the new columns need one.
+grant insert (title, job_title, industry) on public.book_preorders to anon;

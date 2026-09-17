@@ -210,11 +210,12 @@ form.hide{display:none}
   <section class="panel">
     <div class="panel-in">
 
-      <form id="wl" novalidate>
+      <form data-steps id="wl" novalidate>
         <p class="eyebrow">Join the waitlist</p>
         <h2 class="form-h">Put your name down.</h2>
-        <p class="form-d">A few details, under a minute. One list, no spam, and you can leave at any time.</p>
+        <p class="form-d">Two quick steps, under a minute. One list, no spam, and you can leave at any time.</p>
 
+        <div class="step" data-label="About you">
         <div class="field">
           <label for="title">Title</label>
           <select id="title" name="title" autocomplete="honorific-prefix" required>
@@ -243,6 +244,8 @@ form.hide{display:none}
                  placeholder="name@example.com" required maxlength="254">
         </div>
 
+        </div>
+        <div class="step" data-label="Your work">
         <div class="row">
           <div class="field">
             <label for="job">Job title</label>
@@ -290,6 +293,8 @@ form.hide{display:none}
           <p><b>Your rights under POPIA.</b> You may ask to see, correct or delete your information at any time by writing to <a href="mailto:info@takechargeli.co.za">info@takechargeli.co.za</a>. Every email we send carries a one-click unsubscribe link, and unsubscribing removes you from the list entirely.</p>
           <p><a href="/terms/" target="_blank" rel="noopener">Read the full terms and privacy notice</a></p>
         </details>
+
+        </div>
 
         <div class="hp" aria-hidden="true">
           <label for="company">Company</label>
@@ -431,5 +436,6 @@ form.hide{display:none}
   });
 })();
 </script>
+<script src="/assets/steps.js" defer></script>
 </body>
 </html>

@@ -365,7 +365,8 @@ button.go{width:100%}
         <h3>Register your interest</h3>
         <p>Leave your details to hear from the Take Charge Leadership Institute about U-GRIP sessions and opportunities.</p>
 
-        <form id="ugForm" novalidate>
+        <form data-steps id="ugForm" novalidate>
+          <div class="step" data-label="About you">
           <div class="f">
             <label for="ugTitle">Title</label>
             <select id="ugTitle" name="title" autocomplete="honorific-prefix" required><option value="" disabled selected>Choose a title</option><option>Mr</option><option>Ms</option><option>Mrs</option><option>Dr</option><option>Prof</option><option>Adv</option></select>
@@ -384,6 +385,8 @@ button.go{width:100%}
             <label for="ugEmail">Email address</label>
             <input id="ugEmail" name="email" type="email" autocomplete="email" placeholder="name@example.com" required maxlength="254">
           </div>
+          </div>
+          <div class="step" data-label="Your work">
           <div class="two">
             <div class="f">
               <label for="ugJob">Job title</label>
@@ -398,6 +401,8 @@ button.go{width:100%}
             <input id="ugAgree" type="checkbox" required>
             <label for="ugAgree">Email me about U-GRIP. I accept the <a href="/terms/" target="_blank" rel="noopener">terms and privacy notice</a>.</label>
           </div>
+          </div>
+
           <div class="hp" aria-hidden="true"><label for="ugCo">Company</label><input id="ugCo" name="company" type="text" tabindex="-1" autocomplete="off"></div>
           <button class="btn btn-ink go" id="ugGo" type="submit">Register my interest</button>
           <p class="msg" id="ugMsg" role="alert" aria-live="polite"></p>
@@ -510,5 +515,6 @@ document.getElementById('yr').textContent = new Date().getFullYear();
   });
 })();
 </script>
+<script src="/assets/steps.js" defer></script>
 </body>
 </html>
