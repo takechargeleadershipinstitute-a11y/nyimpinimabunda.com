@@ -659,6 +659,11 @@ a{color:inherit}
   font-size:16px;color:var(--ink);background:#fff;border:0;padding:14px 15px;
   box-shadow:inset 0 0 0 1px var(--line)}
 .mdl .f input:focus{outline:0;box-shadow:inset 0 0 0 2px var(--ink)}
+.mdl .f select{width:100%;font-family:var(--body);font-size:16px;color:var(--ink);background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23051A52' stroke-width='1.8'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E") no-repeat right 14px center;
+  border:0;border-radius:0;box-shadow:inset 0 0 0 1px var(--line);padding:13px 38px 13px 14px;appearance:none;-webkit-appearance:none;cursor:pointer}
+.mdl .f select:invalid{color:#A9A296}
+.mdl .f select option{color:var(--ink)}
+.mdl .f select:focus{outline:0;box-shadow:inset 0 0 0 2px var(--ink)}
 .mdl .two{display:grid;gap:14px}
 @media(min-width:460px){.mdl .two{grid-template-columns:1fr 1fr}}
 .mdl .agree{display:flex;gap:10px;align-items:flex-start;margin:16px 0 20px}
@@ -1574,8 +1579,12 @@ body{background:var(--off)}
     <form id="cnForm">
       <p class="mdl-k">CEO Nights</p>
       <h2 class="mdl-h" id="cnH">Be invited to a live recording.</h2>
-      <p class="mdl-d">Recordings are small and seats go to the list first. Three fields and you are on it.</p>
+      <p class="mdl-d">Recordings are small and seats go to the list first. A few details and you are on it.</p>
 
+      <div class="f">
+        <label for="cnTitle">Title</label>
+        <select id="cnTitle" name="title" autocomplete="honorific-prefix" required><option value="" disabled selected>Choose a title</option><option>Mr</option><option>Ms</option><option>Mrs</option><option>Dr</option><option>Prof</option><option>Adv</option></select>
+      </div>
       <div class="two">
         <div class="f">
           <label for="cnFirst">First name</label>
@@ -1591,6 +1600,16 @@ body{background:var(--off)}
         <input id="cnEmail" name="email" type="email" autocomplete="email" placeholder="name@example.com" required maxlength="254">
       </div>
 
+      <div class="two">
+        <div class="f">
+          <label for="cnJob">Job title</label>
+          <input id="cnJob" name="job" type="text" autocomplete="organization-title" placeholder="Your role" required maxlength="120">
+        </div>
+        <div class="f">
+          <label for="cnIndustry">Industry</label>
+          <select id="cnIndustry" name="industry" required><option value="" disabled selected>Choose one</option><option>Agriculture</option><option>Banking and financial services</option><option>Consulting and professional services</option><option>Education</option><option>Energy and utilities</option><option>FMCG and retail</option><option>Government and public sector</option><option>Healthcare and pharmaceuticals</option><option>Insurance</option><option>Legal</option><option>Manufacturing and engineering</option><option>Media and entertainment</option><option>Mining and resources</option><option>Non-profit and NGO</option><option>Property and construction</option><option>Technology and telecoms</option><option>Transport and logistics</option><option>Tourism and hospitality</option><option>Student</option><option>Other</option></select>
+        </div>
+      </div>
       <div class="agree">
         <input id="cnAgree" type="checkbox" required>
         <label for="cnAgree">Email me about CEO Nights live recordings and related news. I accept the <a href="/terms/" target="_blank" rel="noopener">terms and privacy notice</a>.</label>
@@ -1625,6 +1644,10 @@ body{background:var(--off)}
       <h2 class="mdl-h" id="bkH">Pre-order CEO Nights.</h2>
       <p class="mdl-d">Leave your details and the TCLI team will contact you to confirm your order before the book is released.</p>
 
+      <div class="f">
+        <label for="bkTitle">Title</label>
+        <select id="bkTitle" name="title" autocomplete="honorific-prefix" required><option value="" disabled selected>Choose a title</option><option>Mr</option><option>Ms</option><option>Mrs</option><option>Dr</option><option>Prof</option><option>Adv</option></select>
+      </div>
       <div class="two">
         <div class="f">
           <label for="bkFirst">First name</label>
@@ -1638,6 +1661,16 @@ body{background:var(--off)}
       <div class="f">
         <label for="bkEmail">Email address</label>
         <input id="bkEmail" name="email" type="email" autocomplete="email" placeholder="name@example.com" required maxlength="254">
+      </div>
+      <div class="two">
+        <div class="f">
+          <label for="bkJob">Job title</label>
+          <input id="bkJob" name="job" type="text" autocomplete="organization-title" placeholder="Your role" required maxlength="120">
+        </div>
+        <div class="f">
+          <label for="bkIndustry">Industry</label>
+          <select id="bkIndustry" name="industry" required><option value="" disabled selected>Choose one</option><option>Agriculture</option><option>Banking and financial services</option><option>Consulting and professional services</option><option>Education</option><option>Energy and utilities</option><option>FMCG and retail</option><option>Government and public sector</option><option>Healthcare and pharmaceuticals</option><option>Insurance</option><option>Legal</option><option>Manufacturing and engineering</option><option>Media and entertainment</option><option>Mining and resources</option><option>Non-profit and NGO</option><option>Property and construction</option><option>Technology and telecoms</option><option>Transport and logistics</option><option>Tourism and hospitality</option><option>Student</option><option>Other</option></select>
+        </div>
       </div>
       <div class="f">
         <label for="bkPhone">Contact number</label>
@@ -1688,6 +1721,10 @@ body{background:var(--off)}
       <p class="mdl-d">Pay by card on Yoco's secure payment page. Every copy can be signed and personalised by Nyimpini.</p>
       <p class="test-note" id="payTest" hidden><b>Test mode.</b> No real money moves. Pay with the Yoco test card.</p>
 
+      <div class="f">
+        <label for="payTitle">Title</label>
+        <select id="payTitle" name="title" autocomplete="honorific-prefix" required><option value="" disabled selected>Choose a title</option><option>Mr</option><option>Ms</option><option>Mrs</option><option>Dr</option><option>Prof</option><option>Adv</option></select>
+      </div>
       <div class="two">
         <div class="f">
           <label for="payFirst">First name</label>
@@ -1701,6 +1738,16 @@ body{background:var(--off)}
       <div class="f">
         <label for="payEmail">Email address</label>
         <input id="payEmail" name="email" type="email" autocomplete="email" placeholder="name@example.com" required maxlength="254">
+      </div>
+      <div class="two">
+        <div class="f">
+          <label for="payJob">Job title</label>
+          <input id="payJob" name="job" type="text" autocomplete="organization-title" placeholder="Your role" required maxlength="120">
+        </div>
+        <div class="f">
+          <label for="payIndustry">Industry</label>
+          <select id="payIndustry" name="industry" required><option value="" disabled selected>Choose one</option><option>Agriculture</option><option>Banking and financial services</option><option>Consulting and professional services</option><option>Education</option><option>Energy and utilities</option><option>FMCG and retail</option><option>Government and public sector</option><option>Healthcare and pharmaceuticals</option><option>Insurance</option><option>Legal</option><option>Manufacturing and engineering</option><option>Media and entertainment</option><option>Mining and resources</option><option>Non-profit and NGO</option><option>Property and construction</option><option>Technology and telecoms</option><option>Transport and logistics</option><option>Tourism and hospitality</option><option>Student</option><option>Other</option></select>
+        </div>
       </div>
       <div class="f">
         <label for="payPhone">Contact number</label>
@@ -1825,7 +1872,7 @@ var SB = {
     // Keep Tab inside the dialog: a keyboard user must not fall out of a modal
     // into the page behind it.
     if (e.key === 'Tab' && mdl.classList.contains('open')) {
-      var f = mdl.querySelectorAll('button, input, a[href], [tabindex]:not([tabindex="-1"])');
+      var f = mdl.querySelectorAll('button, input, select, a[href], [tabindex]:not([tabindex="-1"])');
       f = [].filter.call(f, function (n) { return n.offsetParent !== null; });
       if (!f.length) return;
       var first = f[0], lastEl = f[f.length - 1];
@@ -1850,6 +1897,12 @@ var SB = {
     if (!first || !lastN) return fail('Please give your first name and surname.');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       return fail('That email address does not look right. Please check it.');
+    var title = document.getElementById('cnTitle').value,
+        job = document.getElementById('cnJob').value.trim(),
+        industry = document.getElementById('cnIndustry').value;
+    if (!title) return fail('Please choose your title.');
+    if (!job) return fail('Please tell us your job title.');
+    if (!industry) return fail('Please choose your industry.');
     if (!document.getElementById('cnAgree').checked)
       return fail('Please tick the box so we know you are happy to hear from us.');
     if (form.company.value) { form.style.display='none'; done.classList.add('show'); return; }
@@ -1861,6 +1914,7 @@ var SB = {
       headers: { 'apikey': SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
       body: JSON.stringify({
         first_name: first, last_name: lastN, email: email.toLowerCase(),
+        title: title, job_title: job, industry: industry,
         interests: ['ceo-nights'], source: 'ceo-nights-dialog'
       })
     })
@@ -1927,7 +1981,7 @@ var SB = {
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && mdl.classList.contains('open')) close();
     if (e.key === 'Tab' && mdl.classList.contains('open')) {
-      var f = mdl.querySelectorAll('button, input, a[href], [tabindex]:not([tabindex="-1"])');
+      var f = mdl.querySelectorAll('button, input, select, a[href], [tabindex]:not([tabindex="-1"])');
       f = [].filter.call(f, function (n) { return n.offsetParent !== null; });
       if (!f.length) return;
       var first = f[0], lastEl = f[f.length - 1];
@@ -1955,6 +2009,12 @@ var SB = {
     if (!first || !lastN) return fail('Please give your first name and surname.');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       return fail('That email address does not look right. Please check it.');
+    var title = document.getElementById('bkTitle').value,
+        job = document.getElementById('bkJob').value.trim(),
+        industry = document.getElementById('bkIndustry').value;
+    if (!title) return fail('Please choose your title.');
+    if (!job) return fail('Please tell us your job title.');
+    if (!industry) return fail('Please choose your industry.');
     // Same rule as the table's check constraint: 9 to 15 digits.
     if (!/^\+?[0-9 ()-]+$/.test(phone) || digits.length < 9 || digits.length > 15)
       return fail('That contact number does not look right. Please check it.');
@@ -1972,6 +2032,7 @@ var SB = {
       body: JSON.stringify({
         book: 'ceo-nights', first_name: first, last_name: lastN,
         email: email.toLowerCase(), phone: phone, copies: copies,
+        title: title, job_title: job, industry: industry,
         signed: form.signed.checked,
         accepted_terms: document.getElementById('bkAgree').checked,
         terms_version: TERMS_VERSION,
@@ -2065,7 +2126,7 @@ var SB = {
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && mdl.classList.contains('open')) close();
     if (e.key === 'Tab' && mdl.classList.contains('open')) {
-      var f = mdl.querySelectorAll('button, input, textarea, a[href], [tabindex]:not([tabindex="-1"])');
+      var f = mdl.querySelectorAll('button, input, select, textarea, a[href], [tabindex]:not([tabindex="-1"])');
       f = [].filter.call(f, function (n) { return n.offsetParent !== null; });
       if (!f.length) return;
       var first = f[0], lastEl = f[f.length - 1];
@@ -2099,6 +2160,12 @@ var SB = {
       return fail('That contact number does not look right. Please check it.');
     if (!(copies >= 1 && copies <= 50))
       return fail('Please choose between 1 and 50 copies. For a bigger order, email info@takechargeli.co.za.');
+    var title = document.getElementById('payTitle').value,
+        job = document.getElementById('payJob').value.trim(),
+        industry = document.getElementById('payIndustry').value;
+    if (!title) return fail('Please choose your title.');
+    if (!job) return fail('Please tell us your job title.');
+    if (!industry) return fail('Please choose your industry.');
     if (!FEES.hasOwnProperty(how)) return fail('Please choose delivery or collection.');
     if (how !== 'collection' && addr.length < 10) return fail('Please give the full delivery address.');
     if (!document.getElementById('payAgree').checked) return fail('Please accept the terms to continue.');
@@ -2112,6 +2179,7 @@ var SB = {
       body: JSON.stringify({
         book: 'take-charge', first_name: first, last_name: lastN,
         email: email.toLowerCase(), phone: phone, copies: copies,
+        title: title, job_title: job, industry: industry,
         delivery: how, delivery_address: how === 'collection' ? null : addr,
         signed: form.signed.checked, sign_for: form.signed.checked ? form.signfor.value.trim() : null,
         accepted_terms: true, terms_version: TERMS_VERSION,

@@ -67,6 +67,8 @@ async function db(path: string, init: RequestInit = {}) {
   });
 }
 
+const TITLES = ["Mr", "Ms", "Mrs", "Dr", "Prof", "Adv"];
+
 const str = (v: unknown) => (typeof v === "string" ? v.trim() : "");
 
 function validate(b: Record<string, unknown>) {
@@ -76,6 +78,9 @@ function validate(b: Record<string, unknown>) {
     last_name: str(b.last_name),
     email: str(b.email).toLowerCase(),
     phone: str(b.phone),
+    title: str(b.title),
+    job_title: str(b.job_title),
+    industry: str(b.industry),
     delivery: str(b.delivery),
     delivery_address: str(b.delivery_address) || null,
     copies: Number(b.copies),
@@ -92,6 +97,9 @@ function validate(b: Record<string, unknown>) {
     return { error: "Please give your first name and surname." };
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(o.email) || o.email.length > 254)
     return { error: "That email address does not look right. Please check it." };
+  if (!TITLES.includes(o.title)) return { error: "Please choose your title." };
+  if (!o.job_title || o.job_title.length > 120) return { error: "Please tell us your job title." };
+  if (!o.industry || o.industry.length > 80) return { error: "Please choose your industry." };
   const digits = o.phone.replace(/\D/g, "");
   if (!/^\+?[0-9 ()-]+$/.test(o.phone) || digits.length < 9 || digits.length > 15)
     return { error: "That contact number does not look right. Please check it." };

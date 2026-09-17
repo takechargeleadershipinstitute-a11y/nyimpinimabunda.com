@@ -49,3 +49,4 @@ node_modules/
 
 # Generated deliverable, rebuilt from HANDOVER.md when it changes
 *.docx
+.claude/

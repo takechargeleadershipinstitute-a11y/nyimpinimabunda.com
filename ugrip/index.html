@@ -174,6 +174,11 @@ form{margin-top:24px}
 .f label{display:block;font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);margin-bottom:7px}
 .f input{width:100%;font-family:var(--body);font-size:16px;color:var(--ink);background:var(--off);border:0;padding:14px 15px;box-shadow:inset 0 0 0 1px var(--line)}
 .f input:focus{outline:0;box-shadow:inset 0 0 0 2px var(--ink)}
+.f select{width:100%;font-family:var(--body);font-size:16px;color:var(--ink);background:var(--off) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23051A52' stroke-width='1.8'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E") no-repeat right 14px center;
+  border:0;border-radius:0;box-shadow:inset 0 0 0 1px var(--line);padding:13px 38px 13px 14px;appearance:none;-webkit-appearance:none;cursor:pointer}
+.f select:invalid{color:#A9A296}
+.f select option{color:var(--ink)}
+.f select:focus{outline:0;box-shadow:inset 0 0 0 2px var(--ink)}
 .agree{display:flex;gap:10px;align-items:flex-start;margin:6px 0 20px}
 .agree input{margin-top:3px;accent-color:var(--ink);width:16px;height:16px;flex:0 0 16px}
 .agree label{font-size:13px;line-height:1.5;color:var(--grey)}
@@ -361,6 +366,10 @@ button.go{width:100%}
         <p>Leave your details to hear from the Take Charge Leadership Institute about U-GRIP sessions and opportunities.</p>
 
         <form id="ugForm" novalidate>
+          <div class="f">
+            <label for="ugTitle">Title</label>
+            <select id="ugTitle" name="title" autocomplete="honorific-prefix" required><option value="" disabled selected>Choose a title</option><option>Mr</option><option>Ms</option><option>Mrs</option><option>Dr</option><option>Prof</option><option>Adv</option></select>
+          </div>
           <div class="two">
             <div class="f">
               <label for="ugFirst">First name</label>
@@ -374,6 +383,16 @@ button.go{width:100%}
           <div class="f">
             <label for="ugEmail">Email address</label>
             <input id="ugEmail" name="email" type="email" autocomplete="email" placeholder="name@example.com" required maxlength="254">
+          </div>
+          <div class="two">
+            <div class="f">
+              <label for="ugJob">Job title</label>
+              <input id="ugJob" name="job" type="text" autocomplete="organization-title" placeholder="Your role" required maxlength="120">
+            </div>
+            <div class="f">
+              <label for="ugIndustry">Industry</label>
+              <select id="ugIndustry" name="industry" required><option value="" disabled selected>Choose one</option><option>Agriculture</option><option>Banking and financial services</option><option>Consulting and professional services</option><option>Education</option><option>Energy and utilities</option><option>FMCG and retail</option><option>Government and public sector</option><option>Healthcare and pharmaceuticals</option><option>Insurance</option><option>Legal</option><option>Manufacturing and engineering</option><option>Media and entertainment</option><option>Mining and resources</option><option>Non-profit and NGO</option><option>Property and construction</option><option>Technology and telecoms</option><option>Transport and logistics</option><option>Tourism and hospitality</option><option>Student</option><option>Other</option></select>
+            </div>
           </div>
           <div class="agree">
             <input id="ugAgree" type="checkbox" required>
@@ -460,13 +479,19 @@ document.getElementById('yr').textContent = new Date().getFullYear();
     var first = form.first.value.trim(), last = form.last.value.trim(), email = form.email.value.trim();
     if (!first || !last) return fail('Please give your first name and surname.');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return fail('That email address does not look right. Please check it.');
+    var title = document.getElementById('ugTitle').value,
+        job = document.getElementById('ugJob').value.trim(),
+        industry = document.getElementById('ugIndustry').value;
+    if (!title) return fail('Please choose your title.');
+    if (!job) return fail('Please tell us your job title.');
+    if (!industry) return fail('Please choose your industry.');
     if (!$('ugAgree').checked) return fail('Please tick the box so we can email you about U-GRIP.');
     if (form.company.value) { form.style.display = 'none'; done.classList.add('show'); return; }
     btn.disabled = true; btn.textContent = 'Sending…';
     fetch(SB.url + '/rest/v1/waitlist', {
       method: 'POST',
       headers: { apikey: SB.key, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
-      body: JSON.stringify({ first_name: first, last_name: last, email: email.toLowerCase(), interests: ['ugrip'], source: 'ugrip-page' })
+      body: JSON.stringify({ first_name: first, last_name: last, email: email.toLowerCase(), title: title, job_title: job, industry: industry, interests: ['ugrip'], source: 'ugrip-page' })
     })
     .then(function (r) {
       // 409: that address is already on the list, which is success for the visitor.
