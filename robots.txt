@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /manage/
+Sitemap: https://nyimpini.com/sitemap.xml
