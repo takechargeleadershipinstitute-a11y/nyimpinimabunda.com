@@ -41,7 +41,7 @@ security definer
 set search_path = ''
 as $fn$
 declare
-  row public.book_preorders;
+  rec public.book_preorders;
 begin
   if not public.is_gig_guide_editor() then
     raise exception 'not allowed' using errcode = '42501';
@@ -54,11 +54,11 @@ begin
          status_changed_at = now(),
          status_changed_by = lower(auth.jwt() ->> 'email')
    where id = p_id
-  returning * into row;
-  if row.id is null then
+  returning * into rec;
+  if rec.id is null then
     raise exception 'order not found' using errcode = 'P0002';
   end if;
-  return row;
+  return rec;
 end;
 $fn$;
 revoke all on function public.set_book_order_status(uuid, text) from public, anon;
