@@ -105,13 +105,18 @@ img{max-width:100%;display:block}
 .field{margin-bottom:18px}
 .field label{display:block;font-size:11px;font-weight:600;letter-spacing:.16em;
   text-transform:uppercase;color:var(--grey);margin-bottom:8px}
-.field input{width:100%;font-family:var(--body);font-size:16px;color:var(--ink);
+.field input,.field select{width:100%;font-family:var(--body);font-size:16px;color:var(--ink);
   background:var(--white);border:0;box-shadow:inset 0 0 0 1px var(--line);
   padding:15px 16px;transition:box-shadow .15s}
 /* Placeholders are INSTRUCTIONS, never sample names. "Nyimpini / Mabunda"
    read as a pre-filled value and people submitted without correcting it. */
 .field input::placeholder{color:#A9A296;opacity:1}
-.field input:focus{outline:0;box-shadow:inset 0 0 0 2px var(--ink)}
+.field select{appearance:none;-webkit-appearance:none;border-radius:0;cursor:pointer;padding-right:40px;
+  background:var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23051A52' stroke-width='1.8'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E") no-repeat right 16px center}
+.field select:invalid{color:#A9A296}
+.field select option{color:var(--ink)}
+.field .opt{text-transform:none;letter-spacing:0;font-weight:400;color:#A9A296}
+.field select:focus,.field input:focus{outline:0;box-shadow:inset 0 0 0 2px var(--ink)}
 .row{display:grid;gap:18px}
 @media(min-width:520px){.row{grid-template-columns:1fr 1fr}}
 
@@ -208,7 +213,17 @@ form.hide{display:none}
       <form id="wl" novalidate>
         <p class="eyebrow">Join the waitlist</p>
         <h2 class="form-h">Put your name down.</h2>
-        <p class="form-d">Three fields, under a minute. One list, no spam, and you can leave at any time.</p>
+        <p class="form-d">A few details, under a minute. One list, no spam, and you can leave at any time.</p>
+
+        <div class="field">
+          <label for="title">Title <span class="opt">(optional)</span></label>
+          <select id="title" name="title" autocomplete="honorific-prefix">
+            <option value="">Choose a title</option>
+            <option>Mr</option><option>Ms</option><option>Mrs</option>
+            <option>Dr</option><option>Prof</option><option>Adv</option>
+            <option>Prefer not to say</option>
+          </select>
+        </div>
 
         <div class="row">
           <div class="field">
@@ -229,6 +244,40 @@ form.hide{display:none}
                  placeholder="name@example.com" required maxlength="254">
         </div>
 
+        <div class="row">
+          <div class="field">
+            <label for="job">Job title</label>
+            <input id="job" name="job" type="text" autocomplete="organization-title"
+                   placeholder="Your role" required maxlength="120">
+          </div>
+          <div class="field">
+            <label for="industry">Industry</label>
+            <select id="industry" name="industry" required>
+              <option value="" disabled selected>Choose an industry</option>
+              <option>Agriculture</option>
+              <option>Banking and financial services</option>
+              <option>Consulting and professional services</option>
+              <option>Education</option>
+              <option>Energy and utilities</option>
+              <option>FMCG and retail</option>
+              <option>Government and public sector</option>
+              <option>Healthcare and pharmaceuticals</option>
+              <option>Insurance</option>
+              <option>Legal</option>
+              <option>Manufacturing and engineering</option>
+              <option>Media and entertainment</option>
+              <option>Mining and resources</option>
+              <option>Non-profit and NGO</option>
+              <option>Property and construction</option>
+              <option>Technology and telecoms</option>
+              <option>Transport and logistics</option>
+              <option>Tourism and hospitality</option>
+              <option>Student</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+
         <div class="terms">
           <input id="agree" name="agree" type="checkbox" required>
           <label for="agree">I agree to receive email from the Take Charge Leadership Institute about the platform launch, CEO Nights live recordings, new books and related news, and I accept the <a href="/terms/" target="_blank" rel="noopener">terms and privacy notice</a>.</label>
@@ -236,7 +285,7 @@ form.hide{display:none}
 
         <details class="legal">
           <summary>Terms and privacy · summary</summary>
-          <p><b>What we collect.</b> Your first name, surname and email address, and nothing else. We do not ask for, or store, any payment or identity information on this page.</p>
+          <p><b>What we collect.</b> Your title (if you give one), first name, surname, email address, job title and industry, and nothing else. Job title and industry help us plan events and content for the right audience. We do not ask for, or store, any payment or identity information on this page.</p>
           <p><b>What we use it for.</b> To tell you when the TCLI platform opens, to invite you to CEO Nights live recordings, and to let you know about new books and Institute news. We do not sell or rent your details to anyone.</p>
           <p><b>Who processes it.</b> Your details are stored by the Institute and managed in beehiiv, our email provider. Both hold data outside South Africa, which POPIA permits where comparable protection applies.</p>
           <p><b>Your rights under POPIA.</b> You may ask to see, correct or delete your information at any time by writing to <a href="mailto:info@takechargeli.co.za">info@takechargeli.co.za</a>. Every email we send carries a one-click unsubscribe link, and unsubscribing removes you from the list entirely.</p>
@@ -323,13 +372,18 @@ form.hide{display:none}
 
     var first = form.first.value.trim(),
         last  = form.last.value.trim(),
-        email = form.email.value.trim();
+        email = form.email.value.trim(),
+        title = form.title.value,
+        job   = form.job.value.trim(),
+        industry = form.industry.value;
 
     if (!first || !last) return fail('Please give your first name and surname.');
     // Deliberately loose: the only reliable test of an address is sending to
     // it, and over-strict patterns reject valid addresses.
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       return fail('That email address does not look right. Please check it.');
+    if (!job) return fail('Please tell us your job title.');
+    if (!industry) return fail('Please choose your industry.');
     if (!form.agree.checked)
       return fail('Please tick the box to confirm you are happy to hear from us.');
 
@@ -351,6 +405,9 @@ form.hide{display:none}
         first_name: first,
         last_name:  last,
         email:      email.toLowerCase(),
+        title:      title || null,
+        job_title:  job,
+        industry:   industry,
         interests:  [interest()],
         source:     'waitlist-page'
       })

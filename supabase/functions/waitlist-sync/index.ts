@@ -21,6 +21,9 @@ interface Row {
   first_name: string;
   last_name: string;
   email: string;
+  title: string | null;
+  job_title: string | null;
+  industry: string | null;
   interests: string[] | null;
   source: string | null;
   created_at: string;
@@ -57,6 +60,12 @@ async function addToBeehiiv(row: Row) {
           { name: "First Name", value: row.first_name },
           { name: "Last Name",  value: row.last_name },
           { name: "Interests",  value: (row.interests ?? []).join(", ") },
+          // Omitted when blank: the CEO Nights dialog does not collect these.
+          ...([
+            ["Title", row.title],
+            ["Job Title", row.job_title],
+            ["Industry", row.industry],
+          ] as const).filter(([, v]) => v).map(([name, value]) => ({ name, value })),
         ],
       }),
     },
@@ -74,7 +83,8 @@ async function notifyTcli(row: Row) {
   const from = env("NOTIFY_FROM");
   if (!key || !to || !from) throw new Error("Resend secrets not set");
 
-  const name = `${row.first_name} ${row.last_name}`.trim();
+  const name = [row.title === "Prefer not to say" ? "" : row.title, row.first_name, row.last_name]
+    .filter(Boolean).join(" ").trim();
   const interests = (row.interests ?? []).join(", ") || "not specified";
 
   const res = await fetch("https://api.resend.com/emails", {
@@ -97,6 +107,8 @@ async function notifyTcli(row: Row) {
           <h2 style="margin:6px 0 18px;color:#051A52">${esc(name)}</h2>
           <table cellpadding="6" style="border-collapse:collapse;font-size:14px">
             <tr><td style="color:#8C8478">Email</td><td><a href="mailto:${esc(row.email)}">${esc(row.email)}</a></td></tr>
+            <tr><td style="color:#8C8478">Job title</td><td>${esc(row.job_title ?? "not given")}</td></tr>
+            <tr><td style="color:#8C8478">Industry</td><td>${esc(row.industry ?? "not given")}</td></tr>
             <tr><td style="color:#8C8478">Interested in</td><td>${esc(interests)}</td></tr>
             <tr><td style="color:#8C8478">Source</td><td>${esc(row.source ?? "website")}</td></tr>
             <tr><td style="color:#8C8478">Signed up</td><td>${esc(row.created_at)}</td></tr>
