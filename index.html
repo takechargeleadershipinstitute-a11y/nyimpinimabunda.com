@@ -1652,9 +1652,9 @@ body{background:var(--off)}
     <button class="mdl-x" type="button" data-bk-close aria-label="Close">&times;</button>
 
     <form data-steps id="bkForm">
-      <p class="mdl-k">The next book · Coming soon</p>
+      <p class="mdl-k">The next book · Pre-sale · R375</p>
       <h2 class="mdl-h" id="bkH">Pre-order CEO Nights.</h2>
-      <p class="mdl-d">Leave your details and the TCLI team will contact you to confirm your order before the book is released.</p>
+      <p class="mdl-d">Leave your details, then pay R375 on Yoco's secure page to reserve your copy. One copy per order.</p>
 
       <div class="step" data-label="About you">
       <div class="f">
@@ -1693,10 +1693,6 @@ body{background:var(--off)}
         <label for="bkPhone">Contact number</label>
         <input id="bkPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="072 123 4567" required maxlength="25">
       </div>
-      <div class="f f-copies">
-        <label for="bkCopies">Number of copies</label>
-        <input id="bkCopies" name="copies" type="number" inputmode="numeric" min="1" max="50" step="1" value="1" required>
-      </div>
 
       <div class="agree">
         <input id="bkSigned" name="signed" type="checkbox">
@@ -1713,7 +1709,7 @@ body{background:var(--off)}
         <label for="bkCo">Company</label><input id="bkCo" name="company" type="text" tabindex="-1" autocomplete="off">
       </div>
 
-      <button class="go" id="bkGo" type="submit">Reserve my copy</button>
+      <button class="go" id="bkGo" type="submit">Continue to payment</button>
       <p class="mdl-msg" id="bkMsg" role="alert" aria-live="polite"></p>
     </form>
 
@@ -1739,7 +1735,7 @@ body{background:var(--off)}
     <form data-steps id="payForm" novalidate>
       <p class="mdl-k">Take Charge · R320</p>
       <h2 class="mdl-h" id="payH">Order your copy.</h2>
-      <p class="mdl-d">Leave your details, then pay on Yoco's secure page. Every copy can be signed and personalised by Nyimpini.</p>
+      <p class="mdl-d">Leave your details, then pay R320 on Yoco's secure page. One copy per order, signed and personalised by Nyimpini if you like.</p>
 
       <div class="step" data-label="About you">
       <div class="f">
@@ -1777,10 +1773,6 @@ body{background:var(--off)}
       <div class="f">
         <label for="payPhone">Contact number</label>
         <input id="payPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="072 123 4567" required maxlength="25">
-      </div>
-      <div class="f f-copies">
-        <label for="payCopies">Number of copies</label>
-        <input id="payCopies" name="copies" type="number" inputmode="numeric" min="1" max="50" step="1" value="1" required>
       </div>
 
       <fieldset class="opts">
@@ -1973,7 +1965,7 @@ var SB = {
    team contacts the buyer. */
 var BOOK_PAY = {
   'take-charge': 'https://pay.yoco.com/r/wDM1Oq',
-  'ceo-nights':  ''            // waiting for the pre-order link from TCLI
+  'ceo-nights':  'https://pay.yoco.com/r/qNNZDp'
 };
 function orderRef(prefix) {
   var A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', out = '', b = new Uint8Array(6);
@@ -2010,7 +2002,7 @@ function payPanel(doneEl, book, ref, first) {
       btn   = document.getElementById('bkGo'),
       msg   = document.getElementById('bkMsg'),
       done  = document.getElementById('bkDone'),
-      LABEL = 'Reserve my copy',
+      LABEL = 'Continue to payment',
       // The "Last updated" date on /terms/. Stored with each order as the record
       // of which terms the visitor accepted, so bump it whenever that page changes.
       TERMS_VERSION = '2026-09-11',
@@ -2065,7 +2057,7 @@ function payPanel(doneEl, book, ref, first) {
         email  = form.email.value.trim(),
         phone  = form.phone.value.trim(),
         digits = phone.replace(/\D/g, ''),
-        copies = parseInt(form.copies.value, 10);
+        copies = 1;   // each Yoco link charges for one copy
 
     if (!first || !lastN) return fail('Please give your first name and surname.');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
@@ -2177,7 +2169,7 @@ function payPanel(doneEl, book, ref, first) {
         email  = form.email.value.trim(),
         phone  = form.phone.value.trim(),
         digits = phone.replace(/\D/g, ''),
-        copies = parseInt(form.copies.value, 10),
+        copies = 1,   // each Yoco link charges for one copy
         how    = delivery(),
         addr   = form.address.value.trim(),
         title  = document.getElementById('payTitle').value,
