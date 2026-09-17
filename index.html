@@ -1973,6 +1973,23 @@ function orderRef(prefix) {
   for (var i = 0; i < 6; i++) out += A[b[i] % A.length];
   return prefix + '-' + out;
 }
+// Saves an order under a new reference. The table has a unique index on
+// order_ref, so a repeat is refused with 409; we then draw another reference
+// and try again. 32^6 (about a billion) references make that very unlikely,
+// but it can never produce two orders with the same reference.
+function saveOrder(prefix, row, tries) {
+  tries = tries || 0;
+  row.order_ref = orderRef(prefix);
+  return fetch(SB.url + '/rest/v1/book_preorders', {
+    method: 'POST',
+    headers: { 'apikey': SB.key, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+    body: JSON.stringify(row)
+  }).then(function (r) {
+    if (r.ok) return row.order_ref;
+    if (r.status === 409 && tries < 4) return saveOrder(prefix, row, tries + 1);
+    return r.text().then(function (t) { throw new Error(t || r.status); });
+  });
+}
 function payPanel(doneEl, book, ref, first) {
   var link = BOOK_PAY[book],
       h = doneEl.querySelector('.mdl-h'), d = doneEl.querySelector('.mdl-d'),
@@ -2077,31 +2094,22 @@ function payPanel(doneEl, book, ref, first) {
       return fail('Please tick the box so we can contact you about your order.');
     if (form.company.value) { form.style.display = 'none'; done.classList.add('show'); return; }
 
-    var ref = orderRef('CN');
     btn.disabled = true; btn.textContent = 'Sending…';
 
-    fetch(SB.url + '/rest/v1/book_preorders', {
-      method: 'POST',
-      headers: { 'apikey': SB.key, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-      body: JSON.stringify({
-        book: 'ceo-nights', order_ref: ref, first_name: first, last_name: lastN,
-        email: email.toLowerCase(), phone: phone, copies: copies,
-        title: title, job_title: job, industry: industry,
-        signed: form.signed.checked,
-        accepted_terms: document.getElementById('bkAgree').checked,
-        terms_version: TERMS_VERSION,
-        source: 'book-preorder-dialog'
-      })
+    saveOrder('CN', {
+      book: 'ceo-nights', first_name: first, last_name: lastN,
+      email: email.toLowerCase(), phone: phone, copies: copies,
+      title: title, job_title: job, industry: industry,
+      signed: form.signed.checked,
+      accepted_terms: document.getElementById('bkAgree').checked,
+      terms_version: TERMS_VERSION,
+      source: 'book-preorder-dialog'
     })
-    .then(function (r) {
-      if (r.ok) {
-        payPanel(done, 'ceo-nights', ref, first);
-        form.style.display = 'none';
-        done.classList.add('show');
-        btn.disabled = false; btn.textContent = LABEL;
-        return;
-      }
-      return r.text().then(function (t) { throw new Error(t || r.status); });
+    .then(function (ref) {
+      payPanel(done, 'ceo-nights', ref, first);
+      form.style.display = 'none';
+      done.classList.add('show');
+      btn.disabled = false; btn.textContent = LABEL;
     })
     .catch(function (err) {
       console.error('book-preorder:', err);
@@ -2192,23 +2200,17 @@ function payPanel(doneEl, book, ref, first) {
     if (!document.getElementById('payAgree').checked) return fail('Please accept the terms to continue.');
     if (form.company.value) return;
 
-    var ref = orderRef('TC');
     btn.disabled = true; btn.textContent = 'Saving your order…';
 
-    fetch(SB.url + '/rest/v1/book_preorders', {
-      method: 'POST',
-      headers: { 'apikey': SB.key, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-      body: JSON.stringify({
-        book: 'take-charge', order_ref: ref,
-        first_name: first, last_name: lastN, email: email.toLowerCase(), phone: phone,
-        title: title, job_title: job, industry: industry, copies: copies,
-        delivery: how, delivery_address: how === 'collection' ? null : addr,
-        signed: form.signed.checked, sign_for: form.signed.checked ? (form.signfor.value.trim() || null) : null,
-        accepted_terms: true, terms_version: TERMS_VERSION, source: 'book-order-dialog'
-      })
+    saveOrder('TC', {
+      book: 'take-charge',
+      first_name: first, last_name: lastN, email: email.toLowerCase(), phone: phone,
+      title: title, job_title: job, industry: industry, copies: copies,
+      delivery: how, delivery_address: how === 'collection' ? null : addr,
+      signed: form.signed.checked, sign_for: form.signed.checked ? (form.signfor.value.trim() || null) : null,
+      accepted_terms: true, terms_version: TERMS_VERSION, source: 'book-order-dialog'
     })
-    .then(function (r) {
-      if (!r.ok) return r.text().then(function (t) { throw new Error(t || r.status); });
+    .then(function (ref) {
       payPanel(done, 'take-charge', ref, first);
       form.style.display = 'none'; done.classList.add('show');
       btn.disabled = false; btn.textContent = LABEL;
