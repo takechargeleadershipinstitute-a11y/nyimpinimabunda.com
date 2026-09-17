@@ -373,7 +373,7 @@ form.hide{display:none}
     var first = form.first.value.trim(),
         last  = form.last.value.trim(),
         email = form.email.value.trim(),
-        title = form.title.value,
+        title = document.getElementById('title').value,
         job   = form.job.value.trim(),
         industry = form.industry.value;
 
@@ -394,23 +394,35 @@ form.hide{display:none}
     btn.disabled = true;
     btn.textContent = 'Joining…';
 
-    fetch(SUPABASE_URL + '/rest/v1/waitlist', {
-      method: 'POST',
-      headers: {
-        'apikey': SUPABASE_ANON,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify({
-        first_name: first,
-        last_name:  last,
-        email:      email.toLowerCase(),
-        title:      title || null,
-        job_title:  job,
-        industry:   industry,
-        interests:  [interest()],
-        source:     'waitlist-page'
-      })
+    var base = {
+      first_name: first,
+      last_name:  last,
+      email:      email.toLowerCase(),
+      interests:  [interest()],
+      source:     'waitlist-page'
+    };
+    var full = Object.assign({ title: title || null, job_title: job, industry: industry }, base);
+
+    function send(body) {
+      return fetch(SUPABASE_URL + '/rest/v1/waitlist', {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_ANON,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(body)
+      });
+    }
+
+    // Safety net: if the database has not yet been given the title/job_title/
+    // industry columns (PGRST204, "column not found"), sign the person up with
+    // the original fields rather than losing them.
+    send(full).then(function (r) {
+      if (r.status !== 400) return r;
+      return r.clone().text().then(function (t) {
+        return /PGRST204|column/i.test(t) ? send(base) : r;
+      });
     })
     .then(function (r) {
       // 409 is the unique constraint on email: they are already signed up,
