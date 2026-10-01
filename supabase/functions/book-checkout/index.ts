@@ -45,6 +45,8 @@ const DELIVERY: Record<string, { name: string; fee: number }> = {
 };
 
 const ORIGINS = [
+  "https://nyimpini.com",
+  "https://www.nyimpini.com",
   "https://nyimpinimabunda-com.pages.dev",
   ...env("SITE_ORIGINS").split(",").map((s) => s.trim().replace(/\/$/, "")).filter(Boolean),
 ];
