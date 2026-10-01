@@ -727,6 +727,7 @@ a{color:inherit}
 .mdl .total b{font-family:var(--disp);font-weight:500;font-size:30px;line-height:1;color:var(--ink)}
 .mdl .test-note{font-size:12.5px;line-height:1.5;padding:10px 12px;margin:-8px 0 20px;background:rgba(212,173,102,.16);
   color:var(--ink);box-shadow:inset 0 0 0 1px rgba(212,173,102,.5)}
+.mdl .sign-list .hint{font-size:12.5px;line-height:1.5;color:var(--grey);margin:-4px 0 12px}
 .mdl .pay-ref{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);margin:4px 0 18px}
 .mdl .pay-ref b{display:block;margin-top:6px;font-family:var(--disp);font-weight:500;font-size:28px;letter-spacing:.06em;color:var(--ink)}
 .mdl a.go.pay-link{display:block;width:100%;box-sizing:border-box;text-align:center;text-decoration:none;font-family:var(--body);font-weight:600;font-size:12px;letter-spacing:.2em;text-transform:uppercase;padding:17px 30px;background:var(--ink);color:#fff}
@@ -1745,8 +1746,9 @@ body{background:var(--off)}
 
       <div class="agree">
         <input id="bkSigned" name="signed" type="checkbox">
-        <label for="bkSigned">I would like my copy signed and personalised by Nyimpini.</label>
+        <label for="bkSigned">I would like my order signed and personalised by Nyimpini.</label>
       </div>
+      <div id="bkSignWrap" class="sign-list" hidden></div>
       <div class="agree">
         <input id="bkAgree" type="checkbox" required>
         <label for="bkAgree">Contact me about this pre-order. I accept the <a href="/terms/" target="_blank" rel="noopener">terms and privacy notice</a>.</label>
@@ -1830,9 +1832,9 @@ body{background:var(--off)}
 
       <fieldset class="opts">
         <legend>Delivery</legend>
-        <label class="opt"><input type="radio" name="delivery" value="delivery" checked> Delivery in South Africa</label>
-        <label class="opt"><input type="radio" name="delivery" value="international"> International delivery</label>
-        <label class="opt"><input type="radio" name="delivery" value="collection"> Collection</label>
+        <label class="opt"><input type="radio" name="delivery" value="delivery" checked> Delivery (local)</label>
+        <label class="opt"><input type="radio" name="delivery" value="international"> Delivery (international)</label>
+        <label class="opt"><input type="radio" name="delivery" value="collection"> Collect</label>
       </fieldset>
       <p class="secure" style="text-align:left;margin:-6px 0 14px">Delivery is not charged now. The TCLI team will contact you to arrange it.</p>
       <div class="f" id="payAddrWrap">
@@ -1842,12 +1844,9 @@ body{background:var(--off)}
 
       <div class="agree">
         <input id="paySigned" name="signed" type="checkbox">
-        <label for="paySigned">Sign and personalise my copy.</label>
+        <label for="paySigned">Sign and personalise my order.</label>
       </div>
-      <div class="f" id="paySignWrap" hidden>
-        <label for="paySignFor">Sign it for</label>
-        <input id="paySignFor" name="signfor" type="text" maxlength="120" placeholder="The name to write in the book">
-      </div>
+      <div id="paySignWrap" class="sign-list" hidden></div>
       <div class="agree">
         <input id="payAgree" type="checkbox" required>
         <label for="payAgree">I accept the <a href="/terms/" target="_blank" rel="noopener">terms and privacy notice</a>.</label>
@@ -2057,6 +2056,38 @@ function placeOrder(prefix, row) {
       });
     }, manual);
 }
+// One "personalise for" box per copy, shown when signing is ticked. Returns a
+// function giving the text to store: a single name for one copy, otherwise
+// "Copy 1: … | Copy 2: …" (blank boxes are saved as "signature only").
+function signList(form, wrap) {
+  function count() { var n = parseInt(form.copies.value, 10); return n >= 1 && n <= 50 ? n : 1; }
+  function render() {
+    var on = form.signed.checked, n = count(), old = [].map.call(wrap.querySelectorAll('input'), function (i) { return i.value; });
+    wrap.hidden = !on;
+    if (!on) return;
+    wrap.textContent = '';
+    var hint = document.createElement('p'); hint.className = 'hint';
+    hint.textContent = n > 1 ? 'Tell us who each copy is for. Leave a box empty for a signature only.' : 'Leave empty for a signature only.';
+    for (var i = 0; i < n; i++) {
+      var f = document.createElement('div'); f.className = 'f';
+      var id = wrap.id + 'N' + i, l = document.createElement('label'), inp = document.createElement('input');
+      l.htmlFor = id; l.textContent = n > 1 ? 'Copy ' + (i + 1) + ': personalise for' : 'Personalise for';
+      inp.id = id; inp.type = 'text'; inp.maxLength = 70; inp.placeholder = 'For example: For Thandi'; inp.value = old[i] || '';
+      f.appendChild(l); f.appendChild(inp); wrap.appendChild(f);
+    }
+    wrap.appendChild(hint);
+  }
+  form.addEventListener('change', render);
+  form.addEventListener('input', function (e) { if (e.target === form.copies) render(); });
+  form.addEventListener('reset', function () { setTimeout(function () { wrap.textContent = ''; render(); }, 0); });
+  render();
+  return function () {
+    if (!form.signed.checked) return null;
+    var v = [].map.call(wrap.querySelectorAll('input'), function (i) { return i.value.trim(); });
+    if (v.length <= 1) return v[0] || null;
+    return v.map(function (x, i) { return 'Copy ' + (i + 1) + ': ' + (x || 'signature only'); }).join(' | ');
+  };
+}
 function manualPanel(doneEl, ref, first) {
   doneEl.querySelector('.mdl-h').textContent = 'Thank you, ' + first + '.';
   doneEl.querySelector('.mdl-d').textContent = 'Your order is saved. The TCLI team will send you a secure Yoco payment link by SMS or email, usually within one working day. Keep the reference below.';
@@ -2079,6 +2110,7 @@ function manualPanel(doneEl, ref, first) {
       msg   = document.getElementById('bkMsg'),
       done  = document.getElementById('bkDone'),
       LABEL = 'Continue to payment',
+      signFor = signList(form, document.getElementById('bkSignWrap')),
       // The "Last updated" date on /terms/. Stored with each order as the record
       // of which terms the visitor accepted, so bump it whenever that page changes.
       TERMS_VERSION = '2026-09-11',
@@ -2159,7 +2191,7 @@ function manualPanel(doneEl, ref, first) {
       book: 'ceo-nights', first_name: first, last_name: lastN,
       email: email.toLowerCase(), phone: phone, copies: copies,
       title: title, job_title: job, industry: industry,
-      signed: form.signed.checked,
+      signed: form.signed.checked, sign_for: signFor(),
       accepted_terms: document.getElementById('bkAgree').checked,
       terms_version: TERMS_VERSION,
       source: 'book-preorder-dialog'
@@ -2196,16 +2228,16 @@ function manualPanel(doneEl, ref, first) {
     document.getElementById('payAddrWrap').hidden = delivery() === 'collection';
     document.getElementById('payAddr').placeholder = delivery() === 'international'
       ? 'Street address, city, postal code and country' : 'Street address, suburb, city and postal code';
-    document.getElementById('paySignWrap').hidden = !form.signed.checked;
   }
   form.addEventListener('change', refresh);
+  var signFor = signList(form, document.getElementById('paySignWrap'));
 
   function open(e) {
     if (e) e.preventDefault();
     last = document.activeElement;
     if (done.classList.contains('show')) { form.reset(); form.style.display = ''; done.classList.remove('show'); }
     // "Get your signed copy" opens the same order with signing ticked.
-    if (e && e.currentTarget && e.currentTarget.hasAttribute('data-signed')) form.signed.checked = true;
+    if (e && e.currentTarget && e.currentTarget.hasAttribute('data-signed')) { form.signed.checked = true; form.dispatchEvent(new Event('change')); }
     refresh();
     mdl.hidden = false; mdl.classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -2257,7 +2289,7 @@ function manualPanel(doneEl, ref, first) {
       return fail('That contact number does not look right. Please check it.');
     if (!(copies >= 1 && copies <= 50))
       return fail('Please choose between 1 and 50 copies. For a bigger order, email info@takechargeli.co.za.');
-    if (['delivery', 'international', 'collection'].indexOf(how) < 0) return fail('Please choose delivery or collection.');
+    if (['delivery', 'international', 'collection'].indexOf(how) < 0) return fail('Please choose delivery or collect.');
     if (how !== 'collection' && addr.length < 10) return fail('Please give the full delivery address.');
     if (!document.getElementById('payAgree').checked) return fail('Please accept the terms to continue.');
     if (form.company.value) return;
@@ -2273,7 +2305,7 @@ function manualPanel(doneEl, ref, first) {
       // order is marked at the start of the address. The admin reads both.
       delivery: how === 'collection' ? 'collection' : 'johannesburg',
       delivery_address: how === 'collection' ? null : (how === 'international' ? '[INTERNATIONAL] ' : '') + addr,
-      signed: form.signed.checked, sign_for: form.signed.checked ? (form.signfor.value.trim() || null) : null,
+      signed: form.signed.checked, sign_for: signFor(),
       accepted_terms: true, terms_version: TERMS_VERSION, source: 'book-order-dialog'
     })
     .then(function (x) {

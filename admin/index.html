@@ -948,12 +948,12 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
   var ST = { 'new': 'Awaiting payment', pending: 'Payment not completed', contacted: 'Contacted', paid: 'Paid, to send', fulfilled: 'Sent', cancelled: 'Cancelled', refunded: 'Refunded' };
   function rand(c) { return 'R' + (c / 100).toLocaleString('en-ZA', { minimumFractionDigits: c % 100 ? 2 : 0 }); }
   var BOOK = { 'take-charge': 'Take Charge', 'ceo-nights': 'CEO Nights pre-sale' };
-  var DELIV = { johannesburg: 'Delivery, South Africa', kzn: 'Delivery, KwaZulu-Natal', collection: 'Collection' };
+  var DELIV = { johannesburg: 'Delivery (local)', kzn: 'Delivery, KwaZulu-Natal', collection: 'Collect' };
   // International orders are marked at the start of the saved address.
   var INTL = /^\[INTERNATIONAL\]\s*/;
   function delivLabel(o) {
     if (!o.delivery) return o.book === 'ceo-nights' ? 'To confirm' : '';
-    if (INTL.test(o.delivery_address || '')) return 'International delivery';
+    if (INTL.test(o.delivery_address || '')) return 'Delivery (international)';
     return DELIV[o.delivery] || o.delivery;
   }
   var dt = new Intl.DateTimeFormat('en-ZA', { timeZone: 'Africa/Johannesburg', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
@@ -1021,7 +1021,7 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
       [['Email', o.email], ['Phone', o.phone], ['Job title', o.job_title], ['Industry', o.industry],
        ['Book', BOOK[o.book] || o.book], ['Copies', o.copies],
        ['Delivery', delivLabel(o)],
-       ['Address', (o.delivery_address || '').replace(INTL, '')], ['Signed', o.signed ? 'Yes' + (o.sign_for ? ', for ' + o.sign_for : '') : 'No'],
+       ['Address', (o.delivery_address || '').replace(INTL, '')], ['Signed', o.signed ? 'Yes' + (o.sign_for ? (/^Copy 1:/.test(o.sign_for) ? '. ' + o.sign_for.split(' | ').join('; ') : ', for ' + o.sign_for) : '') : 'No'],
        ['Ordered', dt.format(new Date(o.created_at))],
        ['Amount', o.amount_cents ? rand(o.amount_cents) : ''],
        ['Paid', o.paid_at ? dt.format(new Date(o.paid_at)) + ', by card on Yoco' : ''],

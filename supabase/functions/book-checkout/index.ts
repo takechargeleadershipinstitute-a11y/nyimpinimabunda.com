@@ -124,7 +124,7 @@ function validate(b: Record<string, unknown>) {
     return { error: "Please give the full delivery address." };
   if (!Number.isInteger(o.copies) || o.copies < 1 || o.copies > 50)
     return { error: "Please choose between 1 and 50 copies." };
-  if (o.sign_for && o.sign_for.length > 120) return { error: "The name to sign for is too long." };
+  if (o.sign_for && o.sign_for.length > 4000) return { error: "The personalisation text is too long." };
   if (!o.signed) o.sign_for = null;
   if (!o.accepted_terms || !o.terms_version || o.terms_version.length > 40)
     return { error: "Please accept the terms to continue." };
