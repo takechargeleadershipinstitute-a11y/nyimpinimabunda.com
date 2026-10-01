@@ -1654,7 +1654,7 @@ body{background:var(--off)}
     <form data-steps id="bkForm">
       <p class="mdl-k">The next book · Pre-sale · R375</p>
       <h2 class="mdl-h" id="bkH">Pre-order CEO Nights.</h2>
-      <p class="mdl-d">Leave your details and the TCLI team will send you a secure Yoco payment link for R375 to reserve your copy. One copy per order.</p>
+      <p class="mdl-d">Leave your details, then pay R375 a copy by card on Yoco's secure page to reserve your order.</p>
 
       <div class="step" data-label="About you">
       <div class="f">
@@ -1693,6 +1693,10 @@ body{background:var(--off)}
         <label for="bkPhone">Contact number</label>
         <input id="bkPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="072 123 4567" required maxlength="25">
       </div>
+      <div class="f f-copies">
+        <label for="bkCopies">Number of copies</label>
+        <input id="bkCopies" name="copies" type="number" inputmode="numeric" min="1" max="50" step="1" value="1" required>
+      </div>
 
       <div class="agree">
         <input id="bkSigned" name="signed" type="checkbox">
@@ -1709,7 +1713,7 @@ body{background:var(--off)}
         <label for="bkCo">Company</label><input id="bkCo" name="company" type="text" tabindex="-1" autocomplete="off">
       </div>
 
-      <button class="go" id="bkGo" type="submit">Place my order</button>
+      <button class="go" id="bkGo" type="submit">Continue to payment</button>
       <p class="mdl-msg" id="bkMsg" role="alert" aria-live="polite"></p>
     </form>
 
@@ -1735,7 +1739,7 @@ body{background:var(--off)}
     <form data-steps id="payForm" novalidate>
       <p class="mdl-k">Take Charge · R320</p>
       <h2 class="mdl-h" id="payH">Order your copy.</h2>
-      <p class="mdl-d">Leave your details and the TCLI team will send you a secure Yoco payment link for R320. One copy per order, signed and personalised by Nyimpini if you like.</p>
+      <p class="mdl-d">Leave your details, then pay R320 a copy by card on Yoco's secure page. Signed and personalised by Nyimpini if you like.</p>
 
       <div class="step" data-label="About you">
       <div class="f">
@@ -1774,6 +1778,10 @@ body{background:var(--off)}
         <label for="payPhone">Contact number</label>
         <input id="payPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="072 123 4567" required maxlength="25">
       </div>
+      <div class="f f-copies">
+        <label for="payCopies">Number of copies</label>
+        <input id="payCopies" name="copies" type="number" inputmode="numeric" min="1" max="50" step="1" value="1" required>
+      </div>
 
       <fieldset class="opts">
         <legend>Delivery</legend>
@@ -1781,7 +1789,7 @@ body{background:var(--off)}
         <label class="opt"><input type="radio" name="delivery" value="kzn"> Delivery in KwaZulu-Natal</label>
         <label class="opt"><input type="radio" name="delivery" value="collection"> Collection</label>
       </fieldset>
-      <p class="secure" style="text-align:left;margin:-6px 0 14px">The TCLI team confirms any delivery fee with you.</p>
+      <p class="secure" style="text-align:left;margin:-6px 0 14px">Delivery is not charged now. The TCLI team will contact you to arrange it.</p>
       <div class="f" id="payAddrWrap">
         <label for="payAddr">Delivery address</label>
         <textarea id="payAddr" name="address" autocomplete="street-address" maxlength="500" placeholder="Street address, suburb, city and postal code"></textarea>
@@ -1806,7 +1814,7 @@ body{background:var(--off)}
         <label for="payCo">Company</label><input id="payCo" name="company" type="text" tabindex="-1" autocomplete="off">
       </div>
 
-      <button class="go" id="payGo" type="submit">Place my order</button>
+      <button class="go" id="payGo" type="submit">Continue to payment</button>
       <p class="secure">Card details go into Yoco's payment page, never into this site.</p>
       <p class="mdl-msg" id="payMsg" role="alert" aria-live="polite"></p>
     </form>
@@ -1957,28 +1965,23 @@ var SB = {
   });
 })();
 
-/* Book payment links (Yoco). The site cannot tell whether someone paid through a
-   link, so every order is saved FIRST with a short reference the buyer sees and
-   keeps; TCLI matches Yoco payments to orders by reference, name, email and time,
-   then moves the order's status to 'paid' in the Supabase dashboard.
-   An empty link means payment is not open yet: the order is still saved and the
-   team contacts the buyer. */
-var BOOK_PAY = {
-  // 1 Oct 2026: both links were single-use Yoco payment requests; the CEO Nights
-  // one closed after its first payment. Empty until TCLI supplies reusable links.
-  'take-charge': '',
-  'ceo-nights':  ''
-};
+/* Book checkout (both books): website -> book-checkout Edge Function -> Yoco.
+
+   The function sets the price, saves the order with its reference and returns a
+   Yoco payment page created for that one order, so card details never touch
+   this site and no buyer can land on someone else's payment. The order is
+   marked paid only by Yoco's signed message to the yoco-webhook function.
+
+   If the checkout is not reachable (for example before the Yoco key is set),
+   the order is still saved to book_preorders and the buyer is told the team
+   will send a payment link, so an order is never lost. */
+var BOOK_FN = SB.url + '/functions/v1/book-checkout';
 function orderRef(prefix) {
   var A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', out = '', b = new Uint8Array(6);
   (window.crypto || window.msCrypto).getRandomValues(b);
   for (var i = 0; i < 6; i++) out += A[b[i] % A.length];
   return prefix + '-' + out;
 }
-// Saves an order under a new reference. The table has a unique index on
-// order_ref, so a repeat is refused with 409; we then draw another reference
-// and try again. 32^6 (about a billion) references make that very unlikely,
-// but it can never produce two orders with the same reference.
 function saveOrder(prefix, row, tries) {
   tries = tries || 0;
   row.order_ref = orderRef(prefix);
@@ -1992,20 +1995,29 @@ function saveOrder(prefix, row, tries) {
     return r.text().then(function (t) { throw new Error(t || r.status); });
   });
 }
-function payPanel(doneEl, book, ref, first) {
-  var link = BOOK_PAY[book],
-      h = doneEl.querySelector('.mdl-h'), d = doneEl.querySelector('.mdl-d'),
-      a = doneEl.querySelector('.pay-link'), r = doneEl.querySelector('.pay-ref b');
-  r.textContent = ref;
-  if (link) {
-    h.textContent = 'Thank you, ' + first + '. Now pay on Yoco.';
-    d.textContent = 'Your details are saved. Pay on Yoco\'s secure page to complete your order. If Yoco asks for a reference or note, use the one below.';
-    a.href = link; a.hidden = false;
-  } else {
-    h.textContent = 'Thank you, ' + first + '.';
-    d.textContent = 'Your order is saved. The TCLI team will send you a secure Yoco payment link by SMS or email, usually within one working day. Keep the reference below.';
-    a.hidden = true;
+// Resolves {redirect: url} when Yoco is ready, {ref: 'TC-…'} when the order was
+// saved for a manual payment link instead, or rejects with a message for the buyer.
+function placeOrder(prefix, row) {
+  function manual() {
+    var copy = {}; for (var k in row) copy[k] = row[k];
+    return saveOrder(prefix, copy).then(function (ref) { return { ref: ref }; });
   }
+  return fetch(BOOK_FN, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(row) })
+    .then(function (r) {
+      if (r.status >= 500) return manual();
+      return r.json().then(function (d) {
+        if (r.ok && d.redirectUrl && /^https:\/\/([a-z0-9-]+\.)*yoco\.com\//i.test(d.redirectUrl)) return { redirect: d.redirectUrl };
+        if (r.status === 400 && d.error) { var e = new Error(d.error); e.forBuyer = true; throw e; }
+        return manual();
+      });
+    }, manual);
+}
+function manualPanel(doneEl, ref, first) {
+  doneEl.querySelector('.mdl-h').textContent = 'Thank you, ' + first + '.';
+  doneEl.querySelector('.mdl-d').textContent = 'Your order is saved. The TCLI team will send you a secure Yoco payment link by SMS or email, usually within one working day. Keep the reference below.';
+  doneEl.querySelector('.pay-ref').hidden = false;
+  doneEl.querySelector('.pay-ref b').textContent = ref;
+  doneEl.querySelector('.pay-link').hidden = true;
 }
 
 /* CEO Nights book pre-order dialog.
@@ -2021,7 +2033,7 @@ function payPanel(doneEl, book, ref, first) {
       btn   = document.getElementById('bkGo'),
       msg   = document.getElementById('bkMsg'),
       done  = document.getElementById('bkDone'),
-      LABEL = 'Place my order',
+      LABEL = 'Continue to payment',
       // The "Last updated" date on /terms/. Stored with each order as the record
       // of which terms the visitor accepted, so bump it whenever that page changes.
       TERMS_VERSION = '2026-09-11',
@@ -2076,7 +2088,7 @@ function payPanel(doneEl, book, ref, first) {
         email  = form.email.value.trim(),
         phone  = form.phone.value.trim(),
         digits = phone.replace(/\D/g, ''),
-        copies = 1;   // each Yoco link charges for one copy
+        copies = parseInt(form.copies.value, 10);
 
     if (!first || !lastN) return fail('Please give your first name and surname.');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
@@ -2098,7 +2110,7 @@ function payPanel(doneEl, book, ref, first) {
 
     btn.disabled = true; btn.textContent = 'Sending…';
 
-    saveOrder('CN', {
+    placeOrder('CN', {
       book: 'ceo-nights', first_name: first, last_name: lastN,
       email: email.toLowerCase(), phone: phone, copies: copies,
       title: title, job_title: job, industry: industry,
@@ -2107,15 +2119,16 @@ function payPanel(doneEl, book, ref, first) {
       terms_version: TERMS_VERSION,
       source: 'book-preorder-dialog'
     })
-    .then(function (ref) {
-      payPanel(done, 'ceo-nights', ref, first);
+    .then(function (x) {
+      if (x.redirect) { btn.textContent = 'Opening secure payment…'; location.href = x.redirect; return; }
+      manualPanel(done, x.ref, first);
       form.style.display = 'none';
       done.classList.add('show');
       btn.disabled = false; btn.textContent = LABEL;
     })
     .catch(function (err) {
       console.error('book-preorder:', err);
-      fail('Something went wrong on our side. Please try again, or email info@takechargeli.co.za.');
+      fail(err && err.forBuyer ? err.message : 'Something went wrong on our side. Please try again, or email info@takechargeli.co.za.');
     });
   });
 })();
@@ -2130,7 +2143,7 @@ function payPanel(doneEl, book, ref, first) {
       btn  = document.getElementById('payGo'),
       msg  = document.getElementById('payMsg'),
       done = document.getElementById('payDone'),
-      LABEL = 'Place my order',
+      LABEL = 'Continue to payment',
       last = null;
 
   function delivery() { var c = form.querySelector('input[name=delivery]:checked'); return c ? c.value : ''; }
@@ -2181,7 +2194,7 @@ function payPanel(doneEl, book, ref, first) {
         email  = form.email.value.trim(),
         phone  = form.phone.value.trim(),
         digits = phone.replace(/\D/g, ''),
-        copies = 1,   // each Yoco link charges for one copy
+        copies = parseInt(form.copies.value, 10),
         how    = delivery(),
         addr   = form.address.value.trim(),
         title  = document.getElementById('payTitle').value,
@@ -2204,7 +2217,7 @@ function payPanel(doneEl, book, ref, first) {
 
     btn.disabled = true; btn.textContent = 'Saving your order…';
 
-    saveOrder('TC', {
+    placeOrder('TC', {
       book: 'take-charge',
       first_name: first, last_name: lastN, email: email.toLowerCase(), phone: phone,
       title: title, job_title: job, industry: industry, copies: copies,
@@ -2212,16 +2225,53 @@ function payPanel(doneEl, book, ref, first) {
       signed: form.signed.checked, sign_for: form.signed.checked ? (form.signfor.value.trim() || null) : null,
       accepted_terms: true, terms_version: TERMS_VERSION, source: 'book-order-dialog'
     })
-    .then(function (ref) {
-      payPanel(done, 'take-charge', ref, first);
+    .then(function (x) {
+      if (x.redirect) { btn.textContent = 'Opening secure payment…'; location.href = x.redirect; return; }
+      manualPanel(done, x.ref, first);
       form.style.display = 'none'; done.classList.add('show');
       btn.disabled = false; btn.textContent = LABEL;
     })
     .catch(function (err) {
       console.error('book-order:', err);
-      fail('Something went wrong on our side. Please try again, or email info@takechargeli.co.za.');
+      fail(err && err.forBuyer ? err.message : 'Something went wrong on our side. Please try again, or email info@takechargeli.co.za.');
     });
   });
+
+  // ── back from Yoco: ?order=<id>&payment=success|cancelled|failed ─────────
+  // Works for both books: the status lookup says which book and reference.
+  var params = new URLSearchParams(location.search),
+      order = params.get('order'), outcome = params.get('payment');
+  if (!order || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(order) || !outcome) return;
+  history.replaceState(null, '', location.pathname + '#book');   // a refresh must not re-run this
+
+  var H = done.querySelector('.mdl-h'), D = done.querySelector('.mdl-d'),
+      tick = done.querySelector('.tick'), refBox = done.querySelector('.pay-ref');
+  function show(title, text, ok, ref) {
+    H.textContent = title; D.textContent = text; tick.hidden = !ok;
+    refBox.hidden = !ref; if (ref) refBox.querySelector('b').textContent = ref;
+    done.querySelector('.pay-link').hidden = true;
+  }
+  form.style.display = 'none'; done.classList.add('show');
+  mdl.hidden = false; mdl.classList.add('open'); document.body.style.overflow = 'hidden';
+
+  if (outcome === 'cancelled') return show('Payment cancelled.', 'Nothing was charged. You can order again whenever you are ready.', false);
+  if (outcome !== 'success') return show('Payment not completed.', 'Nothing was charged. Please try again, or email info@takechargeli.co.za.', false);
+
+  show('Checking your payment.', 'This takes a few seconds.', false);
+  (function poll(n) {
+    fetch(BOOK_FN + '?order=' + order)
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        var what = d.book === 'ceo-nights' ? 'CEO Nights pre-order' : 'order for Take Charge';
+        if (d.status === 'paid' || d.status === 'fulfilled') {
+          return show('Payment received.', 'Thank you' + (d.first_name ? ', ' + d.first_name : '') + '. Your ' + what + ' is confirmed and paid. The TCLI team will contact you to arrange delivery. Keep the reference below.' +
+            (d.mode === 'test' ? ' This was a test payment, so no money moved.' : ''), true, d.order_ref);
+        }
+        if (n < 15) return setTimeout(function () { poll(n + 1); }, 2000);
+        show('Confirming your payment.', 'Yoco is still confirming it. If you do not hear from us within a day, email info@takechargeli.co.za with the reference below.', false, d.order_ref);
+      })
+      .catch(function () { if (n < 15) setTimeout(function () { poll(n + 1); }, 2000); });
+  })(0);
 })();
 
 /* Upcoming Events card: the next three dates from the gig guide.

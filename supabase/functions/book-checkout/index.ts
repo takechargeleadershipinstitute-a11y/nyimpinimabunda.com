@@ -1,4 +1,4 @@
-// Take Charge book checkout: website -> Supabase -> Yoco
+// Book checkout (Take Charge and CEO Nights pre-sale): website -> Supabase -> Yoco
 //
 // POST  The order form posts here. This function, not the browser, sets the
 //       price, saves the order as 'pending' in public.book_orders, asks Yoco for
@@ -26,10 +26,21 @@ const env = (k: string) => Deno.env.get(k) ?? "";
 // R120, collection free), charged once per order.
 const BOOKS: Record<string, { name: string; price: number }> = {
   "take-charge": { name: "Take Charge: Life Lessons on the Road to CEO", price: 32000 },
+  "ceo-nights": { name: "CEO Nights (pre-sale)", price: 37500 },
 };
+const REF_PREFIX: Record<string, string> = { "take-charge": "TC", "ceo-nights": "CN" };
+
+// Short reference the buyer sees: TC-XXXXXX / CN-XXXXXX. The table has a unique
+// index on it, so a clash is refused and we draw again.
+function orderRef(book: string) {
+  const A = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const b = crypto.getRandomValues(new Uint8Array(6));
+  return REF_PREFIX[book] + "-" + Array.from(b, (x) => A[x % A.length]).join("");
+}
 const DELIVERY: Record<string, { name: string; fee: number }> = {
-  johannesburg: { name: "Delivery: Johannesburg", fee: 9000 },
-  kzn: { name: "Delivery: KwaZulu-Natal", fee: 12000 },
+  // No delivery fee is charged online (TCLI, 1 Oct 2026); it is arranged afterwards.
+  johannesburg: { name: "Delivery: Johannesburg", fee: 0 },
+  kzn: { name: "Delivery: KwaZulu-Natal", fee: 0 },
   collection: { name: "Collection", fee: 0 },
 };
 
@@ -81,7 +92,7 @@ function validate(b: Record<string, unknown>) {
     title: str(b.title),
     job_title: str(b.job_title),
     industry: str(b.industry),
-    delivery: str(b.delivery),
+    delivery: str(b.delivery) || null as string | null,
     delivery_address: str(b.delivery_address) || null,
     copies: Number(b.copies),
     signed: b.signed === true,
@@ -103,8 +114,10 @@ function validate(b: Record<string, unknown>) {
   const digits = o.phone.replace(/\D/g, "");
   if (!/^\+?[0-9 ()-]+$/.test(o.phone) || digits.length < 9 || digits.length > 15)
     return { error: "That contact number does not look right. Please check it." };
-  if (!DELIVERY[o.delivery]) return { error: "Please choose delivery or collection." };
-  if (o.delivery === "collection") o.delivery_address = null;
+  // CEO Nights is a pre-sale: delivery is arranged when the book is released.
+  if (o.book === "ceo-nights") { o.delivery = null; o.delivery_address = null; }
+  else if (!o.delivery || !DELIVERY[o.delivery]) return { error: "Please choose delivery or collection." };
+  else if (o.delivery === "collection") o.delivery_address = null;
   else if (!o.delivery_address || o.delivery_address.length < 10 || o.delivery_address.length > 500)
     return { error: "Please give the full delivery address." };
   if (!Number.isInteger(o.copies) || o.copies < 1 || o.copies > 50)
@@ -124,7 +137,7 @@ Deno.serve(async (req) => {
   if (req.method === "GET") {
     const id = new URL(req.url).searchParams.get("order") ?? "";
     if (!UUID.test(id)) return reply(origin, 400, { error: "Bad order id." });
-    const r = await db(`book_orders?id=eq.${id}&select=status,mode`);
+    const r = await db(`book_orders?id=eq.${id}&select=status,mode,order_ref,book,first_name`);
     const rows = r.ok ? await r.json() : [];
     if (!rows.length) return reply(origin, 404, { error: "Order not found." });
     return reply(origin, 200, rows[0]);
@@ -145,21 +158,26 @@ Deno.serve(async (req) => {
   if (v.error || !v.order) return reply(origin, 400, { error: v.error });
 
   const book = BOOKS[v.order.book];
-  const delivery = DELIVERY[v.order.delivery];
+  const delivery = v.order.delivery ? DELIVERY[v.order.delivery] : { name: "", fee: 0 };
   const amount = book.price * v.order.copies + delivery.fee;
 
   // 1. Save the order first, so no attempt to pay is ever lost.
-  const ins = await db("book_orders", {
-    method: "POST",
-    headers: { Prefer: "return=representation" },
-    body: JSON.stringify({
-      ...v.order,
-      unit_price_cents: book.price,
-      delivery_fee_cents: delivery.fee,
-      amount_cents: amount,
-      mode,
-    }),
-  });
+  let ins: Response = new Response(null, { status: 500 });
+  for (let attempt = 0; attempt < 5; attempt++) {
+    ins = await db("book_orders", {
+      method: "POST",
+      headers: { Prefer: "return=representation" },
+      body: JSON.stringify({
+        ...v.order,
+        order_ref: orderRef(v.order.book),
+        unit_price_cents: book.price,
+        delivery_fee_cents: delivery.fee,
+        amount_cents: amount,
+        mode,
+      }),
+    });
+    if (ins.status !== 409) break;   // 409 = that reference is taken; draw another
+  }
   if (!ins.ok) {
     console.error("book-checkout insert:", ins.status, await ins.text());
     return reply(origin, 500, { error: "We could not start your order. Please try again." });
@@ -184,7 +202,7 @@ Deno.serve(async (req) => {
       cancelUrl: back("cancelled"),
       failureUrl: back("failed"),
       externalId: order.id,
-      metadata: { orderId: order.id, book: v.order.book },
+      metadata: { orderId: order.id, orderRef: order.order_ref, book: v.order.book },
       lineItems: [
         {
           displayName: book.name + (v.order.signed ? " (signed)" : ""),
@@ -214,5 +232,5 @@ Deno.serve(async (req) => {
     body: JSON.stringify({ checkout_id: checkout.id }),
   });
 
-  return reply(origin, 200, { orderId: order.id, redirectUrl: checkout.redirectUrl, mode });
+  return reply(origin, 200, { orderId: order.id, orderRef: order.order_ref, redirectUrl: checkout.redirectUrl, mode });
 });

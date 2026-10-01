@@ -186,10 +186,10 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
 .oname{font-weight:600}
 .ometa{font-size:13px;color:var(--grey);grid-column:1/-1}
 .st{font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:5px 9px;white-space:nowrap}
-.st-new,.st-contacted{background:rgba(212,173,102,.25);color:var(--ink)}
+.st-new,.st-contacted,.st-pending{background:rgba(212,173,102,.25);color:var(--ink)}
 .st-paid{background:var(--ink);color:#fff}
 .st-fulfilled{background:rgba(5,26,82,.08);color:var(--grey)}
-.st-cancelled{background:rgba(180,69,60,.1);color:var(--red)}
+.st-cancelled,.st-refunded{background:rgba(180,69,60,.1);color:var(--red)}
 .obody{border-top:1px solid var(--line);padding:14px 16px 16px;display:grid;gap:16px}
 @media(min-width:700px){.obody{grid-template-columns:1fr 1fr}}
 .odl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px;margin:0}
@@ -941,27 +941,31 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
   // public.list_book_orders() and public.set_book_order_status() refuse anyone
   // not on the editors list (supabase/book_orders_dashboard.sql).
   var orders = [], oStatus = 'new', oBook = 'all';
-  var ST = { 'new': 'Awaiting payment', contacted: 'Contacted', paid: 'Paid, to send', fulfilled: 'Sent', cancelled: 'Cancelled' };
+  var ST = { 'new': 'Awaiting payment', pending: 'Payment not completed', contacted: 'Contacted', paid: 'Paid, to send', fulfilled: 'Sent', cancelled: 'Cancelled', refunded: 'Refunded' };
+  function rand(c) { return 'R' + (c / 100).toLocaleString('en-ZA', { minimumFractionDigits: c % 100 ? 2 : 0 }); }
   var BOOK = { 'take-charge': 'Take Charge', 'ceo-nights': 'CEO Nights pre-sale' };
   var DELIV = { johannesburg: 'Delivery, Johannesburg', kzn: 'Delivery, KwaZulu-Natal', collection: 'Collection' };
   var dt = new Intl.DateTimeFormat('en-ZA', { timeZone: 'Africa/Johannesburg', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 
   async function loadOrders() {
-    var res = await sb.rpc('list_book_orders');
+    var res = await sb.rpc('list_all_book_orders');
+    // Before supabase/book_checkout_both_books.sql has run, fall back to the older list.
+    if (res.error && /PGRST202|Could not find/i.test((res.error.code || '') + ' ' + (res.error.message || ''))) res = await sb.rpc('list_book_orders');
     if (res.error) {
-      console.error('list_book_orders:', res.error);
+      console.error('list_all_book_orders:', res.error);
       $('ordNote').textContent = 'Orders could not load just now. Try Refresh in a moment.';
       return;
     }
     orders = res.data || [];
-    $('ordNote').textContent = 'Every book order from the website. Match each Yoco payment by name, email and time, then mark it Paid.';
+    $('ordNote').textContent = 'Every book order from the website. Orders paid by card are marked Paid automatically by Yoco.';
     renderOrders();
   }
   $('ordRefresh').addEventListener('click', function () { loadOrders(); loadStats(); });
 
   function inStatus(o, f) {
     if (f === 'all') return true;
-    if (f === 'new') return o.status === 'new' || o.status === 'contacted';
+    if (f === 'new') return o.status === 'new' || o.status === 'contacted' || o.status === 'pending';
+    if (f === 'cancelled') return o.status === 'cancelled' || o.status === 'refunded';
     return o.status === f;
   }
 
@@ -997,7 +1001,7 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
       left.appendChild(document.createTextNode('  '));
       left.appendChild(el('span', 'oname', [o.title, o.first_name, o.last_name].filter(Boolean).join(' ')));
       sm.appendChild(left);
-      sm.appendChild(el('span', 'st st-' + o.status, ST[o.status] || o.status));
+      sm.appendChild(el('span', 'st st-' + o.status, (o.mode === 'test' ? 'TEST · ' : '') + (ST[o.status] || o.status)));
       sm.appendChild(el('span', 'ometa', [BOOK[o.book] || o.book, dt.format(new Date(o.created_at)), o.email].join(' · ')));
       d.appendChild(sm);
 
@@ -1007,7 +1011,10 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
        ['Book', BOOK[o.book] || o.book], ['Copies', o.copies],
        ['Delivery', o.delivery ? DELIV[o.delivery] || o.delivery : (o.book === 'ceo-nights' ? 'To confirm' : '')],
        ['Address', o.delivery_address], ['Signed', o.signed ? 'Yes' + (o.sign_for ? ', for ' + o.sign_for : '') : 'No'],
-       ['Ordered', dt.format(new Date(o.created_at))]
+       ['Ordered', dt.format(new Date(o.created_at))],
+       ['Amount', o.amount_cents ? rand(o.amount_cents) : ''],
+       ['Paid', o.paid_at ? dt.format(new Date(o.paid_at)) + ', by card on Yoco' : ''],
+       ['Payment', o.src === 'yoco' ? (o.mode === 'test' ? 'Yoco checkout, TEST mode (no money moved)' : 'Yoco checkout') : 'Manual payment link']
       ].forEach(function (r) {
         if (r[1] == null || r[1] === '') return;
         dl.appendChild(el('dt', null, r[0])); dl.appendChild(el('dd', null, String(r[1])));
@@ -1017,7 +1024,10 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
       var act = el('div', 'oact');
       act.appendChild(el('span', 'lbl', 'Change status'));
       var btns = el('div', 'obtns');
-      [['paid', 'Mark paid'], ['fulfilled', 'Mark sent'], ['contacted', 'Contacted'], ['new', 'Awaiting payment'], ['cancelled', 'Cancel']].forEach(function (c) {
+      // Checkout orders are marked paid by Yoco; the manual button is only a backstop.
+      (o.src === 'yoco'
+        ? [['fulfilled', 'Mark sent'], ['paid', o.status === 'fulfilled' ? 'Back to: to send' : 'Mark paid manually'], ['refunded', 'Refunded'], ['cancelled', 'Cancel']]
+        : [['paid', 'Mark paid'], ['fulfilled', 'Mark sent'], ['contacted', 'Contacted'], ['new', 'Awaiting payment'], ['cancelled', 'Cancel']]).forEach(function (c) {
         if (c[0] === o.status) return;
         var b = el('button', 'btn' + (c[0] === 'cancelled' ? ' danger' : c[0] === 'paid' || c[0] === 'fulfilled' ? '' : ' line'), c[1]);
         b.type = 'button';
