@@ -1830,14 +1830,14 @@ body{background:var(--off)}
 
       <fieldset class="opts">
         <legend>Delivery</legend>
-        <label class="opt"><input type="radio" name="delivery" value="johannesburg" checked> Delivery in Johannesburg</label>
-        <label class="opt"><input type="radio" name="delivery" value="kzn"> Delivery in KwaZulu-Natal</label>
+        <label class="opt"><input type="radio" name="delivery" value="delivery" checked> Delivery in South Africa</label>
+        <label class="opt"><input type="radio" name="delivery" value="international"> International delivery</label>
         <label class="opt"><input type="radio" name="delivery" value="collection"> Collection</label>
       </fieldset>
       <p class="secure" style="text-align:left;margin:-6px 0 14px">Delivery is not charged now. The TCLI team will contact you to arrange it.</p>
       <div class="f" id="payAddrWrap">
         <label for="payAddr">Delivery address</label>
-        <textarea id="payAddr" name="address" autocomplete="street-address" maxlength="500" placeholder="Street address, suburb, city and postal code"></textarea>
+        <textarea id="payAddr" name="address" autocomplete="street-address" maxlength="480" placeholder="Street address, suburb, city and postal code"></textarea>
       </div>
 
       <div class="agree">
@@ -2194,6 +2194,8 @@ function manualPanel(doneEl, ref, first) {
   function delivery() { var c = form.querySelector('input[name=delivery]:checked'); return c ? c.value : ''; }
   function refresh() {
     document.getElementById('payAddrWrap').hidden = delivery() === 'collection';
+    document.getElementById('payAddr').placeholder = delivery() === 'international'
+      ? 'Street address, city, postal code and country' : 'Street address, suburb, city and postal code';
     document.getElementById('paySignWrap').hidden = !form.signed.checked;
   }
   form.addEventListener('change', refresh);
@@ -2255,7 +2257,7 @@ function manualPanel(doneEl, ref, first) {
       return fail('That contact number does not look right. Please check it.');
     if (!(copies >= 1 && copies <= 50))
       return fail('Please choose between 1 and 50 copies. For a bigger order, email info@takechargeli.co.za.');
-    if (['johannesburg', 'kzn', 'collection'].indexOf(how) < 0) return fail('Please choose delivery or collection.');
+    if (['delivery', 'international', 'collection'].indexOf(how) < 0) return fail('Please choose delivery or collection.');
     if (how !== 'collection' && addr.length < 10) return fail('Please give the full delivery address.');
     if (!document.getElementById('payAgree').checked) return fail('Please accept the terms to continue.');
     if (form.company.value) return;
@@ -2266,7 +2268,11 @@ function manualPanel(doneEl, ref, first) {
       book: 'take-charge',
       first_name: first, last_name: lastN, email: email.toLowerCase(), phone: phone,
       title: title, job_title: job, industry: industry, copies: copies,
-      delivery: how, delivery_address: how === 'collection' ? null : addr,
+      // Stored with the database's original delivery values until its rule is
+      // widened: any delivery is saved as 'johannesburg', and an international
+      // order is marked at the start of the address. The admin reads both.
+      delivery: how === 'collection' ? 'collection' : 'johannesburg',
+      delivery_address: how === 'collection' ? null : (how === 'international' ? '[INTERNATIONAL] ' : '') + addr,
       signed: form.signed.checked, sign_for: form.signed.checked ? (form.signfor.value.trim() || null) : null,
       accepted_terms: true, terms_version: TERMS_VERSION, source: 'book-order-dialog'
     })

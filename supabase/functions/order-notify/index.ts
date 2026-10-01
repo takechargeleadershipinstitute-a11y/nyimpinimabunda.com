@@ -50,7 +50,7 @@ const STATUS: Record<string, string> = {
   cancelled: "Cancelled",
 };
 const DELIVERY: Record<string, string> = {
-  johannesburg: "Delivery, Johannesburg",
+  johannesburg: "Delivery, South Africa",
   kzn: "Delivery, KwaZulu-Natal",
   collection: "Collection",
 };
