@@ -1276,7 +1276,7 @@ body{background:var(--off)}
         <p data-i18n="book.signed.d">Every copy ordered here can be signed and personalised by Nyimpini.</p>
       </div>
       <div class="acts">
-        <a class="cta" href="https://pay.yoco.com/r/wDM1Oq" target="_blank" rel="noopener" data-pay-open data-i18n="book.cta1">Buy the book · R320</a>
+        <a class="cta" href="mailto:info@takechargeli.co.za?subject=Take%20Charge%20order" data-pay-open data-i18n="book.cta1">Buy the book · R320</a>
         <a class="cta line" data-pay-open data-signed href="mailto:info@takechargeli.co.za?subject=Signed%20copy%20of%20Take%20Charge&amp;body=Hello%20TCLI%20team%2C%0A%0AI%20would%20like%20a%20signed%20copy%20of%20Take%20Charge.%0A%0AName%3A%0ADelivery%20address%3A%0ANumber%20of%20copies%3A%0ATo%20be%20signed%20for%20(name)%3A%0A%0AThank%20you." data-i18n="book.cta3">Get your signed copy</a>
         <a class="textlink" href="#contact" data-i18n="book.cta2">Bulk &amp; corporate purchases</a>
       </div>
@@ -1654,7 +1654,7 @@ body{background:var(--off)}
     <form data-steps id="bkForm">
       <p class="mdl-k">The next book · Pre-sale · R375</p>
       <h2 class="mdl-h" id="bkH">Pre-order CEO Nights.</h2>
-      <p class="mdl-d">Leave your details, then pay R375 on Yoco's secure page to reserve your copy. One copy per order.</p>
+      <p class="mdl-d">Leave your details and the TCLI team will send you a secure Yoco payment link for R375 to reserve your copy. One copy per order.</p>
 
       <div class="step" data-label="About you">
       <div class="f">
@@ -1709,7 +1709,7 @@ body{background:var(--off)}
         <label for="bkCo">Company</label><input id="bkCo" name="company" type="text" tabindex="-1" autocomplete="off">
       </div>
 
-      <button class="go" id="bkGo" type="submit">Continue to payment</button>
+      <button class="go" id="bkGo" type="submit">Place my order</button>
       <p class="mdl-msg" id="bkMsg" role="alert" aria-live="polite"></p>
     </form>
 
@@ -1735,7 +1735,7 @@ body{background:var(--off)}
     <form data-steps id="payForm" novalidate>
       <p class="mdl-k">Take Charge · R320</p>
       <h2 class="mdl-h" id="payH">Order your copy.</h2>
-      <p class="mdl-d">Leave your details, then pay R320 on Yoco's secure page. One copy per order, signed and personalised by Nyimpini if you like.</p>
+      <p class="mdl-d">Leave your details and the TCLI team will send you a secure Yoco payment link for R320. One copy per order, signed and personalised by Nyimpini if you like.</p>
 
       <div class="step" data-label="About you">
       <div class="f">
@@ -1806,7 +1806,7 @@ body{background:var(--off)}
         <label for="payCo">Company</label><input id="payCo" name="company" type="text" tabindex="-1" autocomplete="off">
       </div>
 
-      <button class="go" id="payGo" type="submit">Continue to payment</button>
+      <button class="go" id="payGo" type="submit">Place my order</button>
       <p class="secure">Card details go into Yoco's payment page, never into this site.</p>
       <p class="mdl-msg" id="payMsg" role="alert" aria-live="polite"></p>
     </form>
@@ -1964,8 +1964,10 @@ var SB = {
    An empty link means payment is not open yet: the order is still saved and the
    team contacts the buyer. */
 var BOOK_PAY = {
-  'take-charge': 'https://pay.yoco.com/r/wDM1Oq',
-  'ceo-nights':  'https://pay.yoco.com/r/qNNZDp'
+  // 1 Oct 2026: both links were single-use Yoco payment requests; the CEO Nights
+  // one closed after its first payment. Empty until TCLI supplies reusable links.
+  'take-charge': '',
+  'ceo-nights':  ''
 };
 function orderRef(prefix) {
   var A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', out = '', b = new Uint8Array(6);
@@ -2001,7 +2003,7 @@ function payPanel(doneEl, book, ref, first) {
     a.href = link; a.hidden = false;
   } else {
     h.textContent = 'Thank you, ' + first + '.';
-    d.textContent = 'Your pre-order is saved. Payment opens soon, and the TCLI team will contact you with the link before the book is released.';
+    d.textContent = 'Your order is saved. The TCLI team will send you a secure Yoco payment link by SMS or email, usually within one working day. Keep the reference below.';
     a.hidden = true;
   }
 }
@@ -2019,7 +2021,7 @@ function payPanel(doneEl, book, ref, first) {
       btn   = document.getElementById('bkGo'),
       msg   = document.getElementById('bkMsg'),
       done  = document.getElementById('bkDone'),
-      LABEL = 'Continue to payment',
+      LABEL = 'Place my order',
       // The "Last updated" date on /terms/. Stored with each order as the record
       // of which terms the visitor accepted, so bump it whenever that page changes.
       TERMS_VERSION = '2026-09-11',
@@ -2128,7 +2130,7 @@ function payPanel(doneEl, book, ref, first) {
       btn  = document.getElementById('payGo'),
       msg  = document.getElementById('payMsg'),
       done = document.getElementById('payDone'),
-      LABEL = 'Continue to payment',
+      LABEL = 'Place my order',
       last = null;
 
   function delivery() { var c = form.querySelector('input[name=delivery]:checked'); return c ? c.value : ''; }
