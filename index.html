@@ -92,6 +92,25 @@ a{color:inherit}
 .nav .links a{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;color:var(--ink);opacity:.75}
 .nav .links a:hover{opacity:1;color:var(--amber)}
 .nav .cta{padding:13px 22px;font-size:11px}
+/* Phone and tablet menu: the section links are hidden below 1080px, so a menu
+   button opens them as a full-screen panel. */
+.burger{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;background:none;border:0;cursor:pointer;color:var(--ink);padding:0}
+.burger svg{width:26px;height:26px}
+@media(min-width:1080px){.burger{display:none}}
+.mnav{position:fixed;inset:0;z-index:80;background:var(--dark);color:#fff;display:flex;flex-direction:column;padding:22px 32px 34px;
+  opacity:0;visibility:hidden;transition:opacity .22s ease,visibility .22s}
+.mnav.open{opacity:1;visibility:visible}
+@media(prefers-reduced-motion:reduce){.mnav{transition:none}}
+.mnav-top{display:flex;justify-content:space-between;align-items:center}
+.mnav-top img{height:28px;width:auto;display:block}
+.mnav-x{width:44px;height:44px;background:none;border:0;color:#fff;cursor:pointer;font-size:34px;line-height:1;padding:0}
+.mnav ul{list-style:none;margin:auto 0;padding:18px 0;overflow-y:auto}
+.mnav li a{display:block;padding:9px 0;font-family:var(--disp);font-weight:500;text-transform:uppercase;font-size:clamp(28px,7.5vw,40px);line-height:1.08;
+  color:#fff;text-decoration:none}
+.mnav li a:hover,.mnav li a:focus-visible{color:var(--amber)}
+.mnav-cta{display:block;text-align:center;text-decoration:none;font-weight:600;font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+  padding:17px 20px;background:var(--amber);color:var(--ink)}
+@media(max-width:420px){.mnav{padding:18px 20px 26px}}
 /* Language switcher — a native <select> so it works on every device with no JS menu to break */
 .nav-right{display:flex;align-items:center;gap:14px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
@@ -856,8 +875,30 @@ body{background:var(--off)}
   </div>
   <div class="nav-right">
     <a class="cta" href="#contact" data-i18n="nav.enquiries">Enquiries</a>
+    <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mnav">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
   </div>
 </nav>
+
+<div class="mnav" id="mnav" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="mnav-top">
+    <img src="assets/nm-logo-white.png" alt="Nyimpini Mabunda">
+    <button class="mnav-x" id="mnavX" type="button" aria-label="Close menu">&times;</button>
+  </div>
+  <ul>
+    <li><a href="#roles">About</a></li>
+    <li><a href="#story">The Story</a></li>
+    <li><a href="#nights">Broadcasting</a></li>
+    <li><a href="#institute">Institute</a></li>
+    <li><a href="#book">Books</a></li>
+    <li><a href="#impact">Impact</a></li>
+    <li><a href="/ugrip/">U-GRIP</a></li>
+    <li><a href="#events">Events</a></li>
+    <li><a href="#contact">Enquiries</a></li>
+  </ul>
+  <a class="mnav-cta" href="#book">Buy the books</a>
+</div>
 
 <header class="hero" id="top">
   <div class="wrap">
@@ -2411,6 +2452,29 @@ function manualPanel(doneEl, ref, first) {
   }
   apply();
   if (mq.addEventListener) mq.addEventListener('change', apply);
+})();
+/* Phone menu: open, close, trap focus, close on link tap or Escape. */
+(function(){
+  var m=document.getElementById('mnav'),b=document.getElementById('burger');
+  if(!m||!b)return;
+  function set(open){
+    m.classList.toggle('open',open);b.setAttribute('aria-expanded',String(open));
+    document.body.style.overflow=open?'hidden':'';
+    if(open)document.getElementById('mnavX').focus();else b.focus();
+  }
+  b.addEventListener('click',function(){set(true);});
+  document.getElementById('mnavX').addEventListener('click',function(){set(false);});
+  m.addEventListener('click',function(e){if(e.target.closest('a')){m.classList.remove('open');b.setAttribute('aria-expanded','false');document.body.style.overflow='';}});
+  document.addEventListener('keydown',function(e){
+    if(!m.classList.contains('open'))return;
+    if(e.key==='Escape')return set(false);
+    if(e.key==='Tab'){
+      var f=m.querySelectorAll('button,a[href]'),first=f[0],last=f[f.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+      else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+    }
+  });
+  window.addEventListener('resize',function(){if(window.innerWidth>=1080&&m.classList.contains('open'))set(false);});
 })();
 var nav=document.getElementById('nav');
 function s(){nav.classList.toggle('solid',window.scrollY>50);}
