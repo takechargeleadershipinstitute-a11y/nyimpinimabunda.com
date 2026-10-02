@@ -139,7 +139,12 @@ Deno.serve(async (req) => {
     console.log("yoco-webhook: no order for checkout", checkoutId);
     return json(200, { ok: true, ignored: "unknown checkout" });
   }
-  if (order.status !== "pending") return json(200, { ok: true, already: order.status });
+  // A payment is the truth. An order someone cancelled in the admin and that was
+  // then paid anyway must still become paid, or money arrives with no paid order.
+  if (order.status !== "pending" && order.status !== "cancelled") {
+    console.log("yoco-webhook: payment for order already", order.status, order.id);
+    return json(200, { ok: true, already: order.status });
+  }
 
   if (p.amount !== order.amount_cents || p.currency !== "ZAR" || (p.mode && p.mode !== order.mode)) {
     const note = `payment ${p.id} did not match: amount ${p.amount} ${p.currency} mode ${p.mode}`;
@@ -149,10 +154,11 @@ Deno.serve(async (req) => {
   }
 
   // Only a pending order moves to paid, so Yoco's retries are harmless.
-  await db(`book_orders?id=eq.${order.id}&status=eq.pending`, {
+  await db(`book_orders?id=eq.${order.id}&status=in.(pending,cancelled)`, {
     method: "PATCH",
     body: JSON.stringify({ status: "paid", payment_id: p.id ?? null, paid_at: new Date().toISOString(), last_error: null }),
   });
 
+  console.log("yoco-webhook: order marked paid", order.id, "was", order.status);
   return json(200, { ok: true, orderId: order.id, status: "paid", mode: verifiedMode });
 });
