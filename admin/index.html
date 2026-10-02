@@ -1010,7 +1010,7 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
     function by(list, book) { return list.filter(function (o) { return o.book === book; }); }
     var paid = real.filter(function (o) { return o.status === 'paid' || o.status === 'fulfilled'; }),
         wait = real.filter(function (o) { return o.status === 'new' || o.status === 'contacted' || o.status === 'pending'; }),
-        card = paid.filter(function (o) { return o.src === 'yoco'; });
+        card = paid.filter(function (o) { return o.src === 'yoco' && o.paid_at; });   // paid_at is set only by Yoco's confirmation
     function moneyTile(label, list, detail, extra) {
       var t = el('div', 'kpi');
       t.appendChild(el('span', 'l', label));
