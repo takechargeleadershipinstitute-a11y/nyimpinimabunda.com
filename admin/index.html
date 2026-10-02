@@ -285,8 +285,10 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
         </div>
         <button class="link" type="button" id="ordRefresh">Refresh</button>
       </div>
+      <div class="kpis" id="money" hidden></div>
       <div class="ofilters" id="ordStatus" role="group" aria-label="Filter by status"></div>
       <div class="ofilters" id="ordBook" role="group" aria-label="Filter by book"></div>
+      <p style="margin:12px 0 0"><button class="link" type="button" id="ordCopy">Copy email addresses</button></p>
       <p class="msg ok toast" id="ordToast" role="status" aria-live="polite" hidden></p>
       <ol class="olist" id="ordList"></ol>
       <p class="empty" id="ordEmpty" hidden></p>
@@ -516,6 +518,7 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
     if (error.code === '23514') {
       if (/ends_on/.test(m)) return "The end date can't be before the start date.";
       if (/link/.test(m)) return 'The event link must start with https://';
+      if (/profile_required/.test(m)) return 'This older order is missing its title, job title or industry, so the database refused the change. Tell the developer.';
       return 'One of the fields is too long or not in the right format. Please check and try again.';
     }
     if (error.code === 'PGRST301' || /JWT/i.test(m)) return 'Your sign-in has expired. Please refresh the page and sign in again.';
@@ -944,7 +947,7 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
   // ── book orders ────────────────────────────────────────────────────────────
   // public.list_book_orders() and public.set_book_order_status() refuse anyone
   // not on the editors list (supabase/book_orders_dashboard.sql).
-  var orders = [], oStatus = 'new', oBook = 'all';
+  var orders = [], shown = [], oStatus = 'new', oBook = 'all';
   var ST = { 'new': 'Awaiting payment', pending: 'Payment not completed', contacted: 'Contacted', paid: 'Paid, to send', fulfilled: 'Sent', cancelled: 'Cancelled', refunded: 'Refunded' };
   function rand(c) { return 'R' + (c / 100).toLocaleString('en-ZA', { minimumFractionDigits: c % 100 ? 2 : 0 }); }
   var BOOK = { 'take-charge': 'Take Charge', 'ceo-nights': 'CEO Nights pre-sale' };
@@ -992,7 +995,46 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
     });
   }
 
+  // Money summary, worked out from the orders themselves. A card order uses the
+  // amount Yoco charged; an order without one (older, or paid by link) is valued
+  // at the book's price times copies. Cancelled, refunded, test-mode and
+  // @example.com orders are left out.
+  var PRICE = { 'take-charge': 32000, 'ceo-nights': 37500 };
+  function worth(o) { return o.amount_cents || (PRICE[o.book] || 0) * (o.copies || 1); }
+  function renderMoney() {
+    var real = orders.filter(function (o) {
+      return o.mode !== 'test' && !/@example\.com$/i.test(o.email || '') && o.status !== 'cancelled' && o.status !== 'refunded';
+    });
+    function sum(list) { return list.reduce(function (t, o) { return t + worth(o); }, 0); }
+    function copies(list) { return list.reduce(function (t, o) { return t + (o.copies || 1); }, 0); }
+    function by(list, book) { return list.filter(function (o) { return o.book === book; }); }
+    var paid = real.filter(function (o) { return o.status === 'paid' || o.status === 'fulfilled'; }),
+        wait = real.filter(function (o) { return o.status === 'new' || o.status === 'contacted' || o.status === 'pending'; }),
+        card = paid.filter(function (o) { return o.src === 'yoco'; });
+    function moneyTile(label, list, detail, extra) {
+      var t = el('div', 'kpi');
+      t.appendChild(el('span', 'l', label));
+      t.appendChild(el('span', 'v', rand(sum(list))));
+      t.appendChild(el('span', 'd', detail));
+      var ul = el('ul');
+      [['Take Charge', by(list, 'take-charge')], ['CEO Nights', by(list, 'ceo-nights')]].concat(extra || []).forEach(function (r) {
+        var li = el('li'); li.appendChild(el('span', null, r[0]));
+        li.appendChild(el('b', null, typeof r[1] === 'string' ? r[1] : rand(sum(r[1])) + ' · ' + copies(r[1]) + (copies(r[1]) === 1 ? ' copy' : ' copies')));
+        ul.appendChild(li);
+      });
+      t.appendChild(ul);
+      return t;
+    }
+    var m = $('money'); m.textContent = '';
+    m.appendChild(moneyTile('Money received', paid, paid.length + (paid.length === 1 ? ' paid order' : ' paid orders'),
+      [['Confirmed by Yoco (card)', rand(sum(card))], ['Marked paid by hand', rand(sum(paid) - sum(card))]]));
+    m.appendChild(moneyTile('Awaiting payment', wait, wait.length + (wait.length === 1 ? ' order' : ' orders') + ' not yet paid'));
+    m.appendChild(moneyTile('If everyone pays', paid.concat(wait), 'Received plus awaiting payment'));
+    m.hidden = false;
+  }
+
   function renderOrders() {
+    renderMoney();
     var byBook = orders.filter(function (o) { return oBook === 'all' || o.book === oBook; });
     chips($('ordStatus'), [['new', 'Awaiting payment'], ['paid', 'Paid, to send'], ['fulfilled', 'Sent'], ['cancelled', 'Cancelled'], ['all', 'All']],
       oStatus, function (v) { oStatus = v; renderOrders(); },
@@ -1001,6 +1043,9 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
       oBook, function (v) { oBook = v; renderOrders(); });
 
     var items = byBook.filter(function (o) { return inStatus(o, oStatus); });
+    shown = items;
+    var uniq = {}; items.forEach(function (o) { if (o.email) uniq[o.email.toLowerCase()] = 1; });
+    $('ordCopy').textContent = 'Copy email addresses (' + Object.keys(uniq).length + ')';
     var list = $('ordList'); list.textContent = '';
     $('ordEmpty').hidden = items.length > 0;
     $('ordEmpty').textContent = 'No orders here.';
@@ -1055,6 +1100,16 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
       list.appendChild(li);
     });
   }
+
+  // Copies the email addresses of the orders currently listed (the chosen
+  // filters), one per person, ready to paste into the Bcc line of an email.
+  $('ordCopy').addEventListener('click', async function () {
+    var uniq = {}; shown.forEach(function (o) { if (o.email) uniq[o.email.toLowerCase()] = 1; });
+    var text = Object.keys(uniq).join('; ');
+    if (!text) return msg($('ordToast'), 'No orders in this list.', true);
+    try { await navigator.clipboard.writeText(text); msg($('ordToast'), Object.keys(uniq).length + ' email addresses copied. Paste them into the Bcc line of your email.', false); }
+    catch (e) { window.prompt('Copy these addresses (Ctrl+C):', text); }
+  });
 
   async function setStatus(o, status, btn) {
     if (status === 'cancelled' && !confirm('Cancel order ' + (o.order_ref || '') + '?')) return;

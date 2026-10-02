@@ -50,3 +50,4 @@ node_modules/
 # Generated deliverable, rebuilt from HANDOVER.md when it changes
 *.docx
 .claude/
+supabase/import_earlier_orders.sql
