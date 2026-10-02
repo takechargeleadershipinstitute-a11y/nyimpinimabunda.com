@@ -727,6 +727,20 @@ a{color:inherit}
 .mdl .total b{font-family:var(--disp);font-weight:500;font-size:30px;line-height:1;color:var(--ink)}
 .mdl .test-note{font-size:12.5px;line-height:1.5;padding:10px 12px;margin:-8px 0 20px;background:rgba(212,173,102,.16);
   color:var(--ink);box-shadow:inset 0 0 0 1px rgba(212,173,102,.5)}
+.mdl .two-fixed{grid-template-columns:1fr 104px}
+.mdl .two-half{grid-template-columns:1fr 1fr;gap:10px}
+.mdl .seg{border:0;padding:0;margin:0 0 16px}
+.mdl .seg legend{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);margin-bottom:8px}
+.mdl .seg-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mdl .seg label{position:relative;display:block;cursor:pointer}
+.mdl .seg input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.mdl .seg span{display:block;text-align:center;padding:12px 6px 11px;background:#fff;box-shadow:inset 0 0 0 1px var(--line);
+  font-size:14px;font-weight:600;color:var(--ink);line-height:1.2}
+.mdl .seg small{display:block;margin-top:3px;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
+.mdl .seg input:checked+span{background:var(--ink);color:#fff;box-shadow:none}
+.mdl .seg input:checked+span small{color:var(--amber)}
+.mdl .seg input:focus-visible+span{outline:2px solid var(--amber);outline-offset:2px}
+.mdl .note{font-size:12.5px;line-height:1.5;color:var(--grey);margin:-2px 0 14px}
 .mdl .sign-list .hint{font-size:12.5px;line-height:1.5;color:var(--grey);margin:-4px 0 12px}
 .mdl .pay-ref{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);margin:4px 0 18px}
 .mdl .pay-ref b{display:block;margin-top:6px;font-family:var(--disp);font-weight:500;font-size:28px;letter-spacing:.06em;color:var(--ink)}
@@ -1700,7 +1714,7 @@ body{background:var(--off)}
     <form data-steps id="bkForm">
       <p class="mdl-k">The next book · Pre-sale · R375</p>
       <h2 class="mdl-h" id="bkH">Pre-order CEO Nights.</h2>
-      <p class="mdl-d">Leave your details, then pay R375 a copy by card on Yoco's secure page to reserve your order.</p>
+      <p class="mdl-d">Leave your details, then pay R375 a copy by card on Yoco's secure page.</p>
 
       <div class="step" data-label="About you">
       <div class="f">
@@ -1735,13 +1749,15 @@ body{background:var(--off)}
       </div>
       </div>
       <div class="step" data-label="Your order">
-      <div class="f">
-        <label for="bkPhone">Contact number</label>
-        <input id="bkPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="072 123 4567" required maxlength="25">
-      </div>
-      <div class="f f-copies">
-        <label for="bkCopies">Number of copies</label>
-        <input id="bkCopies" name="copies" type="number" inputmode="numeric" min="1" max="50" step="1" value="1" required>
+      <div class="two two-fixed">
+        <div class="f">
+          <label for="bkPhone">Contact number</label>
+          <input id="bkPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="072 123 4567" required maxlength="25">
+        </div>
+        <div class="f">
+          <label for="bkCopies">Copies</label>
+          <input id="bkCopies" name="copies" type="number" inputmode="numeric" min="1" max="50" step="1" value="1" required>
+        </div>
       </div>
 
       <div class="agree">
@@ -1749,6 +1765,47 @@ body{background:var(--off)}
         <label for="bkSigned">I would like my order signed and personalised by Nyimpini.</label>
       </div>
       <div id="bkSignWrap" class="sign-list" hidden></div>
+      </div>
+      <div class="step" data-label="Delivery">
+      <fieldset class="seg">
+        <legend>How would you like to receive it?</legend>
+        <div class="seg-row">
+          <label><input type="radio" name="delivery" value="delivery" checked><span>Delivery<small>Local</small></span></label>
+          <label><input type="radio" name="delivery" value="international"><span>Delivery<small>International</small></span></label>
+          <label><input type="radio" name="delivery" value="collection"><span>Collect<small>In person</small></span></label>
+        </div>
+      </fieldset>
+      <div id="bkAddrWrap">
+        <div class="f">
+          <label for="bkStreet">Street address</label>
+          <input id="bkStreet" type="text" autocomplete="address-line1" maxlength="120" placeholder="House or unit number and street">
+        </div>
+        <div class="two two-half">
+          <div class="f">
+            <label for="bkSuburb">Suburb</label>
+            <input id="bkSuburb" type="text" autocomplete="address-line2" maxlength="60" placeholder="Suburb">
+          </div>
+          <div class="f">
+            <label for="bkCity">City</label>
+            <input id="bkCity" type="text" autocomplete="address-level2" maxlength="60" placeholder="City">
+          </div>
+        </div>
+        <div class="two two-half">
+          <div class="f">
+            <label for="bkProvince" id="bkProvinceL">Province</label>
+            <input id="bkProvince" type="text" autocomplete="address-level1" maxlength="60" placeholder="Province">
+          </div>
+          <div class="f">
+            <label for="bkPostal">Postal code</label>
+            <input id="bkPostal" type="text" autocomplete="postal-code" maxlength="12" placeholder="Code">
+          </div>
+        </div>
+        <div class="f" id="bkCountryWrap" hidden>
+          <label for="bkCountry">Country</label>
+          <input id="bkCountry" type="text" autocomplete="country-name" maxlength="60" placeholder="Country">
+        </div>
+      </div>
+      <p class="note" id="bkDelNote">Delivery is not charged now. The TCLI team will contact you to arrange it.</p>
       <div class="agree">
         <input id="bkAgree" type="checkbox" required>
         <label for="bkAgree">Contact me about this pre-order. I accept the <a href="/terms/" target="_blank" rel="noopener">terms and privacy notice</a>.</label>
@@ -1821,25 +1878,15 @@ body{background:var(--off)}
       </div>
       </div>
       <div class="step" data-label="Your order">
-      <div class="f">
-        <label for="payPhone">Contact number</label>
-        <input id="payPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="072 123 4567" required maxlength="25">
-      </div>
-      <div class="f f-copies">
-        <label for="payCopies">Number of copies</label>
-        <input id="payCopies" name="copies" type="number" inputmode="numeric" min="1" max="50" step="1" value="1" required>
-      </div>
-
-      <fieldset class="opts">
-        <legend>Delivery</legend>
-        <label class="opt"><input type="radio" name="delivery" value="delivery" checked> Delivery (local)</label>
-        <label class="opt"><input type="radio" name="delivery" value="international"> Delivery (international)</label>
-        <label class="opt"><input type="radio" name="delivery" value="collection"> Collect</label>
-      </fieldset>
-      <p class="secure" style="text-align:left;margin:-6px 0 14px">Delivery is not charged now. The TCLI team will contact you to arrange it.</p>
-      <div class="f" id="payAddrWrap">
-        <label for="payAddr">Delivery address</label>
-        <textarea id="payAddr" name="address" autocomplete="street-address" maxlength="480" placeholder="Street address, suburb, city and postal code"></textarea>
+      <div class="two two-fixed">
+        <div class="f">
+          <label for="payPhone">Contact number</label>
+          <input id="payPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="072 123 4567" required maxlength="25">
+        </div>
+        <div class="f">
+          <label for="payCopies">Copies</label>
+          <input id="payCopies" name="copies" type="number" inputmode="numeric" min="1" max="50" step="1" value="1" required>
+        </div>
       </div>
 
       <div class="agree">
@@ -1847,6 +1894,47 @@ body{background:var(--off)}
         <label for="paySigned">Sign and personalise my order.</label>
       </div>
       <div id="paySignWrap" class="sign-list" hidden></div>
+      </div>
+      <div class="step" data-label="Delivery">
+      <fieldset class="seg">
+        <legend>How would you like to receive it?</legend>
+        <div class="seg-row">
+          <label><input type="radio" name="delivery" value="delivery" checked><span>Delivery<small>Local</small></span></label>
+          <label><input type="radio" name="delivery" value="international"><span>Delivery<small>International</small></span></label>
+          <label><input type="radio" name="delivery" value="collection"><span>Collect<small>In person</small></span></label>
+        </div>
+      </fieldset>
+      <div id="payAddrWrap">
+        <div class="f">
+          <label for="payStreet">Street address</label>
+          <input id="payStreet" type="text" autocomplete="address-line1" maxlength="120" placeholder="House or unit number and street">
+        </div>
+        <div class="two two-half">
+          <div class="f">
+            <label for="paySuburb">Suburb</label>
+            <input id="paySuburb" type="text" autocomplete="address-line2" maxlength="60" placeholder="Suburb">
+          </div>
+          <div class="f">
+            <label for="payCity">City</label>
+            <input id="payCity" type="text" autocomplete="address-level2" maxlength="60" placeholder="City">
+          </div>
+        </div>
+        <div class="two two-half">
+          <div class="f">
+            <label for="payProvince" id="payProvinceL">Province</label>
+            <input id="payProvince" type="text" autocomplete="address-level1" maxlength="60" placeholder="Province">
+          </div>
+          <div class="f">
+            <label for="payPostal">Postal code</label>
+            <input id="payPostal" type="text" autocomplete="postal-code" maxlength="12" placeholder="Code">
+          </div>
+        </div>
+        <div class="f" id="payCountryWrap" hidden>
+          <label for="payCountry">Country</label>
+          <input id="payCountry" type="text" autocomplete="country-name" maxlength="60" placeholder="Country">
+        </div>
+      </div>
+      <p class="note" id="payDelNote">Delivery is not charged now. The TCLI team will contact you to arrange it.</p>
       <div class="agree">
         <input id="payAgree" type="checkbox" required>
         <label for="payAgree">I accept the <a href="/terms/" target="_blank" rel="noopener">terms and privacy notice</a>.</label>
@@ -2088,6 +2176,50 @@ function signList(form, wrap) {
     return v.map(function (x, i) { return 'Copy ' + (i + 1) + ': ' + (x || 'signature only'); }).join(' | ');
   };
 }
+// Delivery step, shared by both book forms: Local / International / Collect and
+// the address, one field at a time. Returns check() (a message for the buyer, or
+// '') and value() (what to store). The address is stored as one block of lines.
+// The database keeps its original delivery values, so any delivery is saved as
+// 'johannesburg' and an international one is marked at the start of the address;
+// the admin reads both and shows "Delivery (local)" / "Delivery (international)".
+function deliveryStep(form, pre) {
+  var $ = function (k) { return document.getElementById(pre + k); };
+  function how() { var c = form.querySelector('input[name=delivery]:checked'); return c ? c.value : ''; }
+  function refresh() {
+    var h = how(), intl = h === 'international';
+    $('AddrWrap').hidden = h === 'collection';
+    $('CountryWrap').hidden = !intl;
+    $('ProvinceL').textContent = intl ? 'State or region' : 'Province';
+    $('Province').placeholder = intl ? 'State' : 'Province';
+    $('DelNote').textContent = h === 'collection'
+      ? 'The TCLI team will contact you to arrange collection.'
+      : 'Delivery is not charged now. The TCLI team will contact you to arrange it.';
+  }
+  form.addEventListener('change', refresh);
+  form.addEventListener('reset', function () { setTimeout(refresh, 0); });
+  refresh();
+  function v(k) { return $(k).value.trim(); }
+  return {
+    refresh: refresh,
+    check: function () {
+      var h = how();
+      if (['delivery', 'international', 'collection'].indexOf(h) < 0) return 'Please choose delivery or collect.';
+      if (h === 'collection') return '';
+      if (v('Street').length < 3) { $('Street').focus(); return 'Please give your street address.'; }
+      if (!v('City')) { $('City').focus(); return 'Please give your city or town.'; }
+      if (!v('Postal')) { $('Postal').focus(); return 'Please give your postal code.'; }
+      if (h === 'international' && !v('Country')) { $('Country').focus(); return 'Please give your country.'; }
+      return '';
+    },
+    value: function () {
+      var h = how();
+      if (h === 'collection') return { delivery: 'collection', delivery_address: null };
+      var lines = [v('Street'), v('Suburb'), [v('City'), v('Province'), v('Postal')].filter(Boolean).join(', '),
+                   h === 'international' ? v('Country') : 'South Africa'].filter(Boolean);
+      return { delivery: 'johannesburg', delivery_address: (h === 'international' ? '[INTERNATIONAL] ' : '') + lines.join('\n') };
+    }
+  };
+}
 function manualPanel(doneEl, ref, first) {
   doneEl.querySelector('.mdl-h').textContent = 'Thank you, ' + first + '.';
   doneEl.querySelector('.mdl-d').textContent = 'Your order is saved. The TCLI team will send you a secure Yoco payment link by SMS or email, usually within one working day. Keep the reference below.';
@@ -2111,6 +2243,7 @@ function manualPanel(doneEl, ref, first) {
       done  = document.getElementById('bkDone'),
       LABEL = 'Continue to payment',
       signFor = signList(form, document.getElementById('bkSignWrap')),
+      deliv = deliveryStep(form, 'bk'),
       // The "Last updated" date on /terms/. Stored with each order as the record
       // of which terms the visitor accepted, so bump it whenever that page changes.
       TERMS_VERSION = '2026-09-11',
@@ -2181,6 +2314,8 @@ function manualPanel(doneEl, ref, first) {
       return fail('That contact number does not look right. Please check it.');
     if (!(copies >= 1 && copies <= 50))
       return fail('Please choose between 1 and 50 copies. For a bigger order, email info@takechargeli.co.za.');
+    var dErr = deliv.check(); if (dErr) return fail(dErr);
+    var dv = deliv.value();
     if (!document.getElementById('bkAgree').checked)
       return fail('Please tick the box so we can contact you about your order.');
     if (form.company.value) { form.style.display = 'none'; done.classList.add('show'); return; }
@@ -2191,6 +2326,7 @@ function manualPanel(doneEl, ref, first) {
       book: 'ceo-nights', first_name: first, last_name: lastN,
       email: email.toLowerCase(), phone: phone, copies: copies,
       title: title, job_title: job, industry: industry,
+      delivery: dv.delivery, delivery_address: dv.delivery_address,
       signed: form.signed.checked, sign_for: signFor(),
       accepted_terms: document.getElementById('bkAgree').checked,
       terms_version: TERMS_VERSION,
@@ -2223,13 +2359,8 @@ function manualPanel(doneEl, ref, first) {
       LABEL = 'Continue to payment',
       last = null;
 
-  function delivery() { var c = form.querySelector('input[name=delivery]:checked'); return c ? c.value : ''; }
-  function refresh() {
-    document.getElementById('payAddrWrap').hidden = delivery() === 'collection';
-    document.getElementById('payAddr').placeholder = delivery() === 'international'
-      ? 'Street address, city, postal code and country' : 'Street address, suburb, city and postal code';
-  }
-  form.addEventListener('change', refresh);
+  var deliv = deliveryStep(form, 'pay');
+  function refresh() { deliv.refresh(); }
   var signFor = signList(form, document.getElementById('paySignWrap'));
 
   function open(e) {
@@ -2274,8 +2405,6 @@ function manualPanel(doneEl, ref, first) {
         phone  = form.phone.value.trim(),
         digits = phone.replace(/\D/g, ''),
         copies = parseInt(form.copies.value, 10),
-        how    = delivery(),
-        addr   = form.address.value.trim(),
         title  = document.getElementById('payTitle').value,
         job    = document.getElementById('payJob').value.trim(),
         industry = document.getElementById('payIndustry').value;
@@ -2289,8 +2418,8 @@ function manualPanel(doneEl, ref, first) {
       return fail('That contact number does not look right. Please check it.');
     if (!(copies >= 1 && copies <= 50))
       return fail('Please choose between 1 and 50 copies. For a bigger order, email info@takechargeli.co.za.');
-    if (['delivery', 'international', 'collection'].indexOf(how) < 0) return fail('Please choose delivery or collect.');
-    if (how !== 'collection' && addr.length < 10) return fail('Please give the full delivery address.');
+    var dErr = deliv.check(); if (dErr) return fail(dErr);
+    var dv = deliv.value();
     if (!document.getElementById('payAgree').checked) return fail('Please accept the terms to continue.');
     if (form.company.value) return;
 
@@ -2300,11 +2429,7 @@ function manualPanel(doneEl, ref, first) {
       book: 'take-charge',
       first_name: first, last_name: lastN, email: email.toLowerCase(), phone: phone,
       title: title, job_title: job, industry: industry, copies: copies,
-      // Stored with the database's original delivery values until its rule is
-      // widened: any delivery is saved as 'johannesburg', and an international
-      // order is marked at the start of the address. The admin reads both.
-      delivery: how === 'collection' ? 'collection' : 'johannesburg',
-      delivery_address: how === 'collection' ? null : (how === 'international' ? '[INTERNATIONAL] ' : '') + addr,
+      delivery: dv.delivery, delivery_address: dv.delivery_address,
       signed: form.signed.checked, sign_for: signFor(),
       accepted_terms: true, terms_version: TERMS_VERSION, source: 'book-order-dialog'
     })

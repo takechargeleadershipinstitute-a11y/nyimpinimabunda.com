@@ -116,9 +116,7 @@ function validate(b: Record<string, unknown>) {
   const digits = o.phone.replace(/\D/g, "");
   if (!/^\+?[0-9 ()-]+$/.test(o.phone) || digits.length < 9 || digits.length > 15)
     return { error: "That contact number does not look right. Please check it." };
-  // CEO Nights is a pre-sale: delivery is arranged when the book is released.
-  if (o.book === "ceo-nights") { o.delivery = null; o.delivery_address = null; }
-  else if (!o.delivery || !DELIVERY[o.delivery]) return { error: "Please choose delivery or collection." };
+  if (!o.delivery || !DELIVERY[o.delivery]) return { error: "Please choose delivery or collect." };
   else if (o.delivery === "collection") o.delivery_address = null;
   else if (!o.delivery_address || o.delivery_address.length < 10 || o.delivery_address.length > 500)
     return { error: "Please give the full delivery address." };
