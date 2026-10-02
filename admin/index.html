@@ -203,6 +203,36 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
 .obtns{display:flex;flex-wrap:wrap;gap:8px}
 .obtns .btn{padding:11px 14px;font-size:10.5px}
 .ohist{font-size:12.5px;color:var(--grey);margin-top:10px}
+/* Dashboard shell: three sections, one click apart, always in reach. */
+.wrap{max-width:1120px}
+.mtabs{position:sticky;top:0;z-index:20;background:var(--off);border-bottom:1px solid var(--line)}
+.mtabs-in{display:flex;gap:4px;overflow-x:auto}
+.mtab{flex:0 0 auto;display:inline-flex;align-items:center;gap:9px;background:none;border:0;cursor:pointer;padding:18px 18px 16px;
+  font-family:var(--body);font-weight:600;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey-2);
+  box-shadow:inset 0 -3px 0 transparent;white-space:nowrap}
+.mtab:hover{color:var(--ink)}
+.mtab[aria-selected="true"]{color:var(--ink);box-shadow:inset 0 -3px 0 var(--amber)}
+.mtab:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
+.mtab .badge{min-width:22px;padding:3px 7px;font-size:11px;letter-spacing:0;line-height:1.2;text-align:center;background:var(--ink);color:#fff;border-radius:11px}
+.mtab .badge:empty{display:none}
+.mtab .badge.soft{background:rgba(5,26,82,.1);color:var(--ink)}
+.pane{padding-bottom:60px}
+.pane .dash,.pane .orders{padding-top:30px}
+.pane .app-head{padding-top:30px}
+.sub{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);margin:30px 0 0}
+.sub+.kpis{margin-top:12px}
+.todo{display:grid;gap:10px;margin-top:18px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.todo button{display:flex;align-items:center;gap:14px;text-align:left;background:var(--white);border:1px solid var(--line);padding:14px 16px;cursor:pointer;
+  font-family:var(--body);color:var(--ink)}
+.todo button:hover{border-color:var(--ink)}
+.todo b{font-family:var(--disp);font-weight:500;font-size:30px;line-height:1;min-width:34px}
+.todo span{font-size:14px;line-height:1.35}
+.todo small{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-top:3px}
+.todo .hot{border-left:4px solid var(--amber)}
+.ohead{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;justify-content:space-between;margin-top:16px}
+.ohead .ofilters{margin:0}
+.osum{font-size:14px;color:var(--grey);margin-top:14px}
+.osum b{color:var(--ink);font-weight:600}
 </style>
 </head>
 <body>
@@ -252,21 +282,38 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
   <section id="vApp" hidden>
     <h1 class="sr-only">Website manager</h1>
 
+    <nav class="mtabs" aria-label="Sections">
+      <div class="mtabs-in" role="tablist">
+        <button class="mtab" type="button" role="tab" id="mtOverview" data-pane="pOverview" aria-selected="true">Overview</button>
+        <button class="mtab" type="button" role="tab" id="mtOrders" data-pane="pOrders" aria-selected="false">Book orders <span class="badge" id="mtOrdN" title="Paid, to send"></span></button>
+        <button class="mtab" type="button" role="tab" id="mtEvents" data-pane="pEvents" aria-selected="false">Events <span class="badge soft" id="mtEvN" title="Coming up"></span></button>
+      </div>
+    </nav>
+
+    <div class="pane" id="pOverview" role="tabpanel" aria-labelledby="mtOverview">
     <section class="dash" id="dash" aria-labelledby="dashH">
       <div class="dash-head">
         <div>
-          <p class="eyebrow">Website</p>
-          <h2 class="h-disp" id="dashH">At a glance</h2>
-          <p class="muted" id="dashNote" role="status" aria-live="polite">Loading the sign-up figures…</p>
+          <p class="eyebrow">Dashboard</p>
+          <h2 class="h-disp" id="dashH">Overview</h2>
+          <p class="muted" id="ovNote" role="status" aria-live="polite">Loading…</p>
         </div>
         <button class="link" type="button" id="dashRefresh">Refresh</button>
       </div>
+
+      <div class="todo" id="todo"></div>
+
+      <p class="sub">Book sales</p>
+      <div class="kpis" id="money" hidden></div>
+
+      <p class="sub">Website</p>
+      <p class="muted" id="dashNote" role="status" aria-live="polite" style="font-size:13px;margin-top:6px">Loading the sign-up figures…</p>
       <div class="kpis" id="kpis" hidden></div>
       <div class="chart-card" id="chartCard" hidden>
         <div class="chart-top">
           <div>
             <h3>Registrations per week</h3>
-            <p>Mailing list sign-ups, CEO Nights pre-orders and paid book orders, last 12 weeks</p>
+            <p>Mailing list sign-ups, book orders awaiting payment and paid book orders, last 12 weeks</p>
           </div>
           <button class="link" type="button" id="tableToggle" aria-expanded="false" aria-controls="chartTable">Show as table</button>
         </div>
@@ -275,7 +322,9 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
         <div id="chartTable" hidden></div>
       </div>
     </section>
+    </div>
 
+    <div class="pane" id="pOrders" role="tabpanel" aria-labelledby="mtOrders" hidden>
     <section class="orders" id="orders" aria-labelledby="ordH">
       <div class="dash-head">
         <div>
@@ -285,15 +334,18 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
         </div>
         <button class="link" type="button" id="ordRefresh">Refresh</button>
       </div>
-      <div class="kpis" id="money" hidden></div>
-      <div class="ofilters" id="ordStatus" role="group" aria-label="Filter by status"></div>
-      <div class="ofilters" id="ordBook" role="group" aria-label="Filter by book"></div>
-      <p style="margin:12px 0 0"><button class="link" type="button" id="ordCopy">Copy email addresses</button></p>
+      <div class="ohead">
+        <div class="ofilters" id="ordStatus" role="group" aria-label="Filter by status"></div>
+        <div class="ofilters" id="ordBook" role="group" aria-label="Filter by book"></div>
+      </div>
+      <p class="osum"><span id="ordSum"></span> <button class="link" type="button" id="ordCopy" style="margin-left:10px">Copy email addresses</button></p>
       <p class="msg ok toast" id="ordToast" role="status" aria-live="polite" hidden></p>
       <ol class="olist" id="ordList"></ol>
       <p class="empty" id="ordEmpty" hidden></p>
     </section>
+    </div>
 
+    <div class="pane" id="pEvents" role="tabpanel" aria-labelledby="mtEvents" hidden>
     <div class="app-head">
       <div>
         <p class="eyebrow">Gig guide</p>
@@ -310,6 +362,7 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
     <p class="msg ok toast" id="toast" role="status" aria-live="polite" hidden></p>
     <ol class="elist" id="list"></ol>
     <p class="empty" id="empty" hidden></p>
+    </div>
   </section>
 
 </main>
@@ -607,7 +660,7 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
     stats = res.data;
     renderStats();
   }
-  $('dashRefresh').addEventListener('click', loadStats);
+  $('dashRefresh').addEventListener('click', function () { loadStats(); loadOrders(); });
 
   function tile(label, value, detail, rowsList) {
     var t = el('div', 'kpi');
@@ -801,6 +854,7 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
     var up = rows.filter(function (e) { return lastDay(e) >= today; });
     var past = rows.filter(function (e) { return lastDay(e) < today; }).reverse();
     $('nUp').textContent = '(' + up.length + ')';
+    $('mtEvN').textContent = String(up.length);
     $('nPast').textContent = '(' + past.length + ')';
     $('tabUp').setAttribute('aria-selected', String(tab === 'up'));
     $('tabPast').setAttribute('aria-selected', String(tab === 'past'));
@@ -944,6 +998,22 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
     toast('Event deleted.');
   });
 
+  // ── sections: Overview / Book orders / Events ──────────────────────────────
+  var PANES = ['pOverview', 'pOrders', 'pEvents'];
+  function showPane(id, keepScroll) {
+    if (PANES.indexOf(id) < 0) id = 'pOverview';
+    PANES.forEach(function (p) { $(p).hidden = p !== id; });
+    [].forEach.call(document.querySelectorAll('.mtab'), function (t) { t.setAttribute('aria-selected', String(t.getAttribute('data-pane') === id)); });
+    try { sessionStorage.setItem('tcli-pane', id); } catch (e) {}
+    if (!keepScroll) window.scrollTo(0, 0);
+    // The chart measures its box, so draw it when its pane is the one showing.
+    if (id === 'pOverview' && stats) { renderChart(); }
+  }
+  [].forEach.call(document.querySelectorAll('.mtab'), function (t) {
+    t.addEventListener('click', function () { showPane(t.getAttribute('data-pane')); });
+  });
+  try { showPane(sessionStorage.getItem('tcli-pane') || 'pOverview', true); } catch (e) {}
+
   // ── book orders ────────────────────────────────────────────────────────────
   // public.list_book_orders() and public.set_book_order_status() refuse anyone
   // not on the editors list (supabase/book_orders_dashboard.sql).
@@ -967,7 +1037,10 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
   // when something actually changed, so an order you have open stays open.
   var ordSig = '', ordAt = null, ordBusy = false, hhmm = new Intl.DateTimeFormat('en-ZA', { timeZone: 'Africa/Johannesburg', hour: '2-digit', minute: '2-digit', second: '2-digit' });
   var ORD_NOTE = 'Every book order from the website. Orders paid by card are marked Paid automatically by Yoco.';
-  function stamp() { $('ordNote').textContent = ORD_NOTE + (ordAt ? ' Updates automatically. Last checked ' + hhmm.format(ordAt) + '.' : ''); }
+  function stamp() {
+    $('ordNote').textContent = ORD_NOTE + (ordAt ? ' Updates automatically. Last checked ' + hhmm.format(ordAt) + '.' : '');
+    $('ovNote').textContent = 'Book sales and website activity. Updates automatically' + (ordAt ? ', last checked ' + hhmm.format(ordAt) : '') + '.';
+  }
   async function loadOrders(quiet) {
     if (ordBusy) return;
     ordBusy = true;
@@ -1049,6 +1122,19 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
       t.appendChild(ul);
       return t;
     }
+    var toSend = real.filter(function (o) { return o.status === 'paid'; });
+    $('mtOrdN').textContent = toSend.length ? String(toSend.length) : '';
+    var td = $('todo'); td.textContent = '';
+    function todo(n, text, small, status, hot) {
+      var b = el('button', hot ? 'hot' : null); b.type = 'button';
+      b.appendChild(el('b', null, String(n)));
+      var sp = el('span', null, text); sp.appendChild(el('small', null, small)); b.appendChild(sp);
+      b.addEventListener('click', function () { oStatus = status; oBook = 'all'; renderOrders(); showPane('pOrders'); });
+      td.appendChild(b);
+    }
+    todo(toSend.length, toSend.length === 1 ? 'paid order to send' : 'paid orders to send', 'Open the list', 'paid', toSend.length > 0);
+    todo(wait.length, wait.length === 1 ? 'order awaiting payment' : 'orders awaiting payment', rand(sum(wait)) + ' outstanding', 'new', false);
+    $('ovNote').textContent = 'Book sales and website activity. Updates automatically' + (ordAt ? ', last checked ' + hhmm.format(ordAt) : '') + '.';
     var m = $('money'); m.textContent = '';
     m.appendChild(moneyTile('Money received', paid, paid.length + (paid.length === 1 ? ' paid order' : ' paid orders'),
       [['Confirmed by Yoco (card)', rand(sum(card))], ['Marked paid by hand', rand(sum(paid) - sum(card))]]));
@@ -1068,6 +1154,10 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
 
     var items = byBook.filter(function (o) { return inStatus(o, oStatus); });
     shown = items;
+    var liveItems = items.filter(function (o) { return o.mode !== 'test'; });
+    $('ordSum').textContent = '';
+    $('ordSum').appendChild(el('b', null, items.length + (items.length === 1 ? ' order' : ' orders')));
+    $('ordSum').appendChild(document.createTextNode(' in this list, worth ' + rand(liveItems.reduce(function (t, o) { return t + worth(o); }, 0)) + '.'));
     var uniq = {}; items.forEach(function (o) { if (o.email) uniq[o.email.toLowerCase()] = 1; });
     $('ordCopy').textContent = 'Copy email addresses (' + Object.keys(uniq).length + ')';
     var list = $('ordList'), openIds = {};
