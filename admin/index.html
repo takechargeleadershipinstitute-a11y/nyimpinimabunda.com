@@ -961,19 +961,43 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
   }
   var dt = new Intl.DateTimeFormat('en-ZA', { timeZone: 'Africa/Johannesburg', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 
-  async function loadOrders() {
+  // Orders and money keep themselves up to date: the list is re-read every 30
+  // seconds while the page is open, and at once when you come back to the tab.
+  // `quiet` is a background refresh: it never shows an error and only redraws
+  // when something actually changed, so an order you have open stays open.
+  var ordSig = '', ordAt = null, ordBusy = false, hhmm = new Intl.DateTimeFormat('en-ZA', { timeZone: 'Africa/Johannesburg', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  var ORD_NOTE = 'Every book order from the website. Orders paid by card are marked Paid automatically by Yoco.';
+  function stamp() { $('ordNote').textContent = ORD_NOTE + (ordAt ? ' Updates automatically. Last checked ' + hhmm.format(ordAt) + '.' : ''); }
+  async function loadOrders(quiet) {
+    if (ordBusy) return;
+    ordBusy = true;
     var res = await sb.rpc('list_all_book_orders');
     // Before supabase/book_checkout_both_books.sql has run, fall back to the older list.
     if (res.error && /PGRST202|Could not find/i.test((res.error.code || '') + ' ' + (res.error.message || ''))) res = await sb.rpc('list_book_orders');
+    ordBusy = false;
     if (res.error) {
       console.error('list_all_book_orders:', res.error);
-      $('ordNote').textContent = 'Orders could not load just now. Try Refresh in a moment.';
+      if (!quiet) $('ordNote').textContent = 'Orders could not load just now. Try Refresh in a moment.';
+      else if (ordAt) $('ordNote').textContent = ORD_NOTE + ' Could not check for updates just now. Showing figures from ' + hhmm.format(ordAt) + '.';
       return;
     }
-    orders = res.data || [];
-    $('ordNote').textContent = 'Every book order from the website. Orders paid by card are marked Paid automatically by Yoco.';
-    renderOrders();
+    var fresh = res.data || [], sig = JSON.stringify(fresh.map(function (o) { return [o.id, o.status, o.paid_at, o.status_changed_at]; }));
+    ordAt = new Date();
+    if (sig !== ordSig) {
+      var hadSome = !!ordSig, before = orders.length;
+      orders = fresh; ordSig = sig;
+      renderOrders();
+      if (quiet && hadSome) {
+        loadStats();
+        msg($('ordToast'), fresh.length > before ? 'New order received. The figures have been updated.' : 'An order changed. The figures have been updated.', false);
+        setTimeout(function () { $('ordToast').hidden = true; }, 8000);
+      }
+    }
+    stamp();
   }
+  setInterval(function () { if (!document.hidden && !$('vApp').hidden) loadOrders(true); }, 30000);
+  document.addEventListener('visibilitychange', function () { if (!document.hidden && !$('vApp').hidden) loadOrders(true); });
+  window.addEventListener('focus', function () { if (!$('vApp').hidden) loadOrders(true); });
   $('ordRefresh').addEventListener('click', function () { loadOrders(); loadStats(); });
 
   function inStatus(o, f) {
@@ -1046,12 +1070,15 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
     shown = items;
     var uniq = {}; items.forEach(function (o) { if (o.email) uniq[o.email.toLowerCase()] = 1; });
     $('ordCopy').textContent = 'Copy email addresses (' + Object.keys(uniq).length + ')';
-    var list = $('ordList'); list.textContent = '';
+    var list = $('ordList'), openIds = {};
+    [].forEach.call(list.querySelectorAll('details[open]'), function (d) { openIds[d.getAttribute('data-id')] = 1; });
+    list.textContent = '';
     $('ordEmpty').hidden = items.length > 0;
     $('ordEmpty').textContent = 'No orders here.';
 
     items.forEach(function (o) {
       var li = el('li'), d = el('details', 'orow'), sm = el('summary');
+      d.setAttribute('data-id', o.id); if (openIds[o.id]) d.open = true;
       var left = el('div');
       left.appendChild(el('span', 'oref', o.order_ref || '—'));
       left.appendChild(document.createTextNode('  '));
@@ -1118,6 +1145,7 @@ legend span{display:block;font-family:var(--body);text-transform:none;font-size:
     btn.disabled = false;
     if (res.error) { console.error('set_book_order_status:', res.error); msg($('ordToast'), friendlyError(res.error), true); return; }
     Object.assign(o, res.data);
+    ordSig = JSON.stringify(orders.map(function (x) { return [x.id, x.status, x.paid_at, x.status_changed_at]; }));
     msg($('ordToast'), (o.order_ref || 'Order') + ' is now: ' + ST[status] + '.', false);
     setTimeout(function () { $('ordToast').hidden = true; }, 6000);
     renderOrders();
